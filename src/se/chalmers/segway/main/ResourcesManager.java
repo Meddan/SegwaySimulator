@@ -1,4 +1,4 @@
-package se.chalmers.segway;
+package se.chalmers.segway.main;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;

@@ -1,7 +1,9 @@
-package se.chalmers.segway;
+package se.chalmers.segway.main;
 
 import org.andengine.engine.Engine;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
+
+import se.chalmers.segway.scenes.*;
 
 public class SceneManager {
 	// ---------------------------------------------
