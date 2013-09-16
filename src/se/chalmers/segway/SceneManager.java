@@ -1,6 +1,7 @@
 package se.chalmers.segway;
 
 import org.andengine.engine.Engine;
+import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
 public class SceneManager {
 	// ---------------------------------------------
@@ -26,6 +27,23 @@ public class SceneManager {
 
 	public enum SceneType {
 		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING,
+	}
+
+	// ---------------------------------------------
+	// CREATION AND DISPOSAL
+	// ---------------------------------------------
+
+	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
+		ResourcesManager.getInstance().loadSplashScreen();
+		splashScene = new SplashScene();
+		currentScene = splashScene;
+		pOnCreateSceneCallback.onCreateSceneFinished(splashScene);
+	}
+
+	private void disposeSplashScene() {
+		ResourcesManager.getInstance().unloadSplashScreen();
+		splashScene.disposeScene();
+		splashScene = null;
 	}
 
 	// ---------------------------------------------
