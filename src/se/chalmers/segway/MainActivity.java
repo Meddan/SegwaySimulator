@@ -10,12 +10,11 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import android.os.Bundle;
-
 public class MainActivity extends BaseGameActivity {
 	
 	private Camera camera;
 
+	
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		camera = new Camera(0, 0, 800, 480);
