@@ -16,7 +16,7 @@
 
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
         <activity
-            android:name="se.chalmers.segway.MainActivity"
+            android:name="se.chalmers.segway.main.MainActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|mcc|mnc"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
