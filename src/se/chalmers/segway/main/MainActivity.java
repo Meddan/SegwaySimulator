@@ -57,8 +57,12 @@ public class MainActivity extends BaseGameActivity {
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
+						SceneManager.getInstance().createMenuScene();
+
 						// TODO: Kolla exemplet.
 					}
 				}));
+		pOnPopulateSceneCallback.onPopulateSceneFinished();
+
 	}
 }

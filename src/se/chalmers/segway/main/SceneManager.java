@@ -47,6 +47,14 @@ public class SceneManager {
 		splashScene.disposeScene();
 		splashScene = null;
 	}
+	
+	public void createMenuScene()
+	{
+	    ResourcesManager.getInstance().loadMenuResources();
+	    menuScene = new MainMenuScene();
+	    setScene(menuScene);
+	    disposeSplashScene();
+	}
 
 	// ---------------------------------------------
 	// CLASS LOGIC
