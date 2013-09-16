@@ -13,6 +13,7 @@ import org.andengine.ui.activity.BaseGameActivity;
 public class MainActivity extends BaseGameActivity {
 	
 	private Camera camera;
+	private ResourcesManager resourcesManager;
 
 	
 	@Override
@@ -34,7 +35,9 @@ public class MainActivity extends BaseGameActivity {
 	public void onCreateResources(
 			OnCreateResourcesCallback pOnCreateResourcesCallback)
 			throws Exception {
-
+		ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
+		resourcesManager = ResourcesManager.getInstance();
+		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 
 	@Override
