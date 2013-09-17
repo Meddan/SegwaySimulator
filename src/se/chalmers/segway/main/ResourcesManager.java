@@ -2,6 +2,9 @@ package se.chalmers.segway.main;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -12,6 +15,8 @@ import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
+
+import android.graphics.Color;
 
 public class ResourcesManager {
 	// ---------------------------------------------
@@ -26,6 +31,7 @@ public class ResourcesManager {
 	public MainActivity activity;
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
+	public Font loadingFont;
 
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
@@ -44,6 +50,7 @@ public class ResourcesManager {
 	public void loadMenuResources() {
 		loadMenuGraphics();
 		loadMenuAudio();
+		loadMenuFonts();
 	}
 
 	public void loadGameResources() {
@@ -75,6 +82,14 @@ public class ResourcesManager {
 			Debug.e(e);
 		}
 
+	}
+	
+	private void loadMenuFonts() {
+		FontFactory.setAssetBasePath("font/");
+		final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		
+		loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 50, true, Color.WHITE, 2, Color.BLACK);
+		loadingFont.load();
 	}
 
 	private void loadMenuAudio() {
