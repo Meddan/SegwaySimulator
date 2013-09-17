@@ -11,7 +11,8 @@ public class LoadingScene extends BaseScene {
 	@Override
 	public void createScene() {
 		setBackground(new Background(Color.WHITE));
-		attachChild(new Text(400, 240, resourcesManager.loadingFont, "Rolling out segways...", vbom));
+		attachChild(new Text(400, 240, resourcesManager.loadingFont,
+				"Rolling out segways...", vbom));
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class LoadingScene extends BaseScene {
 
 	@Override
 	public void disposeScene() {
-		
+
 	}
 
 }
