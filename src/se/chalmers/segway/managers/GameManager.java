@@ -1,4 +1,4 @@
-package se.chalmers.segway.main;
+package se.chalmers.segway.managers;
 
 
 /**

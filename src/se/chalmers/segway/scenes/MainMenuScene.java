@@ -9,7 +9,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
-import se.chalmers.segway.main.SceneManager.SceneType;
+import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {

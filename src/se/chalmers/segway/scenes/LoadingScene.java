@@ -4,7 +4,7 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.text.Text;
 import org.andengine.util.adt.color.Color;
 
-import se.chalmers.segway.main.SceneManager.SceneType;
+import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public class LoadingScene extends BaseScene {
 

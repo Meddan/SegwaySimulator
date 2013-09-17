@@ -1,4 +1,4 @@
-package se.chalmers.segway.main;
+package se.chalmers.segway.managers;
 
 import org.andengine.engine.Engine;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;

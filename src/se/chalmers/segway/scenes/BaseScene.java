@@ -7,8 +7,8 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import android.app.Activity;
 
-import se.chalmers.segway.main.ResourcesManager;
-import se.chalmers.segway.main.SceneManager.SceneType;
+import se.chalmers.segway.managers.ResourcesManager;
+import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public abstract class BaseScene extends Scene {
 	// ---------------------------------------------
