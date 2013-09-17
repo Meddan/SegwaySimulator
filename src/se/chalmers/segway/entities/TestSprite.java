@@ -10,7 +10,7 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
-import se.chalmers.segway.main.ResourcesManager;
+import se.chalmers.segway.managers.ResourcesManager;
 
 /**
  * Sprite for prototype of the game. 
