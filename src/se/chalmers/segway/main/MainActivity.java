@@ -38,7 +38,8 @@ public class MainActivity extends BaseGameActivity {
 
 	@Override
 	public void onCreateResources(
-			OnCreateResourcesCallback pOnCreateResourcesCallback) {
+			OnCreateResourcesCallback pOnCreateResourcesCallback)
+			throws Exception {
 		ResourcesManager.prepareManager(mEngine, this, camera,
 				getVertexBufferObjectManager());
 		resourcesManager = ResourcesManager.getInstance();
@@ -46,15 +47,17 @@ public class MainActivity extends BaseGameActivity {
 	}
 
 	@Override
-	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) {
+	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
+			throws Exception {
 		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
 	}
 
 	@Override
 	public void onPopulateScene(Scene pScene,
-			OnPopulateSceneCallback pOnPopulateSceneCallback) {
+			OnPopulateSceneCallback pOnPopulateSceneCallback) throws Exception {
 		mEngine.registerUpdateHandler(new TimerHandler(2f,
 				new ITimerCallback() {
+					@Override
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
 						SceneManager.getInstance().createMenuScene();

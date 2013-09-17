@@ -13,6 +13,7 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
@@ -32,9 +33,12 @@ public class ResourcesManager {
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
 	public Font loadingFont;
+	
 
+	//WHY ON EARTH ARE THESE PUBLIC
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
+	public ITiledTextureRegion playerRegion;
 	public ITextureRegion options_region;
 
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
