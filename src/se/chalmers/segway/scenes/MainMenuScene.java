@@ -55,7 +55,7 @@ public class MainMenuScene extends BaseScene implements
 
 	private void createMenuChildScene() {
 		menuChildScene = new MenuScene(camera);
-		menuChildScene.setPosition(40, 260);
+		menuChildScene.setPosition(0, 0);
 
 		final IMenuItem playMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_PLAY, resourcesManager.play_region,
