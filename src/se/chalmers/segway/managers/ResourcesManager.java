@@ -53,6 +53,18 @@ public class ResourcesManager {
 	// CLASS LOGIC
 	// ---------------------------------------------
 
+	public void unloadGameTextures() {
+		// TODO (Since we did not create any textures for game scene yet)
+	}
+
+	public void unloadMenuTextures() {
+		menuTextureAtlas.unload();
+	}
+
+	public void loadMenuTextures() {
+		menuTextureAtlas.load();
+	}
+
 	public void loadMenuResources() {
 		loadMenuGraphics();
 		loadMenuAudio();
@@ -96,9 +108,10 @@ public class ResourcesManager {
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-		loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
-				mainFontTexture, activity.getAssets(), "font.ttf", 50, true,
-				Color.WHITE, 2, Color.BLACK);
+		loadingFont = FontFactory.createStrokeFromAsset(
+				activity.getFontManager(), mainFontTexture,
+				activity.getAssets(), "font.ttf", 50, true, Color.WHITE, 2,
+				Color.BLACK);
 		loadingFont.load();
 	}
 

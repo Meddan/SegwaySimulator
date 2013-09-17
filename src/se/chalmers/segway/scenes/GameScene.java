@@ -11,6 +11,7 @@ import org.andengine.util.adt.color.Color;
 
 import com.badlogic.gdx.math.Vector2;
 
+import se.chalmers.segway.managers.SceneManager;
 import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public class GameScene extends BaseScene {
@@ -36,7 +37,7 @@ public class GameScene extends BaseScene {
 
 	@Override
 	public void onBackKeyPressed() {
-
+		 SceneManager.getInstance().loadMenuScene(engine);
 	}
 
 	@Override
@@ -45,8 +46,13 @@ public class GameScene extends BaseScene {
 	}
 
 	@Override
-	public void disposeScene() {
+	public void disposeScene()
+	{
+	    camera.setHUD(null);
+	    camera.setCenter(400, 240);
 
+	    // TODO code responsible for disposing scene
+	    // removing all game scene objects.
 	}
 	
 	private void createBackground() {

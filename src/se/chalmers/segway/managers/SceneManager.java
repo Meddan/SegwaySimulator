@@ -1,6 +1,8 @@
 package se.chalmers.segway.managers;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
 import se.chalmers.segway.scenes.*;
@@ -83,6 +85,38 @@ public class SceneManager {
 		default:
 			break;
 		}
+	}
+	
+	public void loadGameScene(final Engine mEngine)
+	{
+	    setScene(loadingScene);
+	    ResourcesManager.getInstance().unloadMenuTextures();
+	    mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+	    {
+	        public void onTimePassed(final TimerHandler pTimerHandler) 
+	        {
+	            mEngine.unregisterUpdateHandler(pTimerHandler);
+	            ResourcesManager.getInstance().loadGameResources();
+	            gameScene = new GameScene();
+	            setScene(gameScene);
+	        }
+	    }));
+	}
+	
+	public void loadMenuScene(final Engine mEngine)
+	{
+	    setScene(loadingScene);
+	    gameScene.disposeScene();
+	    ResourcesManager.getInstance().unloadGameTextures();
+	    mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+	    {
+	        public void onTimePassed(final TimerHandler pTimerHandler) 
+	        {
+	            mEngine.unregisterUpdateHandler(pTimerHandler);
+	            ResourcesManager.getInstance().loadMenuTextures();
+	            setScene(menuScene);
+	        }
+	    }));
 	}
 
 	// ---------------------------------------------

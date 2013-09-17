@@ -9,6 +9,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
+import se.chalmers.segway.managers.SceneManager;
 import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
@@ -83,6 +84,7 @@ public class MainMenuScene extends BaseScene implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
+			SceneManager.getInstance().loadGameScene(engine);
 			return true;
 		case MENU_OPTIONS:
 			return true;
