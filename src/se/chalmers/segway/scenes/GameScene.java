@@ -11,7 +11,7 @@ import org.andengine.util.adt.color.Color;
 
 import com.badlogic.gdx.math.Vector2;
 
-import se.chalmers.segway.main.SceneManager.SceneType;
+import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public class GameScene extends BaseScene {
 	

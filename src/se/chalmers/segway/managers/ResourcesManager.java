@@ -1,4 +1,4 @@
-package se.chalmers.segway.main;
+package se.chalmers.segway.managers;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
@@ -16,6 +16,8 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
+
+import se.chalmers.segway.main.MainActivity;
 
 import android.graphics.Color;
 

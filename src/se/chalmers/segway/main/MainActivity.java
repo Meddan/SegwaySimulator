@@ -14,6 +14,8 @@ import org.andengine.ui.activity.BaseGameActivity;
 
 import android.view.KeyEvent;
 
+import se.chalmers.segway.managers.*;
+
 public class MainActivity extends BaseGameActivity {
 
 	private Camera camera;

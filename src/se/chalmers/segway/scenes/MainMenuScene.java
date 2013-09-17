@@ -9,7 +9,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
-import se.chalmers.segway.main.SceneManager.SceneType;
+import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {
@@ -38,7 +38,7 @@ public class MainMenuScene extends BaseScene implements
 	}
 
 	private void createBackground() {
-		attachChild(new Sprite(0, 0,
+		attachChild(new Sprite(400, 240,
 				resourcesManager.menu_background_region, vbom) {
 			@Override
 			protected void preDraw(GLState pGLState, Camera pCamera) {
@@ -54,24 +54,24 @@ public class MainMenuScene extends BaseScene implements
 
 	private void createMenuChildScene() {
 		menuChildScene = new MenuScene(camera);
-		menuChildScene.setPosition(0, 0);
+		menuChildScene.setPosition(40, 260);
 
 		final IMenuItem playMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_PLAY, resourcesManager.play_region,
 						vbom), 1.2f, 1);
-		final IMenuItem optionsMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_OPTIONS,
-						resourcesManager.options_region, vbom), 1.2f, 1);
+//		final IMenuItem optionsMenuItem = new ScaleMenuItemDecorator(
+//				new SpriteMenuItem(MENU_OPTIONS,
+//						resourcesManager.options_region, vbom), 1.2f, 1);
 
 		menuChildScene.addMenuItem(playMenuItem);
-		menuChildScene.addMenuItem(optionsMenuItem);
+//		menuChildScene.addMenuItem(optionsMenuItem);
 
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 
 		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 10);
-		optionsMenuItem.setPosition(optionsMenuItem.getX(),
-				optionsMenuItem.getY() + 25);
+//		optionsMenuItem.setPosition(optionsMenuItem.getX(),
+//				optionsMenuItem.getY() - 110);
 
 		menuChildScene.setOnMenuItemClickListener(this);
 
