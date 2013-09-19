@@ -139,10 +139,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 								pAttributes,
 								LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
 
-						// TODO later we will specify camera BOUNDS and create
-						// invisible walls
-						// on the beginning and on the end of the level.
-
+				        camera.setBounds(0, 0, width, height); // here we set camera bounds
+				        camera.setBoundsEnabled(true);
+				        
 						return GameScene.this;
 					}
 				});
@@ -164,8 +163,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 								pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
 
 						final Sprite levelObject;
-
-						//Cases for loading different objects
+						
+				        //Cases for loading different objects
 						//Loads platform1
 						if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1)) {
 							levelObject = new Sprite(x, y,
