@@ -42,6 +42,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text scoreText;
 	private int score;
 	private PhysicsWorld physicsWorld;
+	
+	private boolean firstTouch = false;
 
 	private Player player;
 
@@ -80,6 +82,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	public void disposeScene() {
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
+		camera.setChaseEntity(null);
 
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
@@ -220,7 +223,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		if (pSceneTouchEvent.isActionDown()) {
-
+			 if (!firstTouch)
+		        {
+		            player.setRunning();
+		            firstTouch = true;
+		        }
+		        else
+		        {
+		            player.jump();
+		        }
 		}
 		return false;
 	}
