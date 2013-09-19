@@ -15,6 +15,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
+import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
@@ -27,7 +28,12 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
+import se.chalmers.segway.entities.Player;
+import se.chalmers.segway.managers.SceneManager;
+import se.chalmers.segway.managers.SceneManager.SceneType;
+
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -35,10 +41,6 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
-
-import se.chalmers.segway.entities.Player;
-import se.chalmers.segway.managers.SceneManager;
-import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
@@ -63,6 +65,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private static final String TAG_ENTITY_ATTRIBUTE_TYPE = "type";
 
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1 = "platform1";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2 = "platform2";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 
@@ -198,7 +202,22 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 									levelObject, BodyType.StaticBody,
 									FIXTURE_DEF).setUserData("platform1");
 							// Loads coin
-						} else if (type
+						}
+			            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2))
+			            {
+			                levelObject = new Sprite(x, y, resourcesManager.platform2_region, vbom);
+			                final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+			                body.setUserData("platform2");
+			                physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+			            }
+			            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3))
+			            {
+			                levelObject = new Sprite(x, y, resourcesManager.platform3_region, vbom);
+			                final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+			                body.setUserData("platform3");
+			                physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+			            }
+						else if (type
 								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 							levelObject = new Sprite(x, y,
 									resourcesManager.coin_region, vbom) {
