@@ -50,7 +50,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	 * Variables
 	 */
 	private HUD gameHUD;
-	private Text scoreText;
 	private Text finalScore;
 	private int score;
 	private PhysicsWorld physicsWorld;
@@ -122,15 +121,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
 	private void createHUD() {
 		gameHUD = new HUD();
-
-		// CREATE SCORE TEXT
-		scoreText = new Text(20, 420, resourcesManager.loadingFont,
-				"Score: 0123456789", new TextOptions(HorizontalAlign.LEFT),
-				vbom);
-		scoreText.setAnchorCenter(0, 0);
-		scoreText.setText("Score: 0");
-		gameHUD.attachChild(scoreText);
-
 		camera.setHUD(gameHUD);
 	}
 	
@@ -144,7 +134,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
 	private void addToScore(int i) {
 		score += i;
-		scoreText.setText("Score: " + score);
 	}
 
 	private void createPhysics() {
