@@ -15,10 +15,22 @@ import se.chalmers.segway.managers.SceneManager.SceneType;
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {
 
+	private boolean sound = true;
+	IMenuItem soundonMenuItem;
+	IMenuItem soundoffMenuItem;
+
 	@Override
 	public void createScene() {
 		createBackground();
 		createMenuChildScene();
+		playMusic();
+	}
+
+	private void playMusic() {
+		if (!this.resourcesManager.music.isPlaying()) {
+			this.resourcesManager.music.play();
+			this.resourcesManager.music.setLooping(true);
+		}
 	}
 
 	@Override
@@ -60,19 +72,24 @@ public class MainMenuScene extends BaseScene implements
 		final IMenuItem playMenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(MENU_PLAY, resourcesManager.play_region,
 						vbom), 1.2f, 1);
-		// final IMenuItem optionsMenuItem = new ScaleMenuItemDecorator(
-		// new SpriteMenuItem(MENU_OPTIONS,
-		// resourcesManager.options_region, vbom), 1.2f, 1);
+		soundonMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
+				MENU_OPTIONS, resourcesManager.soundon_region, vbom), 1.2f, 1);
+		soundoffMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
+				MENU_OPTIONS, resourcesManager.soundoff_region, vbom), 1.2f, 1);
 
 		menuChildScene.addMenuItem(playMenuItem);
-		// menuChildScene.addMenuItem(optionsMenuItem);
+		menuChildScene.addMenuItem(soundonMenuItem);
+		menuChildScene.addMenuItem(soundoffMenuItem);
 
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 
-		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() + 10);
-		// optionsMenuItem.setPosition(optionsMenuItem.getX(),
-		// optionsMenuItem.getY() - 110);
+		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() - 30);
+		soundonMenuItem.setPosition(soundonMenuItem.getX(),
+				soundonMenuItem.getY() - 80);
+		soundoffMenuItem.setPosition(soundonMenuItem.getX(),
+				soundonMenuItem.getY());
+		soundoffMenuItem.setVisible(false);
 
 		menuChildScene.setOnMenuItemClickListener(this);
 
@@ -87,10 +104,19 @@ public class MainMenuScene extends BaseScene implements
 			SceneManager.getInstance().loadGameScene(engine);
 			return true;
 		case MENU_OPTIONS:
+			soundoffMenuItem.setVisible(sound);
+			soundonMenuItem.setVisible(!sound);
+			sound = !sound;
+			if (sound) {
+				resourcesManager.music.getMediaPlayer().setVolume(1,1);
+				resourcesManager.music.resume();
+			} else {
+				resourcesManager.music.getMediaPlayer().setVolume(0,0);
+				resourcesManager.music.pause();
+			}
 			return true;
 		default:
 			return false;
 		}
 	}
-
 }

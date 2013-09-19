@@ -2,8 +2,6 @@ package se.chalmers.segway.scenes;
 
 import java.io.IOException;
 
-import org.andengine.audio.music.Music;
-import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -15,14 +13,12 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.entity.text.TextOptions;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.SAXUtils;
-import org.andengine.util.adt.align.HorizontalAlign;
 import org.andengine.util.adt.color.Color;
 import org.andengine.util.level.EntityLoader;
 import org.andengine.util.level.constants.LevelConstants;
@@ -53,7 +49,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text finalScore;
 	private int score;
 	private PhysicsWorld physicsWorld;
-	
+
 	private LevelCompleteScene levelCompleteScene;
 
 	private boolean gameOverDisplayed = false;
@@ -61,7 +57,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private boolean firstTouch = false;
 
 	private Player player;
-	
+
 	private static final String TAG_ENTITY = "entity";
 	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
 	private static final String TAG_ENTITY_ATTRIBUTE_Y = "y";
@@ -82,17 +78,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		createHUD();
 		createPhysics();
 		loadLevel(1);
-		playSound();
 		setOnSceneTouchListener(this);
-		levelCompleteScene = new LevelCompleteScene(vbom);		
-	}
-
-	private void playSound() {
-		this.resourcesManager.music.play();
-	}
-	
-	private void stopSound(){
-		this.resourcesManager.music.stop();	
+		levelCompleteScene = new LevelCompleteScene(vbom);
 	}
 
 	@Override
@@ -110,7 +97,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
-		stopSound();
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
@@ -123,11 +109,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
 	}
-	
+
 	private void displayScoreAtGameOver() {
+
 		camera.setChaseEntity(null);
-		finalScore = new Text(camera.getCenterX(), camera.getCenterY()/2, resourcesManager.fancyFont,
-				"Score: " + score, vbom);
+		finalScore = new Text(camera.getCenterX(), camera.getCenterY() / 2,
+				resourcesManager.fancyFont, "Score: " + score, vbom);
 		attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
@@ -249,8 +236,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 								@Override
 								public void onDie() {
 									if (!gameOverDisplayed) {
-										levelCompleteScene.display(GameScene.this, camera);
-										addToScore((int) player.getX()/20);
+										levelCompleteScene.display(
+												GameScene.this, camera);
+										addToScore((int) player.getX() / 20);
 										displayScoreAtGameOver();
 									}
 								}
@@ -343,7 +331,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 				player.jump();
 			}
 		}
-		if (gameOverDisplayed){
+		if (gameOverDisplayed) {
 			SceneManager.getInstance().loadMenuScene(engine);
 		}
 		return false;

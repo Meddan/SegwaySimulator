@@ -61,7 +61,9 @@ public class ResourcesManager {
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
 	public ITiledTextureRegion playerRegion;
-	public ITextureRegion options_region;
+	// public ITextureRegion options_region;
+	public ITextureRegion soundon_region;
+	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
 
 	// ---------------------------------------------
@@ -103,8 +105,10 @@ public class ResourcesManager {
 						"menu_background.png");
 		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				menuTextureAtlas, activity, "play.png");
-		options_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(menuTextureAtlas, activity, "play.png");
+		soundon_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity, "soundon.png");
+		soundoff_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity, "soundoff.png");
 
 		try {
 			this.menuTextureAtlas
@@ -122,20 +126,19 @@ public class ResourcesManager {
 		final ITexture loadFontTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		
+
 		final ITexture fancyFontTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		
 
-		//loadingFont
+		// loadingFont
 		loadingFont = FontFactory.createStrokeFromAsset(
 				activity.getFontManager(), loadFontTexture,
 				activity.getAssets(), "start2p.ttf", 32, true, Color.WHITE, 2,
 				Color.BLACK);
 		loadingFont.load();
-		
-		//fancyFont
+
+		// fancyFont
 		fancyFont = FontFactory.createStrokeFromAsset(
 				activity.getFontManager(), fancyFontTexture,
 				activity.getAssets(), "start2p.ttf", 40, true, Color.YELLOW, 2,
@@ -144,7 +147,12 @@ public class ResourcesManager {
 	}
 
 	private void loadMenuAudio() {
-
+		try {
+			music = MusicFactory.createMusicFromAsset(engine.getMusicManager(),
+					activity, "sfx/bigblue.ogg");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void loadGameGraphics() {
@@ -165,8 +173,7 @@ public class ResourcesManager {
 				.createTiledFromAsset(gameTextureAtlas, activity, "segway.png",
 						3, 1);
 		complete_window_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gameTextureAtlas, activity,
-						"complete.png");
+				.createFromAsset(gameTextureAtlas, activity, "complete.png");
 
 		try {
 			this.gameTextureAtlas
@@ -183,14 +190,7 @@ public class ResourcesManager {
 	}
 
 	private void loadGameAudio() {
-		try
-		{
-		    music = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity, "sfx/bigblue.ogg");
-		}
-		catch (IOException e)
-		{
-		    e.printStackTrace();
-		}
+
 	}
 
 	public void loadSplashScreen() {
@@ -225,7 +225,7 @@ public class ResourcesManager {
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
-		
+
 	}
 
 	// ---------------------------------------------
