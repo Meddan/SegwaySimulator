@@ -51,12 +51,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	 */
 	private HUD gameHUD;
 	private Text scoreText;
+	private Text finalScore;
 	private int score;
 	private PhysicsWorld physicsWorld;
 	
 	private LevelCompleteScene levelCompleteScene;
 
-	private Text gameOverText;
 	private boolean gameOverDisplayed = false;
 
 	private boolean firstTouch = false;
@@ -83,7 +83,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		createHUD();
 		createPhysics();
 		loadLevel(1);
-		createGameOverText();
 		playSound();
 		setOnSceneTouchListener(this);
 		levelCompleteScene = new LevelCompleteScene(vbom);		
@@ -134,25 +133,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
 		camera.setHUD(gameHUD);
 	}
-
-	private void createGameOverText() {
-		gameOverText = new Text(0, 0, resourcesManager.loadingFont,
-				"Game Over!", vbom);
-	}
-
-	private void displayGameOverText() {
-		camera.setChaseEntity(null);
-		gameOverText.setPosition(camera.getCenterX(), camera.getCenterY());
-		attachChild(gameOverText);
-		gameOverDisplayed = true;
-	}
 	
 	private void displayScoreAtGameOver() {
-		camera.getHUD().detachChild(scoreText);
 		camera.setChaseEntity(null);
-		scoreText = new Text(camera.getCenterX(), camera.getCenterY(), resourcesManager.loadingFont,
+		finalScore = new Text(camera.getCenterX(), camera.getCenterY()/2, resourcesManager.fancyFont,
 				"Score: " + score, vbom);
-		attachChild(scoreText);
+		attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
 

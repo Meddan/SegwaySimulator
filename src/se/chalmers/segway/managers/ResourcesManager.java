@@ -37,6 +37,7 @@ public class ResourcesManager {
 	public BoundCamera camera;
 	public VertexBufferObjectManager vbom;
 	public Font loadingFont;
+	public Font fancyFont;
 	public Music music;
 
 	// ---------------------------------------------
@@ -122,11 +123,19 @@ public class ResourcesManager {
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
+		//loadingFont
 		loadingFont = FontFactory.createStrokeFromAsset(
 				activity.getFontManager(), mainFontTexture,
 				activity.getAssets(), "start2p.ttf", 32, true, Color.WHITE, 2,
 				Color.BLACK);
 		loadingFont.load();
+		
+		//fancyFont
+		fancyFont = FontFactory.createStrokeFromAsset(
+				activity.getFontManager(), mainFontTexture,
+				activity.getAssets(), "start2p.ttf", 40, true, Color.YELLOW, 2,
+				Color.BLACK);
+		fancyFont.load();
 	}
 
 	private void loadMenuAudio() {
