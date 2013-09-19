@@ -148,10 +148,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	}
 	
 	private void displayScoreAtGameOver() {
-		camera.setChaseEntity(null);
-		scoreText.setText("Score: " + score);
-		scoreText.setPosition(camera.getCenterX(), camera.getCenterY());
 		camera.getHUD().detachChild(scoreText);
+		camera.setChaseEntity(null);
+		scoreText = new Text(camera.getCenterX(), camera.getCenterY(), resourcesManager.loadingFont,
+				"Score: " + score, vbom);
 		attachChild(scoreText);
 		gameOverDisplayed = true;
 	}
