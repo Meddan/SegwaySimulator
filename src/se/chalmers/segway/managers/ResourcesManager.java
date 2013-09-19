@@ -45,6 +45,10 @@ public class ResourcesManager {
 	// Game Texture
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
 
+	// Level Complete Window
+	public ITextureRegion complete_window_region;
+	public ITiledTextureRegion complete_stars_region;
+
 	// Game Texture Regions
 	public ITiledTextureRegion player_region;
 	public ITextureRegion platform1_region;
@@ -138,15 +142,21 @@ public class ResourcesManager {
 
 		platform1_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
-		platform2_region = BitmapTextureAtlasTextureRegionFactory.
-				createFromAsset(gameTextureAtlas, activity, "platform1.png");
-	    platform3_region = BitmapTextureAtlasTextureRegionFactory.
-	    		createFromAsset(gameTextureAtlas, activity, "platform1.png");
+		platform2_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
+		platform3_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "coin.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity, "segway.png",
 						3, 1);
+		complete_window_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity,
+						"levelCompleteWindow.png");
+		complete_stars_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(gameTextureAtlas, activity, "star.png",
+						2, 1);
 
 		try {
 			this.gameTextureAtlas
