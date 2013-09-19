@@ -2,7 +2,7 @@ package se.chalmers.segway.main;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -18,12 +18,12 @@ import se.chalmers.segway.managers.*;
 
 public class MainActivity extends BaseGameActivity {
 
-	private Camera camera;
+	private BoundCamera camera;
 	private ResourcesManager resourcesManager;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
-		camera = new Camera(0, 0, 800, 480);
+		camera = new BoundCamera(0, 0, 800, 480);
 		EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
 						800, 480), this.camera);

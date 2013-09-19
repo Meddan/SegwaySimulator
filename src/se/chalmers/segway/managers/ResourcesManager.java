@@ -1,7 +1,7 @@
 package se.chalmers.segway.managers;
 
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.ITexture;
@@ -31,7 +31,7 @@ public class ResourcesManager {
 
 	public Engine engine;
 	public MainActivity activity;
-	public Camera camera;
+	public BoundCamera camera;
 	public VertexBufferObjectManager vbom;
 	public Font loadingFont;
 
@@ -134,7 +134,6 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "coin.png");
-		player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "segway.png", 3, 1);
 
 
 		try {
@@ -181,7 +180,7 @@ public class ResourcesManager {
 	 *            we can latter access them from different classes (eg. scenes)
 	 */
 	public static void prepareManager(Engine engine, MainActivity activity,
-			Camera camera, VertexBufferObjectManager vbom) {
+			BoundCamera camera, VertexBufferObjectManager vbom) {
 		getInstance().engine = engine;
 		getInstance().activity = activity;
 		getInstance().camera = camera;
