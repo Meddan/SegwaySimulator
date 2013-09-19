@@ -78,7 +78,7 @@ public class GameScene extends BaseScene {
 	}
 
 	private void createBackground() {
-		setBackground(new Background(Color.BLUE));
+		setBackground(new Background(Color.CYAN));
 	}
 
 	private void createHUD() {
