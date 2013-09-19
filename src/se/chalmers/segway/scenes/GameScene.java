@@ -33,6 +33,7 @@ import org.xml.sax.Attributes;
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.managers.SceneManager;
 import se.chalmers.segway.managers.SceneManager.SceneType;
+import se.chalmers.segway.scenes.LevelCompleteScene.StarsCount;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -144,6 +145,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		camera.setChaseEntity(null);
 		gameOverText.setPosition(camera.getCenterX(), camera.getCenterY());
 		attachChild(gameOverText);
+		gameOverDisplayed = true;
+	}
+	
+	private void displayScoreAtGameOver() {
+		camera.setChaseEntity(null);
+		scoreText.setText("Score: " + score);
+		scoreText.setPosition(camera.getCenterX(), camera.getCenterY());
+		camera.getHUD().detachChild(scoreText);
+		attachChild(scoreText);
 		gameOverDisplayed = true;
 	}
 
@@ -265,8 +275,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 								@Override
 								public void onDie() {
 									if (!gameOverDisplayed) {
+										levelCompleteScene.display(StarsCount.THREE, GameScene.this, camera);
 										addToScore((int) player.getX()/20);
-										displayGameOverText();
+										displayScoreAtGameOver();
 									}
 								}
 							};
