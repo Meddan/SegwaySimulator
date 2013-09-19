@@ -153,7 +153,7 @@ public class ResourcesManager {
 						3, 1);
 		complete_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity,
-						"levelCompleteWindow.png");
+						"complete.png");
 		complete_stars_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity, "star.png",
 						2, 1);
