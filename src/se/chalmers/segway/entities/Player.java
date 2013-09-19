@@ -55,7 +55,7 @@ public abstract class Player extends AnimatedSprite {
     
     public void jump()
     {
-        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 12)); 
+        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x/10, 6)); 
     }
     
     public void setRunning()
