@@ -119,20 +119,25 @@ public class ResourcesManager {
 
 	private void loadMenuFonts() {
 		FontFactory.setAssetBasePath("font/");
-		final ITexture mainFontTexture = new BitmapTextureAtlas(
+		final ITexture loadFontTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		
+		final ITexture fancyFontTexture = new BitmapTextureAtlas(
+				activity.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		
 
 		//loadingFont
 		loadingFont = FontFactory.createStrokeFromAsset(
-				activity.getFontManager(), mainFontTexture,
+				activity.getFontManager(), loadFontTexture,
 				activity.getAssets(), "start2p.ttf", 32, true, Color.WHITE, 2,
 				Color.BLACK);
 		loadingFont.load();
 		
 		//fancyFont
 		fancyFont = FontFactory.createStrokeFromAsset(
-				activity.getFontManager(), mainFontTexture,
+				activity.getFontManager(), fancyFontTexture,
 				activity.getAssets(), "start2p.ttf", 40, true, Color.YELLOW, 2,
 				Color.BLACK);
 		fancyFont.load();
