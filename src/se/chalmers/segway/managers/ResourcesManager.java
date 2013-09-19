@@ -135,9 +135,9 @@ public class ResourcesManager {
 		platform1_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		platform2_region = BitmapTextureAtlasTextureRegionFactory.
-				createFromAsset(gameTextureAtlas, activity, "platform2.png");
+				createFromAsset(gameTextureAtlas, activity, "platform1.png");
 	    platform3_region = BitmapTextureAtlasTextureRegionFactory.
-	    		createFromAsset(gameTextureAtlas, activity, "platform3.png");
+	    		createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "coin.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory
