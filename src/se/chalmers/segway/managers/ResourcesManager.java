@@ -1,5 +1,9 @@
 package se.chalmers.segway.managers;
 
+import java.io.IOException;
+
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.opengl.font.Font;
@@ -18,7 +22,6 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
 import se.chalmers.segway.main.MainActivity;
-
 import android.graphics.Color;
 
 public class ResourcesManager {
@@ -34,6 +37,7 @@ public class ResourcesManager {
 	public BoundCamera camera;
 	public VertexBufferObjectManager vbom;
 	public Font loadingFont;
+	public Music music;
 
 	// ---------------------------------------------
 	// TEXTURES & TEXTURE REGIONS
@@ -159,7 +163,14 @@ public class ResourcesManager {
 	}
 
 	private void loadGameAudio() {
-
+		try
+		{
+		    music = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity, "sfx/bigblue.ogg");
+		}
+		catch (IOException e)
+		{
+		    e.printStackTrace();
+		}
 	}
 
 	public void loadSplashScreen() {
@@ -194,6 +205,7 @@ public class ResourcesManager {
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
+		
 	}
 
 	// ---------------------------------------------

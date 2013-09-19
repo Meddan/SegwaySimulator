@@ -2,6 +2,8 @@ package se.chalmers.segway.scenes;
 
 import java.io.IOException;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -58,7 +60,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private boolean firstTouch = false;
 
 	private Player player;
-
+	
 	private static final String TAG_ENTITY = "entity";
 	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
 	private static final String TAG_ENTITY_ATTRIBUTE_Y = "y";
@@ -80,7 +82,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		createPhysics();
 		loadLevel(1);
 		createGameOverText();
+		playSound();
 		setOnSceneTouchListener(this);
+		
+		
+	}
+
+	private void playSound() {
+		this.resourcesManager.music.play();
+	}
+	
+	private void stopSound(){
+		this.resourcesManager.music.stop();
 	}
 
 	@Override
@@ -98,7 +111,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
-
+		stopSound();
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
