@@ -251,6 +251,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 								@Override
 								public void onDie() {
 									if (!gameOverDisplayed) {
+										addToScore((int) player.getX()/20);
 										displayGameOverText();
 									}
 								}
