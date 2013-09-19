@@ -48,6 +48,7 @@ public abstract class Player extends AnimatedSprite {
                 
                 if (canRun)
                 {    
+                	//The actual speed of the segway
                     body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y)); 
                 }
             }
