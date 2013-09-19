@@ -343,6 +343,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 				player.jump();
 			}
 		}
+		if (gameOverDisplayed){
+			SceneManager.getInstance().loadMenuScene(engine);
+		}
 		return false;
 	}
 
