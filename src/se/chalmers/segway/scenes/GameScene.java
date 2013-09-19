@@ -182,13 +182,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 										float pSecondsElapsed) {
 									super.onManagedUpdate(pSecondsElapsed);
 
-									/**
-									 * TODO we will later check if player
-									 * collide with this (coin) and if it does,
-									 * we will increase score and hide coin it
-									 * will be completed in next articles (after
-									 * creating player code)
-									 */
+							        if (player.collidesWith(this))
+							        {
+							            addToScore(10);
+							            this.setVisible(false);
+							            this.setIgnoreUpdate(true);
+							        }
 								}
 							};
 							levelObject

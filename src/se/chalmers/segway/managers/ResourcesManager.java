@@ -134,7 +134,9 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "coin.png");
-
+		player_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(gameTextureAtlas, activity, "segway.png",
+						3, 1);
 
 		try {
 			this.gameTextureAtlas
@@ -157,7 +159,8 @@ public class ResourcesManager {
 	public void loadSplashScreen() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(
-				activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
 		splash_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				splashTextureAtlas, activity, "splash.png", 0, 0);
 		splashTextureAtlas.load();
