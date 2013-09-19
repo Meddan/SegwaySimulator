@@ -53,6 +53,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text scoreText;
 	private int score;
 	private PhysicsWorld physicsWorld;
+	
+	private LevelCompleteScene levelCompleteScene;
 
 	private Text gameOverText;
 	private boolean gameOverDisplayed = false;
@@ -84,8 +86,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		createGameOverText();
 		playSound();
 		setOnSceneTouchListener(this);
-		
-		
+		levelCompleteScene = new LevelCompleteScene(vbom);		
 	}
 
 	private void playSound() {
@@ -93,7 +94,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	}
 	
 	private void stopSound(){
-		this.resourcesManager.music.stop();
+		this.resourcesManager.music.stop();	
 	}
 
 	@Override
