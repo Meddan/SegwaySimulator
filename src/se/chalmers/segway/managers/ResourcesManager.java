@@ -124,7 +124,7 @@ public class ResourcesManager {
 
 		loadingFont = FontFactory.createStrokeFromAsset(
 				activity.getFontManager(), mainFontTexture,
-				activity.getAssets(), "font.ttf", 50, true, Color.WHITE, 2,
+				activity.getAssets(), "start2p.ttf", 32, true, Color.WHITE, 2,
 				Color.BLACK);
 		loadingFont.load();
 	}
