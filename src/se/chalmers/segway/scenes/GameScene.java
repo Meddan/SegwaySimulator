@@ -27,7 +27,12 @@ import org.xml.sax.Attributes;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.managers.SceneManager;
@@ -42,7 +47,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text scoreText;
 	private int score;
 	private PhysicsWorld physicsWorld;
-	
+
+	private Text gameOverText;
+	private boolean gameOverDisplayed = false;
+
 	private boolean firstTouch = false;
 
 	private Player player;
@@ -65,6 +73,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		createHUD();
 		createPhysics();
 		loadLevel(1);
+		createGameOverText();
 		setOnSceneTouchListener(this);
 	}
 
@@ -106,6 +115,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		camera.setHUD(gameHUD);
 	}
 
+	private void createGameOverText() {
+		gameOverText = new Text(0, 0, resourcesManager.loadingFont,
+				"Game Over!", vbom);
+	}
+
+	private void displayGameOverText() {
+		camera.setChaseEntity(null);
+		gameOverText.setPosition(camera.getCenterX(), camera.getCenterY());
+		attachChild(gameOverText);
+		gameOverDisplayed = true;
+	}
+
 	private void addToScore(int i) {
 		score += i;
 		scoreText.setText("Score: " + score);
@@ -113,10 +134,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 
 	private void createPhysics() {
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
+		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
 	}
 
-	//Handles all code for loading levels
+	// Handles all code for loading levels
 	private void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
 
@@ -139,9 +161,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 								pAttributes,
 								LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
 
-				        camera.setBounds(0, 0, width, height); // here we set camera bounds
-				        camera.setBoundsEnabled(true);
-				        
+						camera.setBounds(0, 0, width, height); // here we set
+																// camera bounds
+						camera.setBoundsEnabled(true);
+
 						return GameScene.this;
 					}
 				});
@@ -163,16 +186,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 								pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
 
 						final Sprite levelObject;
-						
-				        //Cases for loading different objects
-						//Loads platform1
+
+						// Cases for loading different objects
+						// Loads platform1
 						if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1)) {
 							levelObject = new Sprite(x, y,
 									resourcesManager.platform1_region, vbom);
 							PhysicsFactory.createBoxBody(physicsWorld,
 									levelObject, BodyType.StaticBody,
 									FIXTURE_DEF).setUserData("platform1");
-						//Loads coin
+							// Loads coin
 						} else if (type
 								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 							levelObject = new Sprite(x, y,
@@ -182,25 +205,26 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 										float pSecondsElapsed) {
 									super.onManagedUpdate(pSecondsElapsed);
 
-							        if (player.collidesWith(this))
-							        {
-							            addToScore(10);
-							            this.setVisible(false);
-							            this.setIgnoreUpdate(true);
-							        }
+									if (player.collidesWith(this)) {
+										addToScore(10);
+										this.setVisible(false);
+										this.setIgnoreUpdate(true);
+									}
 								}
 							};
 							levelObject
 									.registerEntityModifier(new LoopEntityModifier(
 											new ScaleModifier(1, 1, 1.3f)));
-						//Loading player type objects
+							// Loading player type objects
 						} else if (type
 								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
 							player = new Player(x, y, vbom, camera,
 									physicsWorld) {
 								@Override
 								public void onDie() {
-									// TODO Latter we will handle it.
+									if (!gameOverDisplayed) {
+										displayGameOverText();
+									}
 								}
 							};
 							levelObject = player;
@@ -217,19 +241,62 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
 				+ ".lvl");
 	}
+	
+	private ContactListener contactListener() {
+		ContactListener contactListener = new ContactListener() {
+
+			@Override
+			public void beginContact(Contact contact) {
+	            final Fixture x1 = contact.getFixtureA();
+	            final Fixture x2 = contact.getFixtureB();
+
+	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
+	            {
+	                if (x2.getBody().getUserData().equals("player"))
+	                {
+	                    player.increaseFootContacts();
+	                }
+	            }
+			}
+
+			@Override
+			public void endContact(Contact contact) {
+	            final Fixture x1 = contact.getFixtureA();
+	            final Fixture x2 = contact.getFixtureB();
+
+	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
+	            {
+	                if (x2.getBody().getUserData().equals("player"))
+	                {
+	                    player.decreaseFootContacts();
+	                }
+	            }
+
+			}
+
+			@Override
+			public void preSolve(Contact contact, Manifold oldManifold) {
+				
+			}
+
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+				
+			}
+			
+		};
+		return contactListener;
+	}
 
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		if (pSceneTouchEvent.isActionDown()) {
-			 if (!firstTouch)
-		        {
-		            player.setRunning();
-		            firstTouch = true;
-		        }
-		        else
-		        {
-		            player.jump();
-		        }
+			if (!firstTouch) {
+				player.setRunning();
+				firstTouch = true;
+			} else {
+				player.jump();
+			}
 		}
 		return false;
 	}

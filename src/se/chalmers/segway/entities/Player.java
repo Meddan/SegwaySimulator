@@ -16,6 +16,7 @@ import se.chalmers.segway.managers.ResourcesManager;
 public abstract class Player extends AnimatedSprite {
 	
 	private Body body;
+	private int footContacts = 0;
 	private boolean canRun = false;
 	
     public Player(float pX, float pY, VertexBufferObjectManager vbo, Camera camera, PhysicsWorld physicsWorld)
@@ -53,8 +54,20 @@ public abstract class Player extends AnimatedSprite {
         });
     }
     
+	public void increaseFootContacts() {
+		footContacts++;
+	}
+
+	public void decreaseFootContacts() {
+		footContacts--;
+	}
+    
     public void jump()
     {
+        if (footContacts < 1) 
+        {
+            return; 
+        }	
         body.setLinearVelocity(new Vector2(body.getLinearVelocity().x/10, 6)); 
     }
     
