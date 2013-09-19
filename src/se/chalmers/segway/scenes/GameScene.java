@@ -202,22 +202,29 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 									levelObject, BodyType.StaticBody,
 									FIXTURE_DEF).setUserData("platform1");
 							// Loads coin
-						}
-			            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2))
-			            {
-			                levelObject = new Sprite(x, y, resourcesManager.platform2_region, vbom);
-			                final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-			                body.setUserData("platform2");
-			                physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-			            }
-			            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3))
-			            {
-			                levelObject = new Sprite(x, y, resourcesManager.platform3_region, vbom);
-			                final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-			                body.setUserData("platform3");
-			                physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-			            }
-						else if (type
+						} else if (type
+								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2)) {
+							levelObject = new Sprite(x, y,
+									resourcesManager.platform2_region, vbom);
+							final Body body = PhysicsFactory.createBoxBody(
+									physicsWorld, levelObject,
+									BodyType.StaticBody, FIXTURE_DEF);
+							body.setUserData("platform2");
+							physicsWorld
+									.registerPhysicsConnector(new PhysicsConnector(
+											levelObject, body, true, false));
+						} else if (type
+								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3)) {
+							levelObject = new Sprite(x, y,
+									resourcesManager.platform3_region, vbom);
+							final Body body = PhysicsFactory.createBoxBody(
+									physicsWorld, levelObject,
+									BodyType.StaticBody, FIXTURE_DEF);
+							body.setUserData("platform3");
+							physicsWorld
+									.registerPhysicsConnector(new PhysicsConnector(
+											levelObject, body, true, false));
+						} else if (type
 								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 							levelObject = new Sprite(x, y,
 									resourcesManager.coin_region, vbom) {
@@ -262,69 +269,66 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
 				+ ".lvl");
 	}
-	
+
 	private ContactListener contactListener() {
 		ContactListener contactListener = new ContactListener() {
 
 			@Override
 			public void beginContact(Contact contact) {
-	            final Fixture x1 = contact.getFixtureA();
-	            final Fixture x2 = contact.getFixtureB();
+				final Fixture x1 = contact.getFixtureA();
+				final Fixture x2 = contact.getFixtureB();
 
-	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
-	            {
-	                if (x2.getBody().getUserData().equals("player"))
-	                {
-	                    player.increaseFootContacts();
-	                }
-	            }
-	            
-	            if (x1.getBody().getUserData().equals("platform3") && x2.getBody().getUserData().equals("player"))
-	            {
-	                x1.getBody().setType(BodyType.DynamicBody);
-	            }
-	            
-	            if (x1.getBody().getUserData().equals("platform2") && x2.getBody().getUserData().equals("player"))
-	            {
-	                engine.registerUpdateHandler(new TimerHandler(0.2f, new ITimerCallback()
-	                {                                    
-	                    public void onTimePassed(final TimerHandler pTimerHandler)
-	                    {
-	                        pTimerHandler.reset();
-	                        engine.unregisterUpdateHandler(pTimerHandler);
-	                        x1.getBody().setType(BodyType.DynamicBody);
-	                    }
-	                }));
-	            }
-	            
-	            
+				if (x1.getBody().getUserData() != null
+						&& x2.getBody().getUserData() != null) {
+					if (x2.getBody().getUserData().equals("player")) {
+						player.increaseFootContacts();
+					}
+				}
+
+				if (x1.getBody().getUserData().equals("platform3")
+						&& x2.getBody().getUserData().equals("player")) {
+					x1.getBody().setType(BodyType.DynamicBody);
+				}
+
+				if (x1.getBody().getUserData().equals("platform2")
+						&& x2.getBody().getUserData().equals("player")) {
+					engine.registerUpdateHandler(new TimerHandler(0.2f,
+							new ITimerCallback() {
+								public void onTimePassed(
+										final TimerHandler pTimerHandler) {
+									pTimerHandler.reset();
+									engine.unregisterUpdateHandler(pTimerHandler);
+									x1.getBody().setType(BodyType.DynamicBody);
+								}
+							}));
+				}
+
 			}
 
 			@Override
 			public void endContact(Contact contact) {
-	            final Fixture x1 = contact.getFixtureA();
-	            final Fixture x2 = contact.getFixtureB();
+				final Fixture x1 = contact.getFixtureA();
+				final Fixture x2 = contact.getFixtureB();
 
-	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
-	            {
-	                if (x2.getBody().getUserData().equals("player"))
-	                {
-	                    player.decreaseFootContacts();
-	                }
-	            }
+				if (x1.getBody().getUserData() != null
+						&& x2.getBody().getUserData() != null) {
+					if (x2.getBody().getUserData().equals("player")) {
+						player.decreaseFootContacts();
+					}
+				}
 
 			}
 
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
-				
+
 			}
 
 			@Override
 			public void postSolve(Contact contact, ContactImpulse impulse) {
-				
+
 			}
-			
+
 		};
 		return contactListener;
 	}
