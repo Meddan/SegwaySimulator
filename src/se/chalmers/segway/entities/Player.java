@@ -17,7 +17,6 @@ public abstract class Player extends AnimatedSprite {
 	
 	private Body body;
 	private int footContacts = 0;
-	private boolean canRun = false;
 	
     public Player(float pX, float pY, VertexBufferObjectManager vbo, Camera camera, PhysicsWorld physicsWorld)
     {
@@ -45,12 +44,6 @@ public abstract class Player extends AnimatedSprite {
                 {                    
                     onDie();
                 }
-                
-                if (canRun)
-                {    
-                	//The actual speed of the segway
-                    body.setLinearVelocity(new Vector2(5, body.getLinearVelocity().y)); 
-                }
             }
         });
     }
@@ -62,6 +55,10 @@ public abstract class Player extends AnimatedSprite {
 	public void decreaseFootContacts() {
 		footContacts--;
 	}
+	
+	public void setSpeed(Vector2 v) {
+		body.setLinearVelocity(v.x, body.getLinearVelocity().y);
+	}
     
     public void jump()
     {
@@ -69,16 +66,7 @@ public abstract class Player extends AnimatedSprite {
         {
             return; 
         }	
-        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x/10, 6)); 
-    }
-    
-    public void setRunning()
-    {
-        canRun = true;
-            
-        final long[] PLAYER_ANIMATE = new long[] { 100, 100, 100 };
-            
-        animate(PLAYER_ANIMATE, 0, 2, true);
+        body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 6)); 
     }
     
     public abstract void onDie();

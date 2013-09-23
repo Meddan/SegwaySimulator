@@ -17,6 +17,7 @@ import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.SAXUtils;
 import org.andengine.util.adt.color.Color;
@@ -30,6 +31,12 @@ import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.managers.SceneManager;
 import se.chalmers.segway.managers.SceneManager.SceneType;
 
+import android.content.Context;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -40,7 +47,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class GameScene extends BaseScene implements IOnSceneTouchListener {
+public class GameScene extends BaseScene implements IOnSceneTouchListener,
+		SensorEventListener {
 
 	/**
 	 * Variables
@@ -49,12 +57,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	private Text finalScore;
 	private int score;
 	private PhysicsWorld physicsWorld;
+	private SensorManager sensorManager;
+
+	private float tiltSpeedX;
+	private float tiltSpeedY;
 
 	private LevelCompleteScene levelCompleteScene;
 
 	private boolean gameOverDisplayed = false;
-
-	private boolean firstTouch = false;
 
 	private Player player;
 
@@ -77,7 +87,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		createBackground();
 		createHUD();
 		createPhysics();
-		loadLevel(2);
+		createSensorManager();
+		loadLevel(1);
 		setOnSceneTouchListener(this);
 		levelCompleteScene = new LevelCompleteScene(vbom);
 	}
@@ -97,6 +108,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
+		physicsWorld.clearForces();
+		physicsWorld.clearPhysicsConnectors();
+		physicsWorld.reset();
+		physicsWorld.dispose();
+		physicsWorld = null;
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
@@ -124,9 +140,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	}
 
 	private void createPhysics() {
-		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
+		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0,
+				-17), false);
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
+	}
+
+	private void createSensorManager() {
+		sensorManager = (SensorManager) activity
+				.getSystemService(Context.SENSOR_SERVICE);
+		sensorManager.registerListener(this,
+				sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+				SensorManager.SENSOR_DELAY_GAME);
 	}
 
 	// Handles all code for loading levels
@@ -324,17 +349,29 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener {
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		if (pSceneTouchEvent.isActionDown()) {
-			if (!firstTouch) {
-				player.setRunning();
-				firstTouch = true;
+			if (gameOverDisplayed) {
+				SceneManager.getInstance().loadMenuScene(engine);
 			} else {
 				player.jump();
 			}
 		}
-		if (gameOverDisplayed) {
-			SceneManager.getInstance().loadMenuScene(engine);
-		}
 		return false;
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSensorChanged(SensorEvent event) {
+		tiltSpeedX = event.values[1];
+		tiltSpeedY = event.values[0];
+		final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX,
+				tiltSpeedY);
+		player.setSpeed(tiltGravity);
+		Vector2Pool.recycle(tiltGravity);
 	}
 
 }
