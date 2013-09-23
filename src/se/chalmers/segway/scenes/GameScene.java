@@ -62,6 +62,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private float tiltSpeedX;
 	private float tiltSpeedY;
 
+	private boolean takeInput = false;
 	private LevelCompleteScene levelCompleteScene;
 
 	private boolean gameOverDisplayed = false;
@@ -108,11 +109,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
-		physicsWorld.clearForces();
-		physicsWorld.clearPhysicsConnectors();
-		physicsWorld.reset();
-		physicsWorld.dispose();
-		physicsWorld = null;
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
@@ -140,8 +136,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	private void createPhysics() {
-		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0,
-				-17), false);
+		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
 	}
@@ -349,11 +344,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		if (pSceneTouchEvent.isActionDown()) {
-			if (gameOverDisplayed) {
-				SceneManager.getInstance().loadMenuScene(engine);
-			} else {
-				player.jump();
+			if (takeInput) {
+				if (gameOverDisplayed) {
+					SceneManager.getInstance().loadMenuScene(engine);
+				} else {
+					player.jump();
+				}
 			}
+		} else {
+			takeInput = true;
 		}
 		return false;
 	}
@@ -366,12 +365,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
-		tiltSpeedX = event.values[1];
-		tiltSpeedY = event.values[0];
-		final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX,
-				tiltSpeedY);
-		player.setSpeed(tiltGravity);
-		Vector2Pool.recycle(tiltGravity);
+		if (takeInput) {
+			tiltSpeedX = event.values[1];
+			tiltSpeedY = event.values[0];
+			final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX,
+					tiltSpeedY);
+			player.setSpeed(tiltGravity);
+			Vector2Pool.recycle(tiltGravity);
+		}
 	}
 
 }
