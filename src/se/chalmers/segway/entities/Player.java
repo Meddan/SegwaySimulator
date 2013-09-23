@@ -15,8 +15,12 @@ import se.chalmers.segway.managers.ResourcesManager;
 
 public abstract class Player extends AnimatedSprite {
 
+	private boolean forward = true;
+	private boolean backward = false;
+	private float lastPos = 0;
 	private Body body;
 	private int footContacts = 0;
+	final long[] PLAYER_ANIMATE = new long[] { 50, 50, 50 };
 
 	public Player(float pX, float pY, VertexBufferObjectManager vbo,
 			Camera camera, PhysicsWorld physicsWorld) {
@@ -43,13 +47,23 @@ public abstract class Player extends AnimatedSprite {
 					onDie();
 				}
 
-				if (body.getLinearVelocity().x < 0) {
-					final long[] PLAYER_ANIMATE = new long[] { 50, 50, 50 };
-					animate(PLAYER_ANIMATE, 0, 2, true);
-				} //else if (body.getLinearVelocity().x > 0) {
-				//	final long[] PLAYER_ANIMATE = new long[] { 50, 50, 50 };
-				//	animate(PLAYER_ANIMATE, 0, 2, true);
-				//}
+				// System.out.println("Position: " + body.getPosition().x);
+				//System.out.println("Position - lastPosition "
+				//		+ (body.getPosition().x - lastPos));
+				if (body.getPosition().x - lastPos < 0.1) {
+					if (backward) {
+						stopAnimation();
+						animate(PLAYER_ANIMATE, 0, 2, true);
+						forward = true;
+					}
+				} //else if (body.getPosition().x - lastPos < 0.1) {
+//					if (forward) {
+//						stopAnimation();
+//						animate(PLAYER_ANIMATE, 0, 2, true);
+//						backward = true;
+//					}
+//				}
+				lastPos = body.getPosition().x;
 			}
 		});
 	}
@@ -63,7 +77,7 @@ public abstract class Player extends AnimatedSprite {
 	}
 
 	public void setSpeed(Vector2 v) {
-		body.setLinearVelocity(v.x, body.getLinearVelocity().y);
+		body.setLinearVelocity(2*(v.x), body.getLinearVelocity().y);
 	}
 
 	public void jump() {
