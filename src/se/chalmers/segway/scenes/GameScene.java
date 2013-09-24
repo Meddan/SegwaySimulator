@@ -368,8 +368,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
 			tiltSpeedY = event.values[0];
-			final Vector2 tiltGravity = Vector2Pool.obtain(tiltSpeedX,
-					tiltSpeedY);
+			final Vector2 tiltGravity = Vector2Pool.obtain(1.2f*tiltSpeedX,
+					0);
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
 		}
