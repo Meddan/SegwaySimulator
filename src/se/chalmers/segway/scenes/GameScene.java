@@ -77,6 +77,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1 = "platform1";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2 = "platform2";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM1 = "curvyPlatform1";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 
@@ -89,7 +90,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createHUD();
 		createPhysics();
 		createSensorManager();
-		loadLevel(2);
+		loadLevel(1);
 		setOnSceneTouchListener(this);
 		levelCompleteScene = new LevelCompleteScene(vbom);
 	}
@@ -203,10 +204,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1)) {
 							levelObject = new Sprite(x, y,
 									resourcesManager.platform1_region, vbom);
+
 							PhysicsFactory.createBoxBody(physicsWorld,
 									levelObject, BodyType.StaticBody,
 									FIXTURE_DEF).setUserData("platform1");
-							// Loads coin
 						} else if (type
 								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2)) {
 							levelObject = new Sprite(x, y,
@@ -230,6 +231,51 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 									.registerPhysicsConnector(new PhysicsConnector(
 											levelObject, body, true, false));
 						} else if (type
+								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM1)) {
+							levelObject = new Sprite(x, y,
+									resourcesManager.curvyPlatform1_region,
+									vbom);
+							final float width = levelObject.getScaleX()*levelObject.getWidth();
+							final float height = levelObject.getScaleY()*levelObject.getHeight();
+							Vector2[] pVertices = {
+									new Vector2(-0.50050f * width, -0.12000f
+											* height),
+									new Vector2(-0.39239f * width, -0.10667f
+											* height),
+									new Vector2(-0.29229f * width, -0.14000f
+											* height),
+									new Vector2(-0.20821f * width, -0.19333f
+											* height),
+									new Vector2(-0.09209f * width, -0.26667f
+											* height),
+									new Vector2(+0.01602f * width, -0.31333f
+											* height),
+									new Vector2(+0.13814f * width, -0.30667f
+											* height),
+									new Vector2(+0.24424f * width, -0.26667f
+											* height),
+									new Vector2(+0.43644f * width, -0.16000f
+											* height),
+									new Vector2(+0.49650f * width, -0.13333f
+											* height),
+									new Vector2(+0.49650f * width, +0.49333f
+											* height),
+									new Vector2(-0.50050f * width, +0.49333f
+											* height),
+									new Vector2(-0.50050f * width, +0.32000f
+											* height),
+									new Vector2(-0.50050f * width, +0.10667f
+											* height),
+
+							};
+							final Body body = PhysicsFactory.createPolygonBody(
+									physicsWorld, levelObject, pVertices,
+									BodyType.StaticBody, FIXTURE_DEF);
+							//body.setUserData("curvyPlatform1");
+							//physicsWorld
+								//	.registerPhysicsConnector(new PhysicsConnector(
+									//		levelObject, body, true, false));
+						} else if (type
 								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 							levelObject = new Sprite(x, y,
 									resourcesManager.coin_region, vbom) {
@@ -237,7 +283,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 								protected void onManagedUpdate(
 										float pSecondsElapsed) {
 									super.onManagedUpdate(pSecondsElapsed);
-
 									if (player.collidesWith(this)) {
 										addToScore(10);
 										this.setVisible(false);
@@ -368,8 +413,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
 			tiltSpeedY = event.values[0];
-			final Vector2 tiltGravity = Vector2Pool.obtain(1.2f*tiltSpeedX,
-					0);
+			final Vector2 tiltGravity = Vector2Pool
+					.obtain(1.2f * tiltSpeedX, 0);
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
 		}
