@@ -28,6 +28,7 @@ import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
+import se.chalmers.segway.game.PlayerContact;
 import se.chalmers.segway.managers.SceneManager;
 import se.chalmers.segway.managers.SceneManager.SceneType;
 
@@ -279,66 +280,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	private ContactListener contactListener() {
-		ContactListener contactListener = new ContactListener() {
-
-			@Override
-			public void beginContact(Contact contact) {
-				final Fixture x1 = contact.getFixtureA();
-				final Fixture x2 = contact.getFixtureB();
-
-				if (x1.getBody().getUserData() != null
-						&& x2.getBody().getUserData() != null) {
-					if (x2.getBody().getUserData().equals("player")) {
-						player.increaseFootContacts();
-					}
-				}
-
-				if (x1.getBody().getUserData().equals("platform3")
-						&& x2.getBody().getUserData().equals("player")) {
-					x1.getBody().setType(BodyType.DynamicBody);
-				}
-
-				if (x1.getBody().getUserData().equals("platform2")
-						&& x2.getBody().getUserData().equals("player")) {
-					engine.registerUpdateHandler(new TimerHandler(0.2f,
-							new ITimerCallback() {
-								public void onTimePassed(
-										final TimerHandler pTimerHandler) {
-									pTimerHandler.reset();
-									engine.unregisterUpdateHandler(pTimerHandler);
-									x1.getBody().setType(BodyType.DynamicBody);
-								}
-							}));
-				}
-
-			}
-
-			@Override
-			public void endContact(Contact contact) {
-				final Fixture x1 = contact.getFixtureA();
-				final Fixture x2 = contact.getFixtureB();
-
-				if (x1.getBody().getUserData() != null
-						&& x2.getBody().getUserData() != null) {
-					if (x2.getBody().getUserData().equals("player")) {
-						player.decreaseFootContacts();
-					}
-				}
-
-			}
-
-			@Override
-			public void preSolve(Contact contact, Manifold oldManifold) {
-
-			}
-
-			@Override
-			public void postSolve(Contact contact, ContactImpulse impulse) {
-
-			}
-
-		};
-		return contactListener;
+		
+		return new PlayerContact(player, engine);
 	}
 
 	@Override
