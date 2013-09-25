@@ -2,13 +2,10 @@ package se.chalmers.segway.game;
 
 import java.io.IOException;
 
-import org.andengine.engine.Engine;
-import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -20,12 +17,10 @@ import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.managers.ResourcesManager;
-import se.chalmers.segway.scenes.GameScene;
 
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	
