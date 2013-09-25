@@ -2,6 +2,7 @@ package se.chalmers.segway.game;
 
 import java.io.IOException;
 
+import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
@@ -22,6 +23,7 @@ import se.chalmers.segway.managers.ResourcesManager;
 import se.chalmers.segway.scenes.GameScene;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
@@ -38,22 +40,21 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	
-	private Player player; //Unset
+	private Player player;
 	private ResourcesManager resourcesManager;
-	private PhysicsWorld physicsWorld; //Unset
+	private PhysicsWorld physicsWorld;
 	private VertexBufferObjectManager vbom;
-	private BoundCamera camera;
 	
-	public LevelLoader(PhysicsWorld pw){
+	public LevelLoader(PhysicsWorld pw, Player p){
 		super(TAG_ENTITY);
 		this.init();
 		physicsWorld = pw;
+		player = p;
 	}
 	
 	private void init(){
 		resourcesManager = ResourcesManager.getInstance();
 		vbom = resourcesManager.vbom;
-		camera = resourcesManager.camera;
 	}
 	
 	final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0,
@@ -114,16 +115,9 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					new ScaleModifier(1, 1, 1.3f)));
 			// Loading player type objects
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
-			player = new Player(x, y, vbom, camera, physicsWorld) {
-				@Override
-				public void onDie() {
-					//if (!gameOverDisplayed) {
-					//	levelCompleteScene.display(GameScene.this, camera);
-					//	addToScore((int) player.getX() / 20);
-					//	displayScoreAtGameOver();
-					//}
-				}
-			};
+			player.setX(x);
+			player.setY(y);
+			
 			levelObject = player;
 		} else {
 			throw new IllegalArgumentException();

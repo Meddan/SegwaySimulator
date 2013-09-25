@@ -93,6 +93,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createHUD();
 		createPhysics();
 		createSensorManager();
+		createPlayer();
 		loadLevel(2);
 		setOnSceneTouchListener(this);
 		levelCompleteScene = new LevelCompleteScene(vbom);
@@ -124,6 +125,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
+	}
+	
+	private void createPlayer(){
+		player = new Player(50, 610, vbom, camera, physicsWorld) {
+			@Override
+			public void onDie() {
+				if (!gameOverDisplayed) {
+					levelCompleteScene.display(GameScene.this, camera);
+					addToScore((int) player.getX() / 20);
+					displayScoreAtGameOver();
+				}
+			}
+		};
+		contactListener.setPlayer(player);
+		contactListener.setEngine(engine);
 	}
 
 	private void displayScoreAtGameOver() {
@@ -184,7 +200,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					}
 				});
 		
-		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld));
+		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player));
 
 /*		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
