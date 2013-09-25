@@ -171,10 +171,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	// Handles all code for loading levels
 	private void loadLevel(int levelID) {
-		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
-
-		final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0,
-				0.01f, 0.5f);
+		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);;
 
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
@@ -201,105 +198,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				});
 		
 		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player));
-
-/*		levelLoader
-				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
-						TAG_ENTITY) {
-					
-
-					public IEntity onLoadEntity(
-							final String pEntityName,
-							final IEntity pParent,
-							final Attributes pAttributes,
-							final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData)
-							throws IOException {
-						final int x = SAXUtils.getIntAttributeOrThrow(
-								pAttributes, TAG_ENTITY_ATTRIBUTE_X);
-						final int y = SAXUtils.getIntAttributeOrThrow(
-								pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
-						final String type = SAXUtils.getAttributeOrThrow(
-								pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
-
-						final Sprite levelObject;
-
-						// Cases for loading different objects
-						// Loads platform1
-						if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.platform1_region, vbom);
-							PhysicsFactory.createBoxBody(physicsWorld,
-									levelObject, BodyType.StaticBody,
-									FIXTURE_DEF).setUserData("platform1");
-							// Loads coin
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.platform2_region, vbom);
-							final Body body = PhysicsFactory.createBoxBody(
-									physicsWorld, levelObject,
-									BodyType.StaticBody, FIXTURE_DEF);
-							body.setUserData("platform2");
-							physicsWorld
-									.registerPhysicsConnector(new PhysicsConnector(
-											levelObject, body, true, false));
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.platform3_region, vbom);
-							final Body body = PhysicsFactory.createBoxBody(
-									physicsWorld, levelObject,
-									BodyType.StaticBody, FIXTURE_DEF);
-							body.setUserData("platform3");
-							physicsWorld
-									.registerPhysicsConnector(new PhysicsConnector(
-											levelObject, body, true, false));
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.coin_region, vbom) {
-								@Override
-								protected void onManagedUpdate(
-										float pSecondsElapsed) {
-									super.onManagedUpdate(pSecondsElapsed);
-
-									if (player.collidesWith(this)) {
-										addToScore(10);
-										this.setVisible(false);
-										this.setIgnoreUpdate(true);
-									}
-								}
-							};
-							levelObject
-									.registerEntityModifier(new LoopEntityModifier(
-											new ScaleModifier(1, 1, 1.3f)));
-							// Loading player type objects
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
-							player = new Player(x, y, vbom, camera,
-									physicsWorld) {
-								@Override
-								public void onDie() {
-									if (!gameOverDisplayed) {
-										levelCompleteScene.display(
-												GameScene.this, camera);
-										addToScore((int) player.getX() / 20);
-										displayScoreAtGameOver();
-									}
-								}
-							};
-							contactListener.setPlayer(player);
-							contactListener.setEngine(engine);
-							
-							levelObject = player;
-						} else {
-							throw new IllegalArgumentException();
-						}
-
-						levelObject.setCullingEnabled(true);
-
-						return levelObject;
-					}
-				});*/
 
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
 				+ ".lvl");
