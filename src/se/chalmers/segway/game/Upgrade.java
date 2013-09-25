@@ -5,21 +5,23 @@ package se.chalmers.segway.game;
  *
  */
 public class Upgrade {
-	private String name;
 	private int cost;
 	private boolean enabled;
 	
-	public Upgrade(String name, int cost, boolean enabled) {
-		this.name = name;
+	/**
+	 * 
+	 * @param cost The amount of cookies it will cost to purchase this upgrade.
+	 */
+	public Upgrade(int cost) {
 		this.cost = cost;
-		this.enabled = enabled;
+		this.enabled = false;
 	}
 	
-	public void enable(Upgrade upgrade) {
-		upgrade.enabled = true;
+	public void enable() {
+		this.enabled = true;
 	}
 	
-	public void disable(Upgrade upgrade) {
-		upgrade.enabled = false;
+	public void disable() {
+		this.enabled = false;
 	}
 }

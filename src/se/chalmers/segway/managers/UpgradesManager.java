@@ -1,5 +1,7 @@
 package se.chalmers.segway.managers;
 
+import se.chalmers.segway.game.Upgrade;
+
 public class UpgradesManager {
 	/*
 	 * Class variables
@@ -7,10 +9,11 @@ public class UpgradesManager {
 	static final UpgradesManager INSTANCE = new UpgradesManager();
 	
 	/*
-	 * Upgrades
+	 * Upgrades &
+	 * initialization
 	 */
-	private boolean goldCookies;
-	
+	//Example upgrade.
+	private Upgrade goldCookies = new Upgrade(666);
 	/*
 	 * Class methods
 	 */
@@ -19,8 +22,8 @@ public class UpgradesManager {
 	 * Enables an upgrade and notifies the affected class.
 	 * @param upgrade
 	 */
-	private void enableUpgrade(boolean upgrade) {
-		upgrade = true;
+	private void enableUpgrade(Upgrade upgrade) {
+		upgrade.enable();
 		//TODO: Notify affected class
 	}
 	
@@ -28,8 +31,8 @@ public class UpgradesManager {
 	 * Disables an upgrade and notifies the affected class.
 	 * @param upgrade
 	 */
-	private void disableUpgrade(boolean upgrade) {
-		upgrade = false;
+	private void disableUpgrade(Upgrade upgrade) {
+		upgrade.disable();
 		//TODO: Notify affected class
 	}
 	
