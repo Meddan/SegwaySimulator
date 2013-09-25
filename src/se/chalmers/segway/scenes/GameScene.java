@@ -80,6 +80,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
+	
+	private PlayerContact contactListener;
 
 	/**
 	 * Methods
@@ -184,6 +186,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
 						TAG_ENTITY) {
+					
+
 					public IEntity onLoadEntity(
 							final String pEntityName,
 							final IEntity pParent,
@@ -264,6 +268,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 									}
 								}
 							};
+							contactListener.setPlayer(player);
+							contactListener.setEngine(engine);
+							
 							levelObject = player;
 						} else {
 							throw new IllegalArgumentException();
@@ -279,9 +286,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				+ ".lvl");
 	}
 
-	private ContactListener contactListener() {
-		
-		return new PlayerContact(player, engine);
+	private PlayerContact contactListener() {
+		contactListener = new PlayerContact();
+		return contactListener;
 	}
 
 	@Override

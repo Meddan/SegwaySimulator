@@ -18,8 +18,32 @@ public class PlayerContact implements ContactListener {
 	private Player player;
 	private Engine engine;
 
-	public PlayerContact(Player player, Engine engine) {
+	
+	/**
+	 * @return the player
+	 */
+	public Player getPlayer() {
+		return player;
+	}
+
+	/**
+	 * @param player the player to set
+	 */
+	public void setPlayer(Player player) {
 		this.player = player;
+	}
+
+	/**
+	 * @return the engine
+	 */
+	public Engine getEngine() {
+		return engine;
+	}
+
+	/**
+	 * @param engine the engine to set
+	 */
+	public void setEngine(Engine engine) {
 		this.engine = engine;
 	}
 
