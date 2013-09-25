@@ -29,6 +29,7 @@ import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.game.PlayerContact;
+import se.chalmers.segway.game.LevelLoader;
 import se.chalmers.segway.managers.SceneManager;
 import se.chalmers.segway.managers.SceneManager.SceneType;
 
@@ -182,8 +183,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						return GameScene.this;
 					}
 				});
+		
+		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld));
 
-		levelLoader
+/*		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
 						TAG_ENTITY) {
 					
@@ -280,7 +283,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 						return levelObject;
 					}
-				});
+				});*/
 
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
 				+ ".lvl");

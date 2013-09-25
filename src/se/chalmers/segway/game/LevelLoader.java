@@ -2,12 +2,16 @@ package se.chalmers.segway.game;
 
 import java.io.IOException;
 
+import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.SAXUtils;
 import org.andengine.util.level.EntityLoader;
 import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
@@ -34,11 +38,22 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	
-	private Player player;
+	private Player player; //Unset
 	private ResourcesManager resourcesManager;
+	private PhysicsWorld physicsWorld; //Unset
+	private VertexBufferObjectManager vbom;
+	private BoundCamera camera;
 	
-	public LevelLoader(){
+	public LevelLoader(PhysicsWorld pw){
 		super(TAG_ENTITY);
+		this.init();
+		physicsWorld = pw;
+	}
+	
+	private void init(){
+		resourcesManager = ResourcesManager.getInstance();
+		vbom = resourcesManager.vbom;
+		camera = resourcesManager.camera;
 	}
 	
 	final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0,
@@ -89,7 +104,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					super.onManagedUpdate(pSecondsElapsed);
 
 					if (player.collidesWith(this)) {
-						addToScore(10);
+						//addToScore(10);
 						this.setVisible(false);
 						this.setIgnoreUpdate(true);
 					}
@@ -102,11 +117,11 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			player = new Player(x, y, vbom, camera, physicsWorld) {
 				@Override
 				public void onDie() {
-					if (!gameOverDisplayed) {
-						levelCompleteScene.display(GameScene.this, camera);
-						addToScore((int) player.getX() / 20);
-						displayScoreAtGameOver();
-					}
+					//if (!gameOverDisplayed) {
+					//	levelCompleteScene.display(GameScene.this, camera);
+					//	addToScore((int) player.getX() / 20);
+					//	displayScoreAtGameOver();
+					//}
 				}
 			};
 			levelObject = player;
