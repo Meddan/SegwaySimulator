@@ -19,7 +19,7 @@ public abstract class Player extends AnimatedSprite {
 	private boolean backward = false;
 	private float lastPos = 0;
 	private Body body;
-	private int footContacts = 0;
+	private boolean hasContact = false;
 	final long[] PLAYER_ANIMATE = new long[] { 50, 50, 50 };
 
 	public Player(float pX, float pY, VertexBufferObjectManager vbo,
@@ -68,12 +68,8 @@ public abstract class Player extends AnimatedSprite {
 		});
 	}
 
-	public void increaseFootContacts() {
-		footContacts++;
-	}
-
-	public void decreaseFootContacts() {
-		footContacts--;
+	public void setContact(boolean b) {
+		hasContact = b;
 	}
 
 	public void setSpeed(Vector2 v) {
@@ -81,7 +77,7 @@ public abstract class Player extends AnimatedSprite {
 	}
 
 	public void jump() {
-		if (footContacts < 1) {
+		if (hasContact == false) {
 			return;
 		}
 		body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 6));
