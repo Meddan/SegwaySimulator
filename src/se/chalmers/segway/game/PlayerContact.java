@@ -54,25 +54,27 @@ public class PlayerContact implements ContactListener {
 
 		if (x1.getBody().getUserData() != null
 				&& x2.getBody().getUserData() != null) {
-			if (x2.getBody().getUserData().equals("player")) {
+			if (x2.getBody().getUserData().equals("platform1")
+					|| x2.getBody().getUserData().equals("platform2")
+					|| x2.getBody().getUserData().equals("platform3")) {
 				player.increaseFootContacts();
 			}
 		}
 
-		if (x1.getBody().getUserData().equals("platform3")
-				&& x2.getBody().getUserData().equals("player")) {
-			x1.getBody().setType(BodyType.DynamicBody);
+		if (x1.getBody().getUserData().equals("player")
+				&& x2.getBody().getUserData().equals("platform3")) {
+			x2.getBody().setType(BodyType.DynamicBody);
 		}
 
-		if (x1.getBody().getUserData().equals("platform2")
-				&& x2.getBody().getUserData().equals("player")) {
+		if (x1.getBody().getUserData().equals("player")
+				&& x2.getBody().getUserData().equals("platform2")) {
 			engine.registerUpdateHandler(new TimerHandler(0.2f,
 					new ITimerCallback() {
 						public void onTimePassed(
 								final TimerHandler pTimerHandler) {
 							pTimerHandler.reset();
 							engine.unregisterUpdateHandler(pTimerHandler);
-							x1.getBody().setType(BodyType.DynamicBody);
+							x2.getBody().setType(BodyType.DynamicBody);
 						}
 					}));
 		}
@@ -86,7 +88,7 @@ public class PlayerContact implements ContactListener {
 
 		if (x1.getBody().getUserData() != null
 				&& x2.getBody().getUserData() != null) {
-			if (x2.getBody().getUserData().equals("player")) {
+			if (!x2.getBody().getUserData().equals("player")) {
 				player.decreaseFootContacts();
 			}
 		}

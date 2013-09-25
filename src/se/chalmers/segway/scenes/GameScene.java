@@ -94,7 +94,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPhysics();
 		createSensorManager();
 		createPlayer();
-		loadLevel(2);
+		loadLevel(1);
 		setOnSceneTouchListener(this);
 		levelCompleteScene = new LevelCompleteScene(vbom);
 	}
