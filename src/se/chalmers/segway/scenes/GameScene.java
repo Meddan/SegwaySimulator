@@ -208,6 +208,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
 			tiltSpeedY = event.values[0];
+			if (Math.abs(tiltSpeedX) > 3 ) {
+				tiltSpeedX = Math.signum(tiltSpeedX)*3;
+			}
 			final Vector2 tiltGravity = Vector2Pool.obtain(2*tiltSpeedX,
 					0);
 			player.setSpeed(tiltGravity);

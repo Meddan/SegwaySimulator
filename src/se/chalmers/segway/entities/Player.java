@@ -15,12 +15,10 @@ import se.chalmers.segway.managers.ResourcesManager;
 
 public abstract class Player extends AnimatedSprite {
 
-	private boolean forward = true;
-	private boolean backward = false;
-	private float lastPos = 0;
 	private Body body;
 	private boolean hasContact = false;
-	final long[] PLAYER_ANIMATE = new long[] { 50, 50, 50 };
+	final long[] PLAYER_SLOW_ANIMATE = new long[] { 100, 100, 100 };
+	final long[] PLAYER_FAST_ANIMATE = new long[] { 50, 50, 50 };
 
 	public Player(float pX, float pY, VertexBufferObjectManager vbo,
 			Camera camera, PhysicsWorld physicsWorld) {
@@ -46,24 +44,11 @@ public abstract class Player extends AnimatedSprite {
 				if (getY() <= 0) {
 					onDie();
 				}
-
-				// System.out.println("Position: " + body.getPosition().x);
-				//System.out.println("Position - lastPosition "
-				//		+ (body.getPosition().x - lastPos));
-				if (body.getPosition().x - lastPos < 0.1) {
-					if (backward) {
-						stopAnimation();
-						animate(PLAYER_ANIMATE, 0, 2, true);
-						forward = true;
-					}
-				} //else if (body.getPosition().x - lastPos < 0.1) {
-//					if (forward) {
-//						stopAnimation();
-//						animate(PLAYER_ANIMATE, 0, 2, true);
-//						backward = true;
-//					}
-//				}
-				lastPos = body.getPosition().x;
+				
+				System.out.println(Math.abs(body.getLinearVelocity().x));
+				if (Math.abs(body.getLinearVelocity().x) < 0.5) {
+						animate(PLAYER_SLOW_ANIMATE, 0, 2, true);
+				} 
 			}
 		});
 	}
