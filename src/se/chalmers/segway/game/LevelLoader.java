@@ -9,6 +9,7 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.SAXUtils;
 import org.andengine.util.level.EntityLoader;
@@ -23,7 +24,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
-	
+
 	private static final String TAG_ENTITY = "entity";
 	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
 	private static final String TAG_ENTITY_ATTRIBUTE_Y = "y";
@@ -34,28 +35,27 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
-	
+
 	private Player player;
 	private ResourcesManager resourcesManager;
 	private PhysicsWorld physicsWorld;
 	private VertexBufferObjectManager vbom;
-	
-	public LevelLoader(PhysicsWorld pw, Player p){
+
+	public LevelLoader(PhysicsWorld pw, Player p) {
 		super(TAG_ENTITY);
 		this.init();
 		physicsWorld = pw;
 		player = p;
 	}
-	
-	private void init(){
+
+	private void init() {
 		resourcesManager = ResourcesManager.getInstance();
 		vbom = resourcesManager.vbom;
 	}
-	
-	final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0,
-			0.01f, 0.5f);
-	
-	
+
+	final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f,
+			0.5f);
+
 	public IEntity onLoadEntity(final String pEntityName,
 			final IEntity pParent, final Attributes pAttributes,
 			final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData)
@@ -72,27 +72,14 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		// Cases for loading different objects
 		// Loads platform1
 		if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1)) {
-			levelObject = new Sprite(x, y, resourcesManager.platform1_region,
-					vbom);
-			PhysicsFactory.createBoxBody(physicsWorld, levelObject,
-					BodyType.StaticBody, FIXTURE_DEF).setUserData("platform1");
-			// Loads coin
+			levelObject = loadPlatform(x, y, "platform1",
+					resourcesManager.platform1_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2)) {
-			levelObject = new Sprite(x, y, resourcesManager.platform2_region,
-					vbom);
-			final Body body = PhysicsFactory.createBoxBody(physicsWorld,
-					levelObject, BodyType.StaticBody, FIXTURE_DEF);
-			body.setUserData("platform2");
-			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
-					levelObject, body, true, false));
+			levelObject = loadPlatform(x, y, "platform2",
+					resourcesManager.platform2_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3)) {
-			levelObject = new Sprite(x, y, resourcesManager.platform3_region,
-					vbom);
-			final Body body = PhysicsFactory.createBoxBody(physicsWorld,
-					levelObject, BodyType.StaticBody, FIXTURE_DEF);
-			body.setUserData("platform3");
-			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
-					levelObject, body, true, false));
+			levelObject = loadPlatform(x, y, "platform3",
+					resourcesManager.platform3_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 			levelObject = new Sprite(x, y, resourcesManager.coin_region, vbom) {
 				@Override
@@ -100,7 +87,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					super.onManagedUpdate(pSecondsElapsed);
 
 					if (player.collidesWith(this)) {
-						//addToScore(10);
+						// addToScore(10);
 						this.setVisible(false);
 						this.setIgnoreUpdate(true);
 					}
@@ -112,7 +99,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
 			player.setX(x);
 			player.setY(y);
-			
+
 			levelObject = player;
 		} else {
 			throw new IllegalArgumentException();
@@ -121,6 +108,18 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		levelObject.setCullingEnabled(true);
 
 		return levelObject;
+	}
+
+	private Sprite loadPlatform(int x, int y, String platform,
+			ITextureRegion platformRegion) {
+		Sprite platformSprite = new Sprite(x, y, platformRegion, vbom);
+		final Body body = PhysicsFactory.createBoxBody(physicsWorld,
+				platformSprite, BodyType.StaticBody, FIXTURE_DEF);
+		body.setUserData(platform);
+		physicsWorld.registerPhysicsConnector(new PhysicsConnector(
+				platformSprite, body, true, false));
+
+		return platformSprite;
 	}
 
 }
