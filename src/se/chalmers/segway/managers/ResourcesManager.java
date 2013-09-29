@@ -49,6 +49,9 @@ public class ResourcesManager {
 
 	// Level Complete Window
 	public ITextureRegion complete_window_region;
+	
+	// Death Window
+	public ITextureRegion death_window_region;
 
 	// Game Texture Regions
 	public ITiledTextureRegion player_region;
@@ -163,7 +166,7 @@ public class ResourcesManager {
 	private void loadGameGraphics() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/");
 		gameTextureAtlas = new BuildableBitmapTextureAtlas(
-				activity.getTextureManager(), 1024, 1024,
+				activity.getTextureManager(), 2048, 2048,
 				TextureOptions.BILINEAR);
 
 		platform1_region = BitmapTextureAtlasTextureRegionFactory
@@ -185,6 +188,8 @@ public class ResourcesManager {
 						"segwayBackwards.png", 3, 1);
 		complete_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "complete.png");
+		death_window_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "youdied2.png");
 
 		try {
 			this.gameTextureAtlas
