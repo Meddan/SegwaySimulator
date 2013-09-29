@@ -13,8 +13,8 @@ import java.util.LinkedList;
 import se.chalmers.segway.game.Upgrade;
 
 /**
- * A class to keep track of what upgrades exist and wether they have been aquired by the player or not.
- * The class is a singleton in order to guarantee that all the upgrades are synched and that the
+ * A class to keep track of what upgrades exist and whether they have been acquired by the player or not.
+ * The class is a singleton in order to guarantee that all the upgrades are synchronized and that the
  * class is reachable in all parts of the app without having classes passing it along.
  */
 public class UpgradesManager {
@@ -30,13 +30,12 @@ public class UpgradesManager {
 	 * Class methods
 	 */
 	
+	
 	/**
 	 * Enables an upgrade and notifies the affected class.
 	 * @param upgrade the upgrade to enable
 	 */
-	private void enableUpgrade(Upgrade upgrade) {
-		upgrade.enable();
-		//TODO: Notify affected class
+	private void enableUpgrade(Upgrade upgrade ) {
 	}
 	
 	/**
@@ -46,6 +45,11 @@ public class UpgradesManager {
 	private void disableUpgrade(Upgrade upgrade) {
 		upgrade.disable();
 		//TODO: Notify affected class
+		/**
+		 * An enum to represent upgrades and provide useful information about them
+		 * @author meddan
+		 *
+		 */
 	}
 	
 	/**
