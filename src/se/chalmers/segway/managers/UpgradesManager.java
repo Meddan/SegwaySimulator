@@ -1,5 +1,14 @@
 package se.chalmers.segway.managers;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.LinkedList;
+
 import se.chalmers.segway.game.Upgrade;
 
 /**
@@ -12,6 +21,7 @@ public class UpgradesManager {
 	 * Class variables
 	 */ 
 	static final UpgradesManager INSTANCE = new UpgradesManager();
+	private LinkedList<String> Upgrades = new LinkedList<String>();
     private HashMap<String,Boolean> UpgradeEnabled = new HashMap<String,Boolean>();
 	private HashMap<String,Integer> UpgradeCost = new HashMap<String,Integer>();
 
@@ -44,26 +54,41 @@ public class UpgradesManager {
 	 */
 	private void loadUpgrades() {
 		//TODO: File reader
-        BufferedReader reader = new BufferReader(new FileReader("../../../../../assets/upgrades/currentupgrades.txt"))
+        BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new FileReader("../../../../../assets/upgrades/currentupgrades.txt"));
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
                try {
-                   StringBuilder builder = new StringBuilder();
-                   String line = br.readLine();
+                   String line = reader.readLine();
 
                    while (line!=null){
                        String[] split = line.split(" ");
-                       UpgradeCost.put(String[0],String[1].parse);
-                       UpgradeEnabled.
-
+                       if(Upgrades.contains(split[0])){
+                    	   Upgrades.add(split[0]);
+                       }
+                       UpgradeCost.put(split[0],Integer.parseInt(split[1]));
+                       UpgradeEnabled.put(split[0], Boolean.valueOf(split[2]));
                    }
+               } catch(Exception e){
+            	   System.out.println("Error: Loading of upgrades failed.");
                }
-
 	}
 	
 	/**
 	 * Writes which upgrades have been bought to a file.
 	 */
 	private void saveUpgrades() {
-		//TODO: File writer
+		try {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("../../../../../assets/upgrades/currentupgrades.txt"));
+		} catch (IOException e) {
+			System.out.println("Writing went wrong");
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 	public static UpgradesManager getInstance() {
