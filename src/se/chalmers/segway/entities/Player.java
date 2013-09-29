@@ -44,13 +44,9 @@ public abstract class Player extends AnimatedSprite {
 				if (getY() <= 0) {
 					onDie();
 				}
-				
+
 				if (Math.abs(body.getLinearVelocity().x) < 0.5) {
-					if (Math.abs(body.getLinearVelocity().x) <= 10) {
-						animate(PLAYER_SLOW_ANIMATE, 0, 2, true);
-					} else {
-						animate(PLAYER_SLOW_ANIMATE, 0, 2, true);
-					}
+					animate(PLAYER_FAST_ANIMATE, 0, 2, true);
 				} 
 			}
 		});
@@ -65,7 +61,9 @@ public abstract class Player extends AnimatedSprite {
 		body.applyForce(v, body.getPosition());
 
 		if (Math.abs(body.getLinearVelocity().x) >= 15) {
-			body.setLinearVelocity(Math.signum(body.getLinearVelocity().x)*15, body.getLinearVelocity().y);
+			body.setLinearVelocity(
+					Math.signum(body.getLinearVelocity().x) * 15,
+					body.getLinearVelocity().y);
 		}
 	}
 
@@ -75,7 +73,7 @@ public abstract class Player extends AnimatedSprite {
 		}
 		hasContact = false;
 		body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 6));
-		
+
 	}
 
 	public abstract void onDie();

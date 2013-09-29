@@ -68,7 +68,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPhysics();
 		createSensorManager();
 		createPlayer();
-		//TODO: Temporary fix
+		//TODO: Temporary fix, should be retrieved from a manager.
 		currentLvl = 4;
 		loadLevel(currentLvl);
 		setOnSceneTouchListener(this);
