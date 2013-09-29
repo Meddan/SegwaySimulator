@@ -12,7 +12,7 @@ public class DeathScene extends Sprite
     
     public DeathScene(VertexBufferObjectManager pSpriteVertexBufferObject)
     {
-        super(0, 0, 650, 400, ResourcesManager.getInstance().complete_window_region, pSpriteVertexBufferObject);
+        super(0, 0, 650, 400, ResourcesManager.getInstance().death_window_region, pSpriteVertexBufferObject);
     }
     
     /**

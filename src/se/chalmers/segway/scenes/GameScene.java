@@ -111,6 +111,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			public void onDie() {
 				if (!gameOverDisplayed) {
 					deathScene.display(GameScene.this, camera);
+					camera.setChaseEntity(null);
+					gameOverDisplayed = true;
 					/*
 					levelCompleteScene.display(GameScene.this, camera);
 					addToScore((int) player.getX() / 20);
