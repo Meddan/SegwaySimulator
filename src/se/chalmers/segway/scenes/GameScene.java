@@ -42,6 +42,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private HUD gameHUD;
 	private Text finalScore;
 	private int score;
+	private int currentLvl;
 	private PhysicsWorld physicsWorld;
 	private SensorManager sensorManager;
 
@@ -50,6 +51,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private boolean takeInput = false;
 	private LevelCompleteScene levelCompleteScene;
+	private DeathScene deathScene;
 
 	private boolean gameOverDisplayed = false;
 
@@ -66,9 +68,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPhysics();
 		createSensorManager();
 		createPlayer();
-		loadLevel(2);
+		//TODO: Temporary fix
+		currentLvl = 4;
+		loadLevel(currentLvl);
 		setOnSceneTouchListener(this);
 		levelCompleteScene = new LevelCompleteScene(vbom);
+		playMusic();
+		createLocalScenes();
 	}
 
 	@Override
@@ -83,6 +89,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public void disposeScene() {
+		this.resourcesManager.music2.pause();
+		this.resourcesManager.music.resume();
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
@@ -93,6 +101,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createBackground() {
 		setBackground(new Background(Color.CYAN));
 	}
+	
+	private void createLocalScenes(){
+		levelCompleteScene = new LevelCompleteScene(vbom);
+		deathScene = new DeathScene(vbom);
+	}
 
 	private void createHUD() {
 		gameHUD = new HUD();
@@ -100,13 +113,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 	
 	private void createPlayer(){
-		player = new Player(50, 610, vbom, camera, physicsWorld) {
+		player = new Player(50, 5200, vbom, camera, physicsWorld) {
 			@Override
 			public void onDie() {
 				if (!gameOverDisplayed) {
+					deathScene.display(GameScene.this, camera);
+					camera.setChaseEntity(null);
+					gameOverDisplayed = true;
+					/*
 					levelCompleteScene.display(GameScene.this, camera);
 					addToScore((int) player.getX() / 20);
 					displayScoreAtGameOver();
+					*/
 				}
 			}
 		};
@@ -131,6 +149,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
+	}
+	
+	private void playMusic() {
+		if (!this.resourcesManager.music2.isPlaying() && currentLvl == 4) {
+			this.resourcesManager.music2.play();
+			this.resourcesManager.music.pause();
+		}
 	}
 
 	private void createSensorManager() {
