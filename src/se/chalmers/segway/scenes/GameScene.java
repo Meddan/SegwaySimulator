@@ -97,6 +97,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
+	
+	public void showLevelComplete(){
+		this.detachChild(levelCompleteScene);
+		levelCompleteScene.display(GameScene.this, camera);
+		addToScore((int) player.getX() / 20);
+		displayScoreAtGameOver();
+	}
 
 	private void createBackground() {
 		setBackground(new Background(Color.CYAN));

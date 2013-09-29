@@ -61,6 +61,7 @@ public class ResourcesManager {
 	public ITextureRegion platform3_region;
 	public ITextureRegion curvyPlatform1_region;
 	public ITextureRegion coin_region;
+	public ITextureRegion golden_cookie;
 
 	// Other
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
@@ -190,6 +191,8 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "complete.png");
 		death_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "youdied2.png");
+		golden_cookie = BitmapTextureAtlasTextureRegionFactory.
+				createFromAsset(gameTextureAtlas, activity, "goldcookie.png");
 
 		try {
 			this.gameTextureAtlas
