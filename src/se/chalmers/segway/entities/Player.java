@@ -57,6 +57,7 @@ public abstract class Player extends AnimatedSprite {
 	}
 
 	public void setContact(boolean b) {
+		System.out.println("setting contact to" + b);
 		hasContact = b;
 	}
 
@@ -72,7 +73,9 @@ public abstract class Player extends AnimatedSprite {
 		if (hasContact == false) {
 			return;
 		}
+		hasContact = false;
 		body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 6));
+		
 	}
 
 	public abstract void onDie();
