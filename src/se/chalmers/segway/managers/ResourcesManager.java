@@ -39,6 +39,7 @@ public class ResourcesManager {
 	public Font loadingFont;
 	public Font fancyFont;
 	public Music music;
+	public Music music2;
 
 	// ---------------------------------------------
 	// TEXTURES & TEXTURE REGIONS
@@ -152,6 +153,8 @@ public class ResourcesManager {
 		try {
 			music = MusicFactory.createMusicFromAsset(engine.getMusicManager(),
 					activity, "sfx/bigblue.ogg");
+			music2 = MusicFactory.createMusicFromAsset(
+					engine.getMusicManager(), activity, "sfx/shepard_tone.ogg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -170,7 +173,8 @@ public class ResourcesManager {
 		platform3_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		curvyPlatform1_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gameTextureAtlas, activity, "curvyPlatform1.png");
+				.createFromAsset(gameTextureAtlas, activity,
+						"curvyPlatform1.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "cookie.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory
