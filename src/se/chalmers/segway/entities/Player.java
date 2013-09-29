@@ -53,7 +53,6 @@ public abstract class Player extends AnimatedSprite {
 	}
 
 	public void setContact(boolean b) {
-		System.out.println("setting contact to" + b);
 		hasContact = b;
 	}
 
