@@ -1,6 +1,4 @@
-package se.chalmers.segway.managers;
-
-import se.chalmers.segway.game.Upgrade;
+package se.chalmers.segway.game;
 
 public class UpgradesManager {
 	/*

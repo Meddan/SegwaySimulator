@@ -5,10 +5,9 @@ import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.segway.resources.ResourcesManager;
+import se.chalmers.segway.scenes.SceneManager.SceneType;
 import android.app.Activity;
-
-import se.chalmers.segway.managers.ResourcesManager;
-import se.chalmers.segway.managers.SceneManager.SceneType;
 
 public abstract class BaseScene extends Scene {
 	

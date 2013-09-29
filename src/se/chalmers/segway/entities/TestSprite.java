@@ -1,21 +1,17 @@
 package se.chalmers.segway.entities;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+
+import se.chalmers.segway.resources.ResourcesManager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
-import se.chalmers.segway.managers.ResourcesManager;
 
 /**
  * Sprite for prototype of the game. 
@@ -31,7 +27,7 @@ public class TestSprite extends AnimatedSprite {
     private boolean canRun;
     
   
-    //Skicka in VBOMAnager från en metod i MainActivity(?) (mEngine.getVertexBuffer...)
+    //Skicka in VBOMAnager fr��n en metod i MainActivity(?) (mEngine.getVertexBuffer...)
    public TestSprite(float xPos, float yPos, VertexBufferObjectManager vboManager,
 	   Camera camera, PhysicsWorld physWorld){
        super(xPos, yPos, ResourcesManager.getInstance().playerRegion, vboManager);

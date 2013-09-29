@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -24,8 +23,7 @@ import org.xml.sax.Attributes;
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.game.LevelLoader;
 import se.chalmers.segway.game.PlayerContact;
-import se.chalmers.segway.managers.SceneManager;
-import se.chalmers.segway.managers.SceneManager.SceneType;
+import se.chalmers.segway.scenes.SceneManager.SceneType;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
