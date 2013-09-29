@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -75,20 +76,37 @@ public class UpgradesManager {
                } catch(Exception e){
             	   System.out.println("Error: Loading of upgrades failed.");
                }
+               try {
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 	
 	/**
 	 * Writes which upgrades have been bought to a file.
 	 */
 	private void saveUpgrades() {
+		BufferedWriter writer = null;
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("../../../../../assets/upgrades/currentupgrades.txt"));
+			writer = new BufferedWriter(new FileWriter("../../../../../assets/upgrades/currentupgrades.txt"));
 		} catch (IOException e) {
 			System.out.println("Writing went wrong");
 			e.printStackTrace();
 		}
-		
-		
+		for(String upgradeName: Upgrades){
+			try {
+				writer.write(upgradeName + " " + UpgradeCost.get(upgradeName) + " " + UpgradeEnabled.get(upgradeName));
+			} catch (IOException e) {
+				System.out.println("Writing went wrong");				
+				e.printStackTrace();
+			}
+		}
+		try {
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static UpgradesManager getInstance() {
