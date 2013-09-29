@@ -47,7 +47,11 @@ public abstract class Player extends AnimatedSprite {
 				
 				System.out.println(Math.abs(body.getLinearVelocity().x));
 				if (Math.abs(body.getLinearVelocity().x) < 0.5) {
+					if (Math.abs(body.getLinearVelocity().x) <= 10) {
 						animate(PLAYER_SLOW_ANIMATE, 0, 2, true);
+					} else {
+						animate(PLAYER_SLOW_ANIMATE, 0, 2, true);
+					}
 				} 
 			}
 		});
@@ -59,6 +63,9 @@ public abstract class Player extends AnimatedSprite {
 
 	public void setSpeed(Vector2 v) {
 		body.applyForce(v, body.getPosition());
+		if (Math.abs(body.getLinearVelocity().x) >= 10) {
+			body.setLinearVelocity(Math.signum(body.getLinearVelocity().x)*10, body.getLinearVelocity().y);
+		}
 	}
 
 	public void jump() {
