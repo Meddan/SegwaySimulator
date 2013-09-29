@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -232,10 +233,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
 			tiltSpeedY = event.values[0];
-
+			
 			if (Math.abs(tiltSpeedX) > 3 ) {
 				tiltSpeedX = Math.signum(tiltSpeedX)*3;
 			}
+			
+			player.setRotation(tiltSpeedX * 18f);
+			
+			
 			final Vector2 tiltGravity = Vector2Pool.obtain(2*tiltSpeedX, 0);
 
 			player.setSpeed(tiltGravity);
