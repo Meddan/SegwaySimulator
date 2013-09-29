@@ -3,19 +3,12 @@ package se.chalmers.segway.scenes;
 import java.io.IOException;
 
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.engine.handler.timer.ITimerCallback;
-import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
-import org.andengine.entity.modifier.LoopEntityModifier;
-import org.andengine.entity.modifier.ScaleModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
-import org.andengine.extension.physics.box2d.PhysicsConnector;
-import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.input.touch.TouchEvent;
@@ -28,9 +21,10 @@ import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
+import se.chalmers.segway.game.LevelLoader;
+import se.chalmers.segway.game.PlayerContact;
 import se.chalmers.segway.managers.SceneManager;
 import se.chalmers.segway.managers.SceneManager.SceneType;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -38,14 +32,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		SensorEventListener {
@@ -68,18 +54,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private boolean gameOverDisplayed = false;
 
 	private Player player;
-
-	private static final String TAG_ENTITY = "entity";
-	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
-	private static final String TAG_ENTITY_ATTRIBUTE_Y = "y";
-	private static final String TAG_ENTITY_ATTRIBUTE_TYPE = "type";
-
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1 = "platform1";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2 = "platform2";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM1 = "curvyPlatform1";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
+	private PlayerContact contactListener;
 
 	/**
 	 * Methods
@@ -90,7 +65,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createHUD();
 		createPhysics();
 		createSensorManager();
-		loadLevel(1);
+		createPlayer();
+		loadLevel(2);
 		setOnSceneTouchListener(this);
 		levelCompleteScene = new LevelCompleteScene(vbom);
 	}
@@ -122,6 +98,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
 	}
+	
+	private void createPlayer(){
+		player = new Player(50, 610, vbom, camera, physicsWorld) {
+			@Override
+			public void onDie() {
+				if (!gameOverDisplayed) {
+					levelCompleteScene.display(GameScene.this, camera);
+					addToScore((int) player.getX() / 20);
+					displayScoreAtGameOver();
+				}
+			}
+		};
+		contactListener.setPlayer(player);
+		contactListener.setEngine(engine);
+	}
 
 	private void displayScoreAtGameOver() {
 
@@ -152,10 +143,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	// Handles all code for loading levels
 	private void loadLevel(int levelID) {
-		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
-
-		final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0,
-				0.01f, 0.5f);
+		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);;
 
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
@@ -180,209 +168,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						return GameScene.this;
 					}
 				});
-
-		levelLoader
-				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
-						TAG_ENTITY) {
-					public IEntity onLoadEntity(
-							final String pEntityName,
-							final IEntity pParent,
-							final Attributes pAttributes,
-							final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData)
-							throws IOException {
-						final int x = SAXUtils.getIntAttributeOrThrow(
-								pAttributes, TAG_ENTITY_ATTRIBUTE_X);
-						final int y = SAXUtils.getIntAttributeOrThrow(
-								pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
-						final String type = SAXUtils.getAttributeOrThrow(
-								pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
-
-						final Sprite levelObject;
-
-						// Cases for loading different objects
-						// Loads platform1
-						if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.platform1_region, vbom);
-
-							PhysicsFactory.createBoxBody(physicsWorld,
-									levelObject, BodyType.StaticBody,
-									FIXTURE_DEF).setUserData("platform1");
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.platform2_region, vbom);
-							final Body body = PhysicsFactory.createBoxBody(
-									physicsWorld, levelObject,
-									BodyType.StaticBody, FIXTURE_DEF);
-							body.setUserData("platform2");
-							physicsWorld
-									.registerPhysicsConnector(new PhysicsConnector(
-											levelObject, body, true, false));
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.platform3_region, vbom);
-							final Body body = PhysicsFactory.createBoxBody(
-									physicsWorld, levelObject,
-									BodyType.StaticBody, FIXTURE_DEF);
-							body.setUserData("platform3");
-							physicsWorld
-									.registerPhysicsConnector(new PhysicsConnector(
-											levelObject, body, true, false));
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM1)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.curvyPlatform1_region,
-									vbom);
-							final float width = levelObject.getScaleX()*levelObject.getWidth();
-							final float height = levelObject.getScaleY()*levelObject.getHeight();
-							Vector2[] pVertices = {
-									new Vector2(-0.50050f * width, -0.12000f
-											* height),
-									new Vector2(-0.39239f * width, -0.10667f
-											* height),
-									new Vector2(-0.29229f * width, -0.14000f
-											* height),
-									new Vector2(-0.20821f * width, -0.19333f
-											* height),
-									new Vector2(-0.09209f * width, -0.26667f
-											* height),
-									new Vector2(+0.01602f * width, -0.31333f
-											* height),
-									new Vector2(+0.13814f * width, -0.30667f
-											* height),
-									new Vector2(+0.24424f * width, -0.26667f
-											* height),
-									new Vector2(+0.43644f * width, -0.16000f
-											* height),
-									new Vector2(+0.49650f * width, -0.13333f
-											* height),
-									new Vector2(+0.49650f * width, +0.49333f
-											* height),
-									new Vector2(-0.50050f * width, +0.49333f
-											* height),
-									new Vector2(-0.50050f * width, +0.32000f
-											* height),
-									new Vector2(-0.50050f * width, +0.10667f
-											* height),
-
-							};
-							final Body body = PhysicsFactory.createPolygonBody(
-									physicsWorld, levelObject, pVertices,
-									BodyType.StaticBody, FIXTURE_DEF);
-							//body.setUserData("curvyPlatform1");
-							//physicsWorld
-								//	.registerPhysicsConnector(new PhysicsConnector(
-									//		levelObject, body, true, false));
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
-							levelObject = new Sprite(x, y,
-									resourcesManager.coin_region, vbom) {
-								@Override
-								protected void onManagedUpdate(
-										float pSecondsElapsed) {
-									super.onManagedUpdate(pSecondsElapsed);
-									if (player.collidesWith(this)) {
-										addToScore(10);
-										this.setVisible(false);
-										this.setIgnoreUpdate(true);
-									}
-								}
-							};
-							levelObject
-									.registerEntityModifier(new LoopEntityModifier(
-											new ScaleModifier(1, 1, 1.3f)));
-							// Loading player type objects
-						} else if (type
-								.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
-							player = new Player(x, y, vbom, camera,
-									physicsWorld) {
-								@Override
-								public void onDie() {
-									if (!gameOverDisplayed) {
-										levelCompleteScene.display(
-												GameScene.this, camera);
-										addToScore((int) player.getX() / 20);
-										displayScoreAtGameOver();
-									}
-								}
-							};
-							levelObject = player;
-						} else {
-							throw new IllegalArgumentException();
-						}
-
-						levelObject.setCullingEnabled(true);
-
-						return levelObject;
-					}
-				});
+		
+		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player));
 
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
 				+ ".lvl");
 	}
 
-	private ContactListener contactListener() {
-		ContactListener contactListener = new ContactListener() {
-
-			@Override
-			public void beginContact(Contact contact) {
-				final Fixture x1 = contact.getFixtureA();
-				final Fixture x2 = contact.getFixtureB();
-
-				if (x1.getBody().getUserData() != null
-						&& x2.getBody().getUserData() != null) {
-					if (x2.getBody().getUserData().equals("player")) {
-						player.increaseFootContacts();
-					}
-				}
-
-				if (x1.getBody().getUserData().equals("platform3")
-						&& x2.getBody().getUserData().equals("player")) {
-					x1.getBody().setType(BodyType.DynamicBody);
-				}
-
-				if (x1.getBody().getUserData().equals("platform2")
-						&& x2.getBody().getUserData().equals("player")) {
-					engine.registerUpdateHandler(new TimerHandler(0.2f,
-							new ITimerCallback() {
-								public void onTimePassed(
-										final TimerHandler pTimerHandler) {
-									pTimerHandler.reset();
-									engine.unregisterUpdateHandler(pTimerHandler);
-									x1.getBody().setType(BodyType.DynamicBody);
-								}
-							}));
-				}
-
-			}
-
-			@Override
-			public void endContact(Contact contact) {
-				final Fixture x1 = contact.getFixtureA();
-				final Fixture x2 = contact.getFixtureB();
-
-				if (x1.getBody().getUserData() != null
-						&& x2.getBody().getUserData() != null) {
-					if (x2.getBody().getUserData().equals("player")) {
-						player.decreaseFootContacts();
-					}
-				}
-
-			}
-
-			@Override
-			public void preSolve(Contact contact, Manifold oldManifold) {
-
-			}
-
-			@Override
-			public void postSolve(Contact contact, ContactImpulse impulse) {
-
-			}
-
-		};
+	private PlayerContact contactListener() {
+		contactListener = new PlayerContact();
 		return contactListener;
 	}
 
@@ -413,8 +207,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
 			tiltSpeedY = event.values[0];
-			final Vector2 tiltGravity = Vector2Pool
-					.obtain(1.2f * tiltSpeedX, 0);
+
+			if (Math.abs(tiltSpeedX) > 3 ) {
+				tiltSpeedX = Math.signum(tiltSpeedX)*3;
+			}
+			final Vector2 tiltGravity = Vector2Pool.obtain(2*tiltSpeedX, 0);
+
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
 		}

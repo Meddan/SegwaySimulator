@@ -19,7 +19,6 @@ import se.chalmers.segway.managers.*;
 public class MainActivity extends BaseGameActivity {
 
 	private BoundCamera camera;
-	private ResourcesManager resourcesManager;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -43,7 +42,6 @@ public class MainActivity extends BaseGameActivity {
 			OnCreateResourcesCallback pOnCreateResourcesCallback) {
 		ResourcesManager.prepareManager(mEngine, this, camera,
 				getVertexBufferObjectManager());
-		resourcesManager = ResourcesManager.getInstance();
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 

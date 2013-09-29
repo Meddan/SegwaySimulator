@@ -51,6 +51,7 @@ public class ResourcesManager {
 
 	// Game Texture Regions
 	public ITiledTextureRegion player_region;
+	public ITiledTextureRegion player_backwards_region;
 	public ITextureRegion platform1_region;
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
@@ -175,6 +176,9 @@ public class ResourcesManager {
 		player_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity, "segway.png",
 						3, 1);
+		player_backwards_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(gameTextureAtlas, activity,
+						"segwayBackwards.png", 3, 1);
 		complete_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "complete.png");
 
