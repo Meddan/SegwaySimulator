@@ -51,9 +51,11 @@ public class ResourcesManager {
 
 	// Game Texture Regions
 	public ITiledTextureRegion player_region;
+	public ITiledTextureRegion player_backwards_region;
 	public ITextureRegion platform1_region;
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
+	public ITextureRegion curvyPlatform1_region;
 	public ITextureRegion coin_region;
 
 	// Other
@@ -167,11 +169,16 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		platform3_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
+		curvyPlatform1_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "curvyPlatform1.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "cookie.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity, "segway.png",
 						3, 1);
+		player_backwards_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(gameTextureAtlas, activity,
+						"segwayBackwards.png", 3, 1);
 		complete_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "complete.png");
 
