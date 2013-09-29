@@ -42,13 +42,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	 */
 	private HUD gameHUD;
 	private Text finalScore;
+	private Text tip;
 	private int score;
 	private int currentLvl;
 	private PhysicsWorld physicsWorld;
 	private SensorManager sensorManager;
 
 	private float tiltSpeedX;
-	private float tiltSpeedY;
 
 	private boolean takeInput = false;
 	private LevelCompleteScene levelCompleteScene;
@@ -73,7 +73,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		currentLvl = 4;
 		loadLevel(currentLvl);
 		setOnSceneTouchListener(this);
-		levelCompleteScene = new LevelCompleteScene(vbom);
 		playMusic();
 		createLocalScenes();
 	}
@@ -98,12 +97,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
+	
+	public void showLevelComplete(){
+		this.detachChild(levelCompleteScene);
+		levelCompleteScene.display(GameScene.this, camera);
+		addToScore((int) player.getX() / 20);
+		displayScoreAtGameOver();
+	}
 
 	private void createBackground() {
 		setBackground(new Background(Color.CYAN));
 	}
-	
-	private void createLocalScenes(){
+
+	private void createLocalScenes() {
 		levelCompleteScene = new LevelCompleteScene(vbom);
 		deathScene = new DeathScene(vbom);
 	}
@@ -111,9 +117,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
+		tip = new Text(camera.getCenterX()+80, camera.getCenterY()+200 / 2,
+				resourcesManager.tipFont, "Tap screen to start!", vbom);
+		gameHUD.attachChild(tip);
 	}
-	
-	private void createPlayer(){
+
+	private void createPlayer() {
 		player = new Player(50, 5200, vbom, camera, physicsWorld) {
 			@Override
 			public void onDie() {
@@ -122,10 +131,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					camera.setChaseEntity(null);
 					gameOverDisplayed = true;
 					/*
-					levelCompleteScene.display(GameScene.this, camera);
-					addToScore((int) player.getX() / 20);
-					displayScoreAtGameOver();
-					*/
+					 * levelCompleteScene.display(GameScene.this, camera);
+					 * addToScore((int) player.getX() / 20);
+					 * displayScoreAtGameOver();
+					 */
 				}
 			}
 		};
@@ -151,7 +160,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
 	}
-	
+
 	private void playMusic() {
 		if (!this.resourcesManager.music2.isPlaying() && currentLvl == 4) {
 			this.resourcesManager.music2.play();
@@ -169,7 +178,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	// Handles all code for loading levels
 	private void loadLevel(int levelID) {
-		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);;
+		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
+		;
 
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
@@ -194,7 +204,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						return GameScene.this;
 					}
 				});
-		
+
 		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player));
 
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
@@ -218,6 +228,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			}
 		} else {
 			takeInput = true;
+			tip.setVisible(false);
 		}
 		return false;
 	}
@@ -232,7 +243,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void onSensorChanged(SensorEvent event) {
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
-			tiltSpeedY = event.values[0];
 			
 			if (Math.abs(tiltSpeedX) > 3 ) {
 				tiltSpeedX = Math.signum(tiltSpeedX)*3;

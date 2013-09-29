@@ -18,6 +18,8 @@ import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.managers.ResourcesManager;
+import se.chalmers.segway.managers.SceneManager;
+import se.chalmers.segway.scenes.GameScene;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -35,9 +37,11 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
 
 	private Player player;
 	private ResourcesManager resourcesManager;
+	private SceneManager sceneManager;
 	private PhysicsWorld physicsWorld;
 	private VertexBufferObjectManager vbom;
 
@@ -49,6 +53,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	}
 
 	private void init() {
+		sceneManager = SceneManager.getInstance();
 		resourcesManager = ResourcesManager.getInstance();
 		vbom = resourcesManager.vbom;
 	}
@@ -101,6 +106,19 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			player.setY(y);
 
 			levelObject = player;
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE)) {
+			levelObject = new Sprite(x, y, resourcesManager.golden_cookie, vbom){
+				@Override
+				protected void onManagedUpdate(float pSecondsElapsed) {
+					super.onManagedUpdate(pSecondsElapsed);
+					
+					if (player.collidesWith(this)) {
+						GameScene gs = (GameScene) sceneManager.getCurrentScene();
+						gs.showLevelComplete();
+					}
+				}
+			};
+			
 		} else {
 			throw new IllegalArgumentException();
 		}

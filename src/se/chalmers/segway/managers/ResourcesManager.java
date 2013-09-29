@@ -38,6 +38,7 @@ public class ResourcesManager {
 	public VertexBufferObjectManager vbom;
 	public Font loadingFont;
 	public Font fancyFont;
+	public Font tipFont;
 	public Music music;
 	public Music music2;
 
@@ -49,7 +50,7 @@ public class ResourcesManager {
 
 	// Level Complete Window
 	public ITextureRegion complete_window_region;
-	
+
 	// Death Window
 	public ITextureRegion death_window_region;
 
@@ -61,6 +62,7 @@ public class ResourcesManager {
 	public ITextureRegion platform3_region;
 	public ITextureRegion curvyPlatform1_region;
 	public ITextureRegion coin_region;
+	public ITextureRegion golden_cookie;
 
 	// Other
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
@@ -71,6 +73,7 @@ public class ResourcesManager {
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
+	private ITexture tipFontTexture;
 
 	// ---------------------------------------------
 	// CLASS LOGIC
@@ -137,6 +140,10 @@ public class ResourcesManager {
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
+		final ITexture tipFontTexture = new BitmapTextureAtlas(
+				activity.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
 		// loadingFont
 		loadingFont = FontFactory.createStrokeFromAsset(
 				activity.getFontManager(), loadFontTexture,
@@ -150,6 +157,12 @@ public class ResourcesManager {
 				activity.getAssets(), "start2p.ttf", 40, true, Color.YELLOW, 2,
 				Color.BLACK);
 		fancyFont.load();
+
+		// tipFont
+		tipFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
+				tipFontTexture, activity.getAssets(), "start2p.ttf", 30, true,
+				Color.GREEN, 2, Color.BLACK);
+		tipFont.load();
 	}
 
 	private void loadMenuAudio() {
@@ -190,6 +203,8 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "complete.png");
 		death_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "youdied2.png");
+		golden_cookie = BitmapTextureAtlasTextureRegionFactory.
+				createFromAsset(gameTextureAtlas, activity, "goldcookie.png");
 
 		try {
 			this.gameTextureAtlas
