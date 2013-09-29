@@ -50,6 +50,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private boolean takeInput = false;
 	private LevelCompleteScene levelCompleteScene;
+	private DeathScene deathScene;
 
 	private boolean gameOverDisplayed = false;
 
@@ -68,7 +69,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPlayer();
 		loadLevel(2);
 		setOnSceneTouchListener(this);
-		levelCompleteScene = new LevelCompleteScene(vbom);
+		createLocalScenes();
 	}
 
 	@Override
@@ -93,6 +94,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createBackground() {
 		setBackground(new Background(Color.CYAN));
 	}
+	
+	private void createLocalScenes(){
+		levelCompleteScene = new LevelCompleteScene(vbom);
+		deathScene = new DeathScene(vbom);
+	}
 
 	private void createHUD() {
 		gameHUD = new HUD();
@@ -104,9 +110,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			@Override
 			public void onDie() {
 				if (!gameOverDisplayed) {
+					deathScene.display(GameScene.this, camera);
+					/*
 					levelCompleteScene.display(GameScene.this, camera);
 					addToScore((int) player.getX() / 20);
 					displayScoreAtGameOver();
+					*/
 				}
 			}
 		};
