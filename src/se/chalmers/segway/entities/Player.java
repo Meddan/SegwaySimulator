@@ -64,8 +64,8 @@ public abstract class Player extends AnimatedSprite {
 	public void setSpeed(Vector2 v) {
 		body.applyForce(v, body.getPosition());
 
-		if (Math.abs(body.getLinearVelocity().x) >= 10) {
-			body.setLinearVelocity(Math.signum(body.getLinearVelocity().x)*10, body.getLinearVelocity().y);
+		if (Math.abs(body.getLinearVelocity().x) >= 20) {
+			body.setLinearVelocity(Math.signum(body.getLinearVelocity().x)*20, body.getLinearVelocity().y);
 		}
 	}
 

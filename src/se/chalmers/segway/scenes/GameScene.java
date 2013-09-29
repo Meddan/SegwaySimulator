@@ -66,7 +66,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPhysics();
 		createSensorManager();
 		createPlayer();
-		loadLevel(2);
+		loadLevel(4);
 		setOnSceneTouchListener(this);
 		levelCompleteScene = new LevelCompleteScene(vbom);
 	}
@@ -100,7 +100,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 	
 	private void createPlayer(){
-		player = new Player(50, 610, vbom, camera, physicsWorld) {
+		player = new Player(50, 9200, vbom, camera, physicsWorld) {
 			@Override
 			public void onDie() {
 				if (!gameOverDisplayed) {
