@@ -45,6 +45,6 @@
 	<entity x="12700" y="800" type="platform2"/>
 	<entity x="13000" y="700" type="platform2"/>
 	<entity x="13300" y="600" type="platform2"/>
-	<entity x="750" y="4830" type="golden_cookie"/>
+	<entity x="13600" y="700" type="golden_cookie"/>
     <entity x="50" y="5200" type="player"/>
 </level>
