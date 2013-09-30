@@ -111,7 +111,7 @@ public class SceneManager {
 				}));
 	}
 
-	public void loadGameScene(final Engine mEngine) {
+	public void loadGameScene(final Engine mEngine, final int level) {
 		setScene(loadingScene);
 		ResourcesManager.getInstance().unloadSelectionTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
@@ -120,6 +120,7 @@ public class SceneManager {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
 						ResourcesManager.getInstance().loadGameResources();
 						gameScene = new GameScene();
+						((GameScene) gameScene).loadLevel(level);
 						setScene(gameScene);
 					}
 				}));

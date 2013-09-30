@@ -1,7 +1,8 @@
 package se.chalmers.segway.scenes;
 
+import java.util.ArrayList;
+
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -9,9 +10,6 @@ import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
-import org.andengine.util.adt.color.Color;
-
-import android.R.color;
 
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
@@ -58,16 +56,19 @@ public class LevelSelectionScene extends BaseScene implements
 		selectionChildScene = new MenuScene(camera);
 		selectionChildScene.setPosition(0, 0);
 
-		final IMenuItem lvl1MenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(LEVEL_1, resourcesManager.level_button, vbom),
-				1.2f, 1);
+		for (int i = 1; i < 5; i++) {
+			IMenuItem button = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
+					resourcesManager.level_button, vbom), 1.2f, 1);
+			//TODO: WHY IT NO WORK button.setPosition(i*50 + 80, 200);
+			selectionChildScene.addMenuItem(button);
+		}
 
-		selectionChildScene.addMenuItem(lvl1MenuItem);
+		
 
 		selectionChildScene.buildAnimations();
 		selectionChildScene.setBackgroundEnabled(false);
 
-		lvl1MenuItem.setPosition(100, 200);
+		
 
 		selectionChildScene.setOnMenuItemClickListener(this);
 
@@ -77,13 +78,7 @@ public class LevelSelectionScene extends BaseScene implements
 	@Override
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
 			float pMenuItemLocalX, float pMenuItemLocalY) {
-		switch (pMenuItem.getID()) {
-		case LEVEL_1:
-			SceneManager.getInstance().loadGameScene(engine);
-			return true;
-		default:
-			return false;
-		}
-
+		SceneManager.getInstance().loadGameScene(engine, pMenuItem.getID());
+		return true;
 	}
 }

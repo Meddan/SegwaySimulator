@@ -67,8 +67,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createSensorManager();
 		createPlayer();
 		//TODO: Temporary fix, should be retrieved from a manager.
-		currentLvl = 4;
-		loadLevel(currentLvl);
+		//currentLvl = 4;
+		
 		setOnSceneTouchListener(this);
 		playMusic();
 		createLocalScenes();
@@ -174,7 +174,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	// Handles all code for loading levels
-	private void loadLevel(int levelID) {
+	public void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
 		;
 
