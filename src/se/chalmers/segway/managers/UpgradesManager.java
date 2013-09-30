@@ -34,7 +34,7 @@ public class UpgradesManager {
 	 * sessions and enables them.
      * Upgrades are stored in the format "Name Enabled(true/false)"
 	 */
-	private void loadUpgrades() {
+	public static void loadUpgrades() {
 		File file = new File("upgrades");
 		try {
 			//TODO: Needs testing
@@ -58,7 +58,7 @@ public class UpgradesManager {
 	/**
 	 * Writes which upgrades have been bought to a file.
 	 */
-	private void saveUpgrades() {
+	public static void saveUpgrades() {
 		File file = new File("upgrades");
 		FileOutputStream fos;
 		try {
