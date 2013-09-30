@@ -1,4 +1,4 @@
-package se.chalmers.segway.game;
+package se.chalmers.segway.scenes;
 
 import java.io.IOException;
 

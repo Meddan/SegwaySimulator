@@ -21,7 +21,6 @@ import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
-import se.chalmers.segway.game.LevelLoader;
 import se.chalmers.segway.game.PlayerContact;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 import android.content.Context;
