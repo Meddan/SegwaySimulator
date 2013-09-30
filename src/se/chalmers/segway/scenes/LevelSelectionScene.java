@@ -28,6 +28,7 @@ public class LevelSelectionScene extends BaseScene implements IOnMenuItemClickLi
 	@Override
 	public void createScene() {
 		createBackground();
+		createSelectionChildScene();
 	}
 	
 	private void createBackground() {
@@ -56,6 +57,9 @@ public class LevelSelectionScene extends BaseScene implements IOnMenuItemClickLi
 		final IMenuItem lvl1MenuItem = new ScaleMenuItemDecorator(
 				new SpriteMenuItem(LEVEL_1, resourcesManager.play_region,
 						vbom), 1.2f, 1);
-		lvl1MenuItem.setPosition(lvl1MenuItem.getX(), lvl1MenuItem.getY()-60);
+		
+		selectionChildScene.addMenuItem(lvl1MenuItem);
+		
+		lvl1MenuItem.setPosition(100, 200);
 	}
 }

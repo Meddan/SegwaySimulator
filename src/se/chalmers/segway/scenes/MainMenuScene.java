@@ -106,8 +106,8 @@ public class MainMenuScene extends BaseScene implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
-//			SceneManager.getInstance().loadSelectionScene(engine);
-			SceneManager.getInstance().loadGameScene(engine);
+			SceneManager.getInstance().loadSelectionScene(engine);
+//			SceneManager.getInstance().loadGameScene(engine);
 			return true;
 		case MENU_OPTIONS:
 			soundoffMenuItem.setVisible(sound);

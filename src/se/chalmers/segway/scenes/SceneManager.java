@@ -93,7 +93,6 @@ public class SceneManager {
 	
 	//TODO: Unfinished
 	public void loadSelectionScene(final Engine mEngine) {
-		setScene(selectionScene);
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
