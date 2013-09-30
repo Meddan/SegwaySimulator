@@ -98,7 +98,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void showLevelComplete(){
 		this.detachChild(levelCompleteScene);
 		levelCompleteScene.display(GameScene.this, camera);
-		addToScore((int) player.getX() / 20);
+//		addToScore((int) player.getX() / 20);
 		displayScoreAtGameOver();
 	}
 
@@ -142,9 +142,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		finalScore = new Text(camera.getCenterX(), camera.getCenterY() / 2,
+		finalScore = new Text(270, 100,
 				resourcesManager.fancyFont, "Score: " + score, vbom);
-		attachChild(finalScore);
+		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
 
@@ -176,7 +176,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	// Handles all code for loading levels
 	public void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
-		;
 
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
