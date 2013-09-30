@@ -37,6 +37,7 @@ public class UpgradesManager {
 	private void loadUpgrades() {
 		File file = new File("upgrades");
 		try {
+			//TODO: Needs testing
 			FileInputStream fis = new FileInputStream(file);
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			ObjectInputStream ois = new ObjectInputStream(bis);
