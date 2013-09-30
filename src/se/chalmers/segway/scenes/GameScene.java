@@ -98,7 +98,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void showLevelComplete(){
 		this.detachChild(levelCompleteScene);
 		levelCompleteScene.display(GameScene.this, camera);
-//		addToScore((int) player.getX() / 20);
+		addToScore((int) player.getX() / 20);
 		displayScoreAtGameOver();
 	}
 
