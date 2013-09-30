@@ -66,9 +66,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPhysics();
 		createSensorManager();
 		createPlayer();
-		//TODO: Temporary fix, should be retrieved from a manager.
-		//currentLvl = 4;
-		
+		// TODO: Temporary fix, should be retrieved from a manager.
+		// currentLvl = 4;
+
 		setOnSceneTouchListener(this);
 		playMusic();
 		createLocalScenes();
@@ -94,12 +94,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
-	
-	public void showLevelComplete(){
-		this.detachChild(levelCompleteScene);
-		levelCompleteScene.display(GameScene.this, camera);
-		addToScore((int) player.getX() / 20);
-		displayScoreAtGameOver();
+
+	public void showLevelComplete() {
+		if (!gameOverDisplayed) {
+			this.detachChild(levelCompleteScene);
+			levelCompleteScene.display(GameScene.this, camera);
+			addToScore((int) player.getX() / 20);
+			displayScoreAtGameOver();
+		}
 	}
 
 	private void createBackground() {
@@ -114,7 +116,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
-		tip = new Text(camera.getCenterX()+80, camera.getCenterY()+200 / 2,
+		tip = new Text(camera.getCenterX() + 80, camera.getCenterY() + 200 / 2,
 				resourcesManager.tipFont, "Tap screen to start!", vbom);
 		gameHUD.attachChild(tip);
 	}
@@ -142,8 +144,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		finalScore = new Text(270, 100,
-				resourcesManager.fancyFont, "Score: " + score, vbom);
+		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
+				+ score, vbom);
 		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
@@ -239,15 +241,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void onSensorChanged(SensorEvent event) {
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
-			
-			if (Math.abs(tiltSpeedX) > 3 ) {
-				tiltSpeedX = Math.signum(tiltSpeedX)*3;
+
+			if (Math.abs(tiltSpeedX) > 3) {
+				tiltSpeedX = Math.signum(tiltSpeedX) * 3;
 			}
-			
+
 			player.setRotation(tiltSpeedX * 18f);
-			
-			
-			final Vector2 tiltGravity = Vector2Pool.obtain(2*tiltSpeedX, 0);
+
+			final Vector2 tiltGravity = Vector2Pool.obtain(2 * tiltSpeedX, 0);
 
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
