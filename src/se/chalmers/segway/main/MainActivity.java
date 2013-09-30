@@ -12,14 +12,13 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import se.chalmers.segway.resources.ResourcesManager;
+import se.chalmers.segway.scenes.SceneManager;
 import android.view.KeyEvent;
-
-import se.chalmers.segway.managers.*;
 
 public class MainActivity extends BaseGameActivity {
 
 	private BoundCamera camera;
-	private ResourcesManager resourcesManager;
 
 	@Override
 	public EngineOptions onCreateEngineOptions() {
@@ -43,7 +42,6 @@ public class MainActivity extends BaseGameActivity {
 			OnCreateResourcesCallback pOnCreateResourcesCallback) {
 		ResourcesManager.prepareManager(mEngine, this, camera,
 				getVertexBufferObjectManager());
-		resourcesManager = ResourcesManager.getInstance();
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 

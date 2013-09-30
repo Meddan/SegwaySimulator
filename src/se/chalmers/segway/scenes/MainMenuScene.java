@@ -9,8 +9,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
-import se.chalmers.segway.managers.SceneManager;
-import se.chalmers.segway.managers.SceneManager.SceneType;
+import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {
@@ -26,6 +25,9 @@ public class MainMenuScene extends BaseScene implements
 		playMusic();
 	}
 
+	/**
+	 * Starts music if none is running and makes it loop forever.
+	 */
 	private void playMusic() {
 		if (!this.resourcesManager.music.isPlaying()) {
 			this.resourcesManager.music.play();
@@ -50,6 +52,9 @@ public class MainMenuScene extends BaseScene implements
 
 	}
 
+	/**
+	 * Adds a background to the scene.
+	 */
 	private void createBackground() {
 		attachChild(new Sprite(400, 240,
 				resourcesManager.menu_background_region, vbom) {

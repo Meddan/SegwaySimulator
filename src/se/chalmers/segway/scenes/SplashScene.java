@@ -4,7 +4,7 @@ import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
-import se.chalmers.segway.managers.SceneManager.SceneType;
+import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene {
 

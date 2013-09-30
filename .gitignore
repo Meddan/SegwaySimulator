@@ -115,4 +115,10 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
+#Gradle
+build.gradle
+gradle/
+gradlew
+gradlew.bat
+
 

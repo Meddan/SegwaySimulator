@@ -5,16 +5,16 @@ import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.segway.resources.ResourcesManager;
+import se.chalmers.segway.scenes.SceneManager.SceneType;
 import android.app.Activity;
 
-import se.chalmers.segway.managers.ResourcesManager;
-import se.chalmers.segway.managers.SceneManager.SceneType;
-
 public abstract class BaseScene extends Scene {
+	
+	
 	// ---------------------------------------------
 	// VARIABLES
 	// ---------------------------------------------
-
 	protected Engine engine;
 	protected Activity activity;
 	protected ResourcesManager resourcesManager;
@@ -24,7 +24,6 @@ public abstract class BaseScene extends Scene {
 	// ---------------------------------------------
 	// CONSTRUCTOR
 	// ---------------------------------------------
-
 	public BaseScene() {
 		this.resourcesManager = ResourcesManager.getInstance();
 		this.engine = resourcesManager.engine;
@@ -34,15 +33,28 @@ public abstract class BaseScene extends Scene {
 		createScene();
 	}
 
+	
 	// ---------------------------------------------
 	// ABSTRACTION
 	// ---------------------------------------------
-
+	/**
+	 * The creation of the actual scene, used to initialize stuff.
+	 */
 	public abstract void createScene();
 
+	/**
+	 * Whatever happens when you press the hardware back button.
+	 */
 	public abstract void onBackKeyPressed();
 
+	/**
+	 * Returns the type of the scene used. (ENUM)
+	 * @return
+	 */
 	public abstract SceneType getSceneType();
 
+	/**
+	 * Disposes the scene.
+	 */
 	public abstract void disposeScene();
 }
