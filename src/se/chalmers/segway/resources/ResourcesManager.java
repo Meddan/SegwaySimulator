@@ -204,7 +204,7 @@ public class ResourcesManager {
 		death_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "youdied2.png");
 		golden_cookie = BitmapTextureAtlasTextureRegionFactory.
-				createFromAsset(gameTextureAtlas, activity, "goldcookie.png");
+				createFromAsset(gameTextureAtlas, activity, "goldcookie2.png");
 
 		try {
 			this.gameTextureAtlas
