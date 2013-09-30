@@ -16,6 +16,7 @@ public class SceneManager {
 	private BaseScene menuScene;
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
+	private BaseScene selectionScene;
 
 	// ---------------------------------------------
 	// VARIABLES
@@ -30,7 +31,7 @@ public class SceneManager {
 	private Engine engine = ResourcesManager.getInstance().engine;
 
 	public enum SceneType {
-		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING,
+		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING, SCENE_SELECTION,
 	}
 
 	// ---------------------------------------------
@@ -82,9 +83,25 @@ public class SceneManager {
 		case SCENE_LOADING:
 			setScene(loadingScene);
 			break;
+		case SCENE_SELECTION:
+			setScene(selectionScene);
+			break;
 		default:
 			break;
 		}
+	}
+	
+	//TODO: Unfinished
+	public void loadSelectionScene(final Engine mEngine) {
+		setScene(selectionScene);
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						selectionScene = new LevelSelectionScene();
+						setScene(selectionScene);
+					}
+				}));
 	}
 
 	public void loadGameScene(final Engine mEngine) {
@@ -102,9 +119,11 @@ public class SceneManager {
 	}
 
 	public void loadMenuScene(final Engine mEngine) {
+		if (currentScene == gameScene) {
+			gameScene.disposeScene();
+			ResourcesManager.getInstance().unloadGameTextures();
+		}
 		setScene(loadingScene);
-		gameScene.disposeScene();
-		ResourcesManager.getInstance().unloadGameTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
