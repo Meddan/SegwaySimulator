@@ -86,7 +86,9 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			levelObject = loadPlatform(x, y, "platform3",
 					resourcesManager.platform3_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
-			levelObject = new Sprite(x, y, resourcesManager.coin_region, vbom) {
+			ITextureRegion cookie = resourcesManager.cookies_region
+					.getTextureRegion((int) (Math.random() * 8 - 1));
+			levelObject = new Sprite(x, y, cookie, vbom) {
 				@Override
 				protected void onManagedUpdate(float pSecondsElapsed) {
 					super.onManagedUpdate(pSecondsElapsed);
@@ -99,7 +101,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 				}
 			};
 			levelObject.registerEntityModifier(new LoopEntityModifier(
-					new ScaleModifier(1, 1, 1.3f)));
+					new ScaleModifier(1, 0.4f, 0.6f)));
 			// Loading player type objects
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
 			player.setX(x);
@@ -107,18 +109,19 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 
 			levelObject = player;
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE)) {
-			levelObject = new Sprite(x, y, resourcesManager.golden_cookie, vbom){
+			levelObject = new Sprite(x, y, resourcesManager.golden_cookie, vbom) {
 				@Override
 				protected void onManagedUpdate(float pSecondsElapsed) {
 					super.onManagedUpdate(pSecondsElapsed);
-					
+
 					if (player.collidesWith(this)) {
-						GameScene gs = (GameScene) sceneManager.getCurrentScene();
+						GameScene gs = (GameScene) sceneManager
+								.getCurrentScene();
 						gs.showLevelComplete();
 					}
 				}
 			};
-			
+
 		} else {
 			throw new IllegalArgumentException();
 		}

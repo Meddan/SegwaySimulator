@@ -17,7 +17,6 @@ import java.io.Writer;
 import java.util.LinkedList;
 
 import android.content.Context;
-import se.chalmers.segway.game.Upgrade;
 
 /**
  * A class to keep track of what upgrades exist and whether they have been acquired by the player or not.
