@@ -57,6 +57,7 @@ public class ResourcesManager {
 	// Game Texture Regions
 	public ITiledTextureRegion player_region;
 	public ITiledTextureRegion player_backwards_region;
+	public ITiledTextureRegion cookies_region;
 	public ITextureRegion platform1_region;
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
@@ -205,6 +206,9 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "youdied2.png");
 		golden_cookie = BitmapTextureAtlasTextureRegionFactory.
 				createFromAsset(gameTextureAtlas, activity, "goldcookie2.png");
+		cookies_region = BitmapTextureAtlasTextureRegionFactory.
+				createTiledFromAsset(gameTextureAtlas, activity, "cookie_sheet.png",
+						8, 1);
 
 		try {
 			this.gameTextureAtlas
