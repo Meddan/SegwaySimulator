@@ -10,16 +10,31 @@ public enum Upgrades {
 		SuperHelmet(300, false);
 		
 		private final int cost;
-		private final boolean isEnabled;
+		private boolean isActive;
 		private Upgrades(int cost, boolean isEnabled) {
 			this.cost = cost; 
-			this.isEnabled = isEnabled;
+			this.isActive = isEnabled;
 		}
+		/**
+		 * Returns the cost of the upgrade
+		 * @return the cost
+		 */
 		public int getCost(){
 			return this.cost;
 		}
-		public boolean isEnabled(){
-			return this.isEnabled;
+		/**
+		 * Returns whether the upgrade is active or not
+		 * @return whether it is active or not
+		 */
+		public boolean isActivated(){
+			return this.isActive;
+		}
+		/**
+		 * Sets the active status of the upgrade
+		 * @param b
+		 */
+		public void setActive(boolean b){
+			this.isActive = b;
 		}
 		
 }

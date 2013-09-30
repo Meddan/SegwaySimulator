@@ -19,14 +19,6 @@ import se.chalmers.segway.game.Upgrade;
  */
 public class UpgradesManager {
 	/*
-	 * Class variables
-	 */ 
-	static final UpgradesManager INSTANCE = new UpgradesManager();
-	private LinkedList<String> Upgrades = new LinkedList<String>();
-    private HashMap<String,Boolean> UpgradeEnabled = new HashMap<String,Boolean>();
-	private HashMap<String,Integer> UpgradeCost = new HashMap<String,Integer>();
-
-	/*
 	 * Class methods
 	 */
 	
