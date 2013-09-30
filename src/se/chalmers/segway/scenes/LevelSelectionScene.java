@@ -1,5 +1,6 @@
 package se.chalmers.segway.scenes;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.andengine.engine.camera.Camera;
@@ -19,6 +20,7 @@ public class LevelSelectionScene extends BaseScene implements
 	private MenuScene selectionChildScene;
 	private final int BACK = 0;
 	private final int LEVEL_1 = 1;
+	private final int nmbrOfLevels = 4;//new File("assets/level/").list().length;
 
 	@Override
 	public void createScene() {
@@ -55,20 +57,16 @@ public class LevelSelectionScene extends BaseScene implements
 	private void createSelectionChildScene() {
 		selectionChildScene = new MenuScene(camera);
 		selectionChildScene.setPosition(0, 0);
-
-		for (int i = 1; i < 5; i++) {
-			IMenuItem button = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
+		final IMenuItem[] button = new IMenuItem[nmbrOfLevels];
+		
+		for (int i = 1; i < nmbrOfLevels+1; i++) {
+			button[i-1] = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
 					resourcesManager.level_button, vbom), 1.2f, 1);
-			//TODO: WHY IT NO WORK button.setPosition(i*50 + 80, 200);
-			selectionChildScene.addMenuItem(button);
+			button[i-1].setPosition(i*100, 300);
+			selectionChildScene.addMenuItem(button[i-1]);
 		}
 
-		
-
-		selectionChildScene.buildAnimations();
 		selectionChildScene.setBackgroundEnabled(false);
-
-		
 
 		selectionChildScene.setOnMenuItemClickListener(this);
 
