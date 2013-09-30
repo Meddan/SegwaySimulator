@@ -1,15 +1,22 @@
 package se.chalmers.segway.managers;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import android.content.Context;
 import se.chalmers.segway.game.Upgrade;
 
 /**
@@ -28,56 +35,40 @@ public class UpgradesManager {
      * Upgrades are stored in the format "Name Enabled(true/false)"
 	 */
 	private void loadUpgrades() {
-        BufferedReader reader = null;
+		File file = new File("upgrades");
 		try {
-			reader = new BufferedReader(new FileReader("../../../../../assets/upgrades/currentupgrades.txt"));
-		} catch (FileNotFoundException e1) {
-			e1.printStackTrace();
-		}
-               try {
-                   String line = reader.readLine();
-
-                   while (line!=null){
-                	   //Splits the line so that the first part of split contains the name and the second part contains whether the upgrade was enabled or not
-                       String[] split = line.split(" ");
-                       for(Upgrades upg : Upgrades.values()){
-                    	   if(upg.getName().equals(split[0])){
-                    		   upg.setActive(Boolean.parseBoolean(split[1]));
-                    	   }
-                       }
-                   }
-               } catch(Exception e){
-            	   System.out.println("Error: Loading of upgrades failed.");
-               }
-               try {
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
+			FileInputStream fis = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			Object obj = ois.readObject();
+			if (obj != null && obj instanceof Upgrades){
+				for (Upgrades upg : Upgrades.values()){
+					if(upg.getName().equals(((Upgrades) obj).getName())){
+						upg.setActive(((Upgrades) obj).isActivated());
+					}
+				}
 			}
+		} catch (Exception e){
+			
+		}
+		
 	}
 	
 	/**
 	 * Writes which upgrades have been bought to a file.
 	 */
 	private void saveUpgrades() {
-		BufferedWriter writer = null;
+		File file = new File("upgrades");
+		FileOutputStream fos;
 		try {
-			writer = new BufferedWriter(new FileWriter("../../../../../assets/upgrades/currentupgrades.txt"));
-		} catch (IOException e) {
-			System.out.println("Writing went wrong");
-			e.printStackTrace();
-		}
-		for(Upgrades upg : Upgrades.values()){
-			try {
-				writer.write(upg.getName() + " " + upg.isActivated());
-			} catch (IOException e) {
-				System.out.println("Writing went wrong");				
-				e.printStackTrace();
+			fos = new FileOutputStream(file);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			for(Upgrades upg : Upgrades.values()){
+				oos.writeObject(upg);
 			}
-		}
-		try {
-			writer.close();
-		} catch (IOException e) {
+			oos.close();
+			fos.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
