@@ -19,6 +19,7 @@ public abstract class Player extends AnimatedSprite {
 	private boolean hasContact = false;
 	final long[] PLAYER_SLOW_ANIMATE = new long[] { 100, 100, 100 };
 	final long[] PLAYER_FAST_ANIMATE = new long[] { 50, 50, 50 };
+	private Vector2 speed;
 
 	public Player(float pX, float pY, VertexBufferObjectManager vbo,
 			Camera camera, PhysicsWorld physicsWorld) {
@@ -44,26 +45,34 @@ public abstract class Player extends AnimatedSprite {
 				if (getY() <= 0) {
 					onDie();
 				}
+				
+				movePlayer(pSecondsElapsed);
 
 				if (Math.abs(body.getLinearVelocity().x) < 0.5) {
 					animate(PLAYER_FAST_ANIMATE, 0, 2, true);
-				} 
+				}
 			}
 		});
 	}
 
+	public void movePlayer(float pSecondsElapsed){
+		if (speed != null) {
+			body.applyForce(speed.mul(50*pSecondsElapsed),
+					body.getPosition());
+			if (Math.abs(body.getLinearVelocity().x) >= 15) {
+				body.setLinearVelocity(
+						Math.signum(body.getLinearVelocity().x) * 15,
+						body.getLinearVelocity().y);
+			}
+		}
+	}
+	
 	public void setContact(boolean b) {
 		hasContact = b;
 	}
 
 	public void setSpeed(Vector2 v) {
-		body.applyForce(v, body.getPosition());
-
-		if (Math.abs(body.getLinearVelocity().x) >= 15) {
-			body.setLinearVelocity(
-					Math.signum(body.getLinearVelocity().x) * 15,
-					body.getLinearVelocity().y);
-		}
+		speed = v;
 	}
 
 	public void jump() {
