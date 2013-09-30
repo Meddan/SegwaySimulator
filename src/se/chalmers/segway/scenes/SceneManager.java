@@ -1,11 +1,11 @@
-package se.chalmers.segway.managers;
+package se.chalmers.segway.scenes;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
-import se.chalmers.segway.scenes.*;
+import se.chalmers.segway.resources.ResourcesManager;
 
 public class SceneManager {
 	// ---------------------------------------------

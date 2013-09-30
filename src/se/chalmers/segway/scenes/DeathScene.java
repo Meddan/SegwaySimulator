@@ -5,7 +5,7 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import se.chalmers.segway.managers.ResourcesManager;
+import se.chalmers.segway.resources.ResourcesManager;
 
 public class DeathScene extends Sprite
 {

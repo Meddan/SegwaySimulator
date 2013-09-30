@@ -1,4 +1,4 @@
-package se.chalmers.segway.game;
+package se.chalmers.segway.scenes;
 
 import java.io.IOException;
 
@@ -17,9 +17,9 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
-import se.chalmers.segway.managers.ResourcesManager;
-import se.chalmers.segway.managers.SceneManager;
+import se.chalmers.segway.resources.ResourcesManager;
 import se.chalmers.segway.scenes.GameScene;
+import se.chalmers.segway.scenes.SceneManager;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;

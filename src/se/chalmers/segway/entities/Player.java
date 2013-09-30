@@ -7,11 +7,11 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.segway.resources.ResourcesManager;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
-import se.chalmers.segway.managers.ResourcesManager;
 
 public abstract class Player extends AnimatedSprite {
 
