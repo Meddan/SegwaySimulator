@@ -90,13 +90,21 @@ public class SceneManager {
 			break;
 		}
 	}
-	
-	//TODO: Unfinished
+
+	// TODO: Unfinished
 	public void loadSelectionScene(final Engine mEngine) {
+		if (currentScene == gameScene) {
+			gameScene.disposeScene();
+			ResourcesManager.getInstance().unloadGameTextures();
+		} else if (currentScene == menuScene) {
+			ResourcesManager.getInstance().unloadMenuTextures();
+		}
+		setScene(loadingScene);
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
+						ResourcesManager.getInstance().loadSelectionResources();
 						selectionScene = new LevelSelectionScene();
 						setScene(selectionScene);
 					}
@@ -105,7 +113,7 @@ public class SceneManager {
 
 	public void loadGameScene(final Engine mEngine) {
 		setScene(loadingScene);
-		ResourcesManager.getInstance().unloadMenuTextures();
+		ResourcesManager.getInstance().unloadSelectionTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {

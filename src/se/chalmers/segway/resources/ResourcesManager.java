@@ -64,6 +64,11 @@ public class ResourcesManager {
 	public ITextureRegion coin_region;
 	public ITextureRegion golden_cookie;
 
+	// Selection Texture Regions
+	public BuildableBitmapTextureAtlas selectionTextureAtlas;
+	public ITextureRegion level_button;
+	public ITextureRegion selection_background_region;
+
 	// Other
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion menu_background_region;
@@ -80,7 +85,7 @@ public class ResourcesManager {
 	// ---------------------------------------------
 
 	public void unloadGameTextures() {
-		// TODO (Since we did not create any textures for game scene yet)
+		gameTextureAtlas.unload();
 	}
 
 	public void unloadMenuTextures() {
@@ -89,6 +94,10 @@ public class ResourcesManager {
 
 	public void loadMenuTextures() {
 		menuTextureAtlas.load();
+	}
+
+	public void unloadSelectionTextures() {
+		selectionTextureAtlas.unload();
 	}
 
 	public void loadMenuResources() {
@@ -101,6 +110,30 @@ public class ResourcesManager {
 		loadGameGraphics();
 		loadGameFonts();
 		loadGameAudio();
+	}
+
+	public void loadSelectionResources() {
+		loadSelectionGraphics();
+	}
+
+	public void loadSelectionGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
+		selectionTextureAtlas = new BuildableBitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		selection_background_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(selectionTextureAtlas, activity,
+						"levelselect_background.png");
+		level_button = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				selectionTextureAtlas, activity, "levelselect_button.png");
+		try {
+			this.selectionTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 0));
+			this.selectionTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
 	}
 
 	private void loadMenuGraphics() {
@@ -203,8 +236,8 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "complete.png");
 		death_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "youdied2.png");
-		golden_cookie = BitmapTextureAtlasTextureRegionFactory.
-				createFromAsset(gameTextureAtlas, activity, "goldcookie2.png");
+		golden_cookie = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "goldcookie2.png");
 
 		try {
 			this.gameTextureAtlas
