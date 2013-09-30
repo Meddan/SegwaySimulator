@@ -27,7 +27,7 @@ public class TestSprite extends AnimatedSprite {
     private boolean canRun;
     
   
-    //Skicka in VBOMAnager fr��n en metod i MainActivity(?) (mEngine.getVertexBuffer...)
+    //Skicka in VBOMAnager från en metod i MainActivity(?) (mEngine.getVertexBuffer...)
    public TestSprite(float xPos, float yPos, VertexBufferObjectManager vboManager,
 	   Camera camera, PhysicsWorld physWorld){
        super(xPos, yPos, ResourcesManager.getInstance().playerRegion, vboManager);
