@@ -18,4 +18,5 @@
     <entity x="620" y="150" type="coin"/>
     <entity x="670" y="150" type="coin"/>
     <entity x="720" y="150" type="coin"/>
+    <entity x="720" y="150" type="golden_cookie"/>
 </level>
