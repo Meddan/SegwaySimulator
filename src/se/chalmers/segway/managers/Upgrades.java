@@ -6,14 +6,16 @@ package se.chalmers.segway.managers;
  *
  */
 public enum Upgrades {
-		AntigravityWheels (100,false),
-		SuperHelmet(300, false);
+		AntigravityWheels (100,false,"AntigravityWheels"),
+		SuperHelmet(300, false,"SuperHelmet");
 		
 		private final int cost;
 		private boolean isActive;
-		private Upgrades(int cost, boolean isEnabled) {
+		private final String name;
+		private Upgrades(int cost, boolean isEnabled, String name) {
 			this.cost = cost; 
 			this.isActive = isEnabled;
+			this.name = name;
 		}
 		/**
 		 * Returns the cost of the upgrade
@@ -35,6 +37,13 @@ public enum Upgrades {
 		 */
 		public void setActive(boolean b){
 			this.isActive = b;
+		}
+		/**
+		 * Returns the name of the upgrade as a string
+		 * @return the name
+		 */
+		public String getName(){
+			return this.name;
 		}
 		
 }

@@ -22,52 +22,29 @@ public class UpgradesManager {
 	 * Class methods
 	 */
 	
-	
-	/**
-	 * Enables an upgrade and notifies the affected class.
-	 * @param upgrade the upgrade to enable
-	 */
-	private void enableUpgrade(Upgrade upgrade ) {
-	}
-	
-	/**
-	 * Disables an upgrade and notifies the affected class.
-	 * @param upgrade the upgrade to disable
-	 */
-	private void disableUpgrade(Upgrade upgrade) {
-		upgrade.disable();
-		//TODO: Notify affected class
-		/**
-		 * An enum to represent upgrades and provide useful information about them
-		 * @author meddan
-		 *
-		 */
-	}
-	
 	/**
 	 * Reads from a file which upgrades have been bought in previous
 	 * sessions and enables them.
-     * Upgrades are stored in the format "Name Cost Enabled(true/false)"
+     * Upgrades are stored in the format "Name Enabled(true/false)"
 	 */
 	private void loadUpgrades() {
-		//TODO: File reader
         BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader("../../../../../assets/upgrades/currentupgrades.txt"));
 		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
                try {
                    String line = reader.readLine();
 
                    while (line!=null){
+                	   //Splits the line so that the first part of split contains the name and the second part contains whether the upgrade was enabled or not
                        String[] split = line.split(" ");
-                       if(Upgrades.contains(split[0])){
-                    	   Upgrades.add(split[0]);
+                       for(Upgrades upg : Upgrades.values()){
+                    	   if(upg.getName().equals(split[0])){
+                    		   upg.setActive(Boolean.parseBoolean(split[1]));
+                    	   }
                        }
-                       UpgradeCost.put(split[0],Integer.parseInt(split[1]));
-                       UpgradeEnabled.put(split[0], Boolean.valueOf(split[2]));
                    }
                } catch(Exception e){
             	   System.out.println("Error: Loading of upgrades failed.");
@@ -90,9 +67,9 @@ public class UpgradesManager {
 			System.out.println("Writing went wrong");
 			e.printStackTrace();
 		}
-		for(String upgradeName: Upgrades){
+		for(Upgrades upg : Upgrades.values()){
 			try {
-				writer.write(upgradeName + " " + UpgradeCost.get(upgradeName) + " " + UpgradeEnabled.get(upgradeName));
+				writer.write(upg.getName() + " " + upg.isActivated());
 			} catch (IOException e) {
 				System.out.println("Writing went wrong");				
 				e.printStackTrace();
@@ -104,9 +81,4 @@ public class UpgradesManager {
 			e.printStackTrace();
 		}
 	}
-	
-	public static UpgradesManager getInstance() {
-		return INSTANCE;
-	}
-	
 }
