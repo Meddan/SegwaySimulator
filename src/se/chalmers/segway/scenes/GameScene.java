@@ -147,24 +147,29 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		//Score is calculated: 10*amount of cookies + 1000/time in seconds
+		//Score is calculated: 10*amount of cookies + 1000/1 + time in seconds
 		score = (int) (score + 1000/(1 + stopTimerAndReturnTime()/1000));
 		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
 				+ score, vbom);
 		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
-
-	private void addToScore(int i) {
+	/**
+	 * Adds a value to the current score
+	 * @param i the value to add.
+	 */
+	public void addToScore(int i) {
 		score += i;
 	}
-
+	
 	private void createPhysics() {
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
 	}
-
+	/**
+	 * Pauses the music playing and starts the song connected to the level
+	 */
 	private void playMusic() {
 		if (!this.resourcesManager.music2.isPlaying() && currentLvl == 4) {
 			this.resourcesManager.music2.play();
@@ -208,7 +213,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					}
 				});
 
-		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player));
+		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player, this));
 
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
 				+ ".lvl");
@@ -275,6 +280,4 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		stopWatchTime = 0;
 		return temp;
 	}
-	
-
 }

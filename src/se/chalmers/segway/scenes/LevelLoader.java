@@ -44,10 +44,11 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private SceneManager sceneManager;
 	private PhysicsWorld physicsWorld;
 	private VertexBufferObjectManager vbom;
-
-	public LevelLoader(PhysicsWorld pw, Player p) {
+	private GameScene gameScene;
+	public LevelLoader(PhysicsWorld pw, Player p, GameScene gs) {
 		super(TAG_ENTITY);
 		this.init();
+		this.gameScene = gs;
 		physicsWorld = pw;
 		player = p;
 	}
@@ -94,7 +95,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					super.onManagedUpdate(pSecondsElapsed);
 
 					if (player.collidesWith(this)) {
-						// addToScore(10);
+						gameScene.addToScore(10);
 						this.setVisible(false);
 						this.setIgnoreUpdate(true);
 					}
