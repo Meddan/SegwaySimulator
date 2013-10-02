@@ -21,7 +21,7 @@ import android.content.Context;
 /**
  * A class to save and load upgrades in between sessions.
  */
-public class UpgradesManager {
+public class SaveManager {
 	/**
 	 * Reads from a file which upgrades have been bought in previous
 	 * sessions and enables them.
@@ -70,5 +70,9 @@ public class UpgradesManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void savePlayer(){
+		
 	}
 }
