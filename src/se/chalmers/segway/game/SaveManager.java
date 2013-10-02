@@ -72,7 +72,41 @@ public class SaveManager {
 		}
 	}
 	
-	public static void savePlayer(){
-		
+	public static void savePlayerData(PlayerData data){
+		File file = new File("player");
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(file);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(data);
+			oos.close();
+			fos.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * Returns the players saved data
+	 * @return PlayerData from file, null if something went wrong, the file doesn't exist
+	 */
+	public static PlayerData loadPlayerData(){
+		File file = new File("upgrades");
+		try {
+			//TODO: Needs testing
+			FileInputStream fis = new FileInputStream(file);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			Object obj = ois.readObject();
+			obj = ois.readObject();
+			ois.close();
+			fis.close();
+			if (obj != null && obj instanceof PlayerData){
+				return (PlayerData) obj;
+			} else {
+				return null;
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

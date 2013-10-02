@@ -1,8 +1,14 @@
 package se.chalmers.segway.game;
 
+/**
+ * A class to sava data about the player
+ * @author meddan
+ *
+ */
 public class PlayerData {
 	private String name;
 	private int cash;
+	private int highestLevelFinished;
 	
 	public int getMoney(){
 		return cash;
@@ -15,5 +21,11 @@ public class PlayerData {
 	}
 	public String getName(){
 		return this.name;
+	}
+	public void setHighestLevelCleared(int level){
+		this.highestLevelFinished=level;
+	}
+	public int getHighestLevelCleared(){
+		return this.highestLevelFinished;
 	}
 }
