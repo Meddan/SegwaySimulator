@@ -55,6 +55,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private Player player;
 	private PlayerContact contactListener;
+	
+	private long stopWatchTime=0;
 
 	/**
 	 * Methods
@@ -126,6 +128,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			@Override
 			public void onDie() {
 				if (!gameOverDisplayed) {
+					stopTimerAndReturnTime();
 					deathScene.display(GameScene.this, camera);
 					camera.setChaseEntity(null);
 					gameOverDisplayed = true;
@@ -144,6 +147,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
+		//Score is calculated: 10*amount of cookies + 1000/time in seconds
+		score = (int) (score + 1000/(1 + stopTimerAndReturnTime()/1000));
 		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
 				+ score, vbom);
 		levelCompleteScene.attachChild(finalScore);
@@ -220,6 +225,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			if (takeInput) {
 				if (gameOverDisplayed) {
 					SceneManager.getInstance().loadMenuScene(engine);
+					startTimer();
 				} else {
 					player.jump();
 				}
@@ -254,5 +260,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			Vector2Pool.recycle(tiltGravity);
 		}
 	}
+	/**
+	 * Starts the timer.
+	 */
+	private void startTimer(){
+		stopWatchTime = System.currentTimeMillis();
+	}
+	/**
+	 * Stops the timer and returns the amount of time it was running in milliseconds
+	 * @return time in millseconds
+	 */
+	private long stopTimerAndReturnTime(){
+		long temp = System.currentTimeMillis()-stopWatchTime;
+		stopWatchTime = 0;
+		return temp;
+	}
+	
 
 }
