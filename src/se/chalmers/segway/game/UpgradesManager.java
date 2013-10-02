@@ -19,19 +19,12 @@ import java.util.LinkedList;
 import android.content.Context;
 
 /**
- * A class to keep track of what upgrades exist and whether they have been acquired by the player or not.
- * The class is a singleton in order to guarantee that all the upgrades are synchronized and that the
- * class is reachable in all parts of the app without having classes passing it along.
+ * A class to save and load upgrades in between sessions.
  */
 public class UpgradesManager {
-	/*
-	 * Class methods
-	 */
-	
 	/**
 	 * Reads from a file which upgrades have been bought in previous
 	 * sessions and enables them.
-     * Upgrades are stored in the format "Name Enabled(true/false)"
 	 */
 	public static void loadUpgrades() {
 		File file = new File("upgrades");
@@ -41,15 +34,21 @@ public class UpgradesManager {
 			BufferedInputStream bis = new BufferedInputStream(fis);
 			ObjectInputStream ois = new ObjectInputStream(bis);
 			Object obj = ois.readObject();
-			if (obj != null && obj instanceof Upgrades){
-				for (Upgrades upg : Upgrades.values()){
-					if(upg.getName().equals(((Upgrades) obj).getName())){
-						upg.setActive(((Upgrades) obj).isActivated());
+			while (obj != null){
+				if (obj != null && obj instanceof Upgrades){
+					for (Upgrades upg : Upgrades.values()){
+						if(upg.getName().equals(((Upgrades) obj).getName())){
+							upg.setActive(((Upgrades) obj).isActivated());
+						}
 					}
 				}
+				obj = ois.readObject();
 			}
+			ois.close();
+			bis.close();
+			fis.close();
 		} catch (Exception e){
-			
+			e.printStackTrace();
 		}
 		
 	}
