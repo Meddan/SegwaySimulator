@@ -87,7 +87,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					resourcesManager.platform3_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 			ITextureRegion cookie = resourcesManager.cookies_region
-					.getTextureRegion((int) (Math.random() * 8 - 1));
+					.getTextureRegion((int) (Math.random() * 8));
 			levelObject = new Sprite(x, y, cookie, vbom) {
 				@Override
 				protected void onManagedUpdate(float pSecondsElapsed) {
