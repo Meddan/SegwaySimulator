@@ -9,6 +9,11 @@ public class PlayerData {
 	private String name;
 	private int cash;
 	private int highestLevelFinished;
+	public PlayerData(String name){
+		this.name = name;
+		this.cash = 200;
+		this.highestLevelFinished = 3;
+	}
 	
 	public int getMoney(){
 		return cash;

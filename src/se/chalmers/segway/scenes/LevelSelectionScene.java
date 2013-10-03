@@ -12,6 +12,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
+import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class LevelSelectionScene extends BaseScene implements
@@ -21,9 +22,8 @@ public class LevelSelectionScene extends BaseScene implements
 	private final int BACK = 0;
 	private final int LEVEL_1 = 1;
 	private final int nmbrOfLevels = 4;//new File("assets/level/").list().length;
-
-	@Override
-	public void createScene() {
+	private int unlockedLevels = 1;
+	public void createScene(PlayerData playerData) {
 		createBackground();
 		createSelectionChildScene();
 	}
@@ -59,11 +59,13 @@ public class LevelSelectionScene extends BaseScene implements
 		selectionChildScene.setPosition(0, 0);
 		final IMenuItem[] button = new IMenuItem[nmbrOfLevels];
 		
-		for (int i = 1; i < nmbrOfLevels+1; i++) {
-			button[i-1] = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
+		for (int i = 1; i <= nmbrOfLevels; i++) {
+			if(i <= unlockedLevels +1 ){
+				button[i-1] = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
 					resourcesManager.level_button, vbom), 1.2f, 1);
-			button[i-1].setPosition(i*100, 300);
-			selectionChildScene.addMenuItem(button[i-1]);
+				button[i-1].setPosition(i*100, 300);
+				selectionChildScene.addMenuItem(button[i-1]);
+			}
 		}
 
 		selectionChildScene.setBackgroundEnabled(false);
@@ -78,5 +80,14 @@ public class LevelSelectionScene extends BaseScene implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		SceneManager.getInstance().loadGameScene(engine, pMenuItem.getID());
 		return true;
+	}
+
+	@Override
+	public void createScene() {
+		// TODO Auto-generated method stub
+		
+	}
+	public void setUnlockedLevels(int nbr){
+		unlockedLevels = nbr;
 	}
 }

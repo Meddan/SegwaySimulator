@@ -5,6 +5,8 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
+import se.chalmers.segway.game.PlayerData;
+import se.chalmers.segway.game.SaveManager;
 import se.chalmers.segway.resources.ResourcesManager;
 
 public class SceneManager {
@@ -17,12 +19,13 @@ public class SceneManager {
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
 	private BaseScene selectionScene;
-
+	private static boolean isCreated = false;
+	private PlayerData playerData;
 	// ---------------------------------------------
 	// VARIABLES
 	// ---------------------------------------------
 
-	private static final SceneManager INSTANCE = new SceneManager();
+	private static SceneManager INSTANCE = new SceneManager();
 
 	private SceneType currentSceneType = SceneType.SCENE_SPLASH;
 
@@ -35,7 +38,7 @@ public class SceneManager {
 	}
 
 	// ---------------------------------------------
-	// CREATION AND DISPOSAL
+	// CREATION AND DsynchronizedISPOSAL
 	// ---------------------------------------------
 
 	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
@@ -141,12 +144,22 @@ public class SceneManager {
 					}
 				}));
 	}
-
+	private void initPlayerData(){
+		playerData = SaveManager.loadPlayerData();
+		if (playerData == null){
+			playerData = new PlayerData("Plebian " + Math.random()*1000);
+		}
+	}
 	// ---------------------------------------------
 	// GETTERS AND SETTERS
 	// ---------------------------------------------
 
-	public static SceneManager getInstance() {
+	public static synchronized SceneManager getInstance() {
+		if(!isCreated){
+			isCreated = true;
+			INSTANCE = new SceneManager();
+			INSTANCE.initPlayerData();
+		}
 		return INSTANCE;
 	}
 

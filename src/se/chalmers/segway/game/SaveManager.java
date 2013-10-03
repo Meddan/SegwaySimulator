@@ -71,7 +71,10 @@ public class SaveManager {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Saves the players data.
+	 * @param data the playerdata to be saved
+	 */
 	public static void savePlayerData(PlayerData data){
 		File file = new File("player");
 		FileOutputStream fos;

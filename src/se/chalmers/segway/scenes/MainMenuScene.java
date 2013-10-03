@@ -9,11 +9,11 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
+import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {
-
 	private boolean sound = true;
 	IMenuItem soundonMenuItem;
 	IMenuItem soundoffMenuItem;
