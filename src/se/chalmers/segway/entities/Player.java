@@ -56,6 +56,10 @@ public abstract class Player extends AnimatedSprite {
 		});
 	}
 
+	/**
+	 * Reads the latest data from the accelerometer and moves Player accordingly. 
+	 * @param pSecondsElapsed the delta since last update, to compensate.
+	 */
 	public void movePlayer(float pSecondsElapsed) {
 		if (speed != null) {
 			body.applyForce(speed.mul(50 * pSecondsElapsed), body.getPosition());
@@ -67,6 +71,11 @@ public abstract class Player extends AnimatedSprite {
 		}
 	}
 
+	/**
+	 * Moves to appropriate place, described in pixels.
+	 * @param x position x in pixels.
+	 * @param y position x in pixels.
+	 */
 	public void setRealPosition(int x, int y) {
 		body.setTransform(x / PIXELS_TO_METERS, y / PIXELS_TO_METERS,
 				body.getAngle());
@@ -80,6 +89,9 @@ public abstract class Player extends AnimatedSprite {
 		speed = v;
 	}
 
+	/**
+	 * Makes the Player jump if it has contact with the ground.
+	 */
 	public void jump() {
 		if (hasContact == false) {
 			return;
