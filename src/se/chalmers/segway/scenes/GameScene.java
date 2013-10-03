@@ -55,6 +55,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private Player player;
 	private PlayerContact contactListener;
+	
+	private long stopWatchTime=0;
 
 	/**
 	 * Methods
@@ -66,9 +68,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createPhysics();
 		createSensorManager();
 		createPlayer();
-		//TODO: Temporary fix, should be retrieved from a manager.
-		//currentLvl = 4;
-		
+		// TODO: Temporary fix, should be retrieved from a manager.
+		// currentLvl = 4;
+
 		setOnSceneTouchListener(this);
 		playMusic();
 		createLocalScenes();
@@ -94,12 +96,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
-	
-	public void showLevelComplete(){
-		this.detachChild(levelCompleteScene);
-		levelCompleteScene.display(GameScene.this, camera);
-		addToScore((int) player.getX() / 20);
-		displayScoreAtGameOver();
+
+	public void showLevelComplete() {
+		if (!gameOverDisplayed) {
+			this.detachChild(levelCompleteScene);
+			levelCompleteScene.display(GameScene.this, camera);
+			addToScore((int) player.getX() / 20);
+			displayScoreAtGameOver();
+		}
 	}
 
 	private void createBackground() {
@@ -114,7 +118,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
-		tip = new Text(camera.getCenterX()+80, camera.getCenterY()+200 / 2,
+		tip = new Text(camera.getCenterX() + 80, camera.getCenterY() + 200 / 2,
 				resourcesManager.tipFont, "Tap screen to start!", vbom);
 		gameHUD.attachChild(tip);
 	}
@@ -124,6 +128,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			@Override
 			public void onDie() {
 				if (!gameOverDisplayed) {
+					stopTimerAndReturnTime();
 					deathScene.display(GameScene.this, camera);
 					camera.setChaseEntity(null);
 					gameOverDisplayed = true;
@@ -142,22 +147,29 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		finalScore = new Text(camera.getCenterX(), camera.getCenterY() / 2,
-				resourcesManager.fancyFont, "Score: " + score, vbom);
-		attachChild(finalScore);
+		//Score is calculated: 10*amount of cookies + 1000/1 + time in seconds
+		score = (int) (score + 1000/(1 + stopTimerAndReturnTime()/1000));
+		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
+				+ score, vbom);
+		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
-
-	private void addToScore(int i) {
+	/**
+	 * Adds a value to the current score
+	 * @param i the value to add.
+	 */
+	public void addToScore(int i) {
 		score += i;
 	}
-
+	
 	private void createPhysics() {
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
 	}
-
+	/**
+	 * Pauses the music playing and starts the song connected to the level
+	 */
 	private void playMusic() {
 		if (!this.resourcesManager.music2.isPlaying() && currentLvl == 4) {
 			this.resourcesManager.music2.play();
@@ -176,7 +188,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	// Handles all code for loading levels
 	public void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
-		;
 
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
@@ -202,7 +213,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					}
 				});
 
-		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player));
+		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player, this));
 
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
 				+ ".lvl");
@@ -219,6 +230,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			if (takeInput) {
 				if (gameOverDisplayed) {
 					SceneManager.getInstance().loadMenuScene(engine);
+					startTimer();
 				} else {
 					player.jump();
 				}
@@ -240,19 +252,32 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void onSensorChanged(SensorEvent event) {
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
-			
-			if (Math.abs(tiltSpeedX) > 3 ) {
-				tiltSpeedX = Math.signum(tiltSpeedX)*3;
+
+			if (Math.abs(tiltSpeedX) > 3) {
+				tiltSpeedX = Math.signum(tiltSpeedX) * 3;
 			}
-			
+
 			player.setRotation(tiltSpeedX * 18f);
-			
-			
-			final Vector2 tiltGravity = Vector2Pool.obtain(2*tiltSpeedX, 0);
+
+			final Vector2 tiltGravity = Vector2Pool.obtain(2 * tiltSpeedX, 0);
 
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
 		}
 	}
-
+	/**
+	 * Starts the timer.
+	 */
+	private void startTimer(){
+		stopWatchTime = System.currentTimeMillis();
+	}
+	/**
+	 * Stops the timer and returns the amount of time it was running in milliseconds
+	 * @return time in millseconds
+	 */
+	private long stopTimerAndReturnTime(){
+		long temp = System.currentTimeMillis()-stopWatchTime;
+		stopWatchTime = 0;
+		return temp;
+	}
 }

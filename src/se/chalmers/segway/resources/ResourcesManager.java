@@ -79,7 +79,6 @@ public class ResourcesManager {
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
-	private ITexture tipFontTexture;
 
 	// ---------------------------------------------
 	// CLASS LOGIC
