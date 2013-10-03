@@ -109,6 +109,7 @@ public class SceneManager {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
 						ResourcesManager.getInstance().loadSelectionResources();
 						selectionScene = new LevelSelectionScene();
+						((LevelSelectionScene) selectionScene).setUnlockedLevels(playerData.getHighestLevelCleared());
 						setScene(selectionScene);
 					}
 				}));
