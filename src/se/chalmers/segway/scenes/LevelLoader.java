@@ -130,8 +130,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					new ScaleModifier(1, 0.4f, 0.6f)));
 			// Loading player type objects
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER)) {
-			player.setX(x);
-			player.setY(y);
+			player.setRealPosition(x, y);
 
 			levelObject = player;
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE)) {

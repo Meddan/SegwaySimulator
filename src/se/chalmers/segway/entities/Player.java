@@ -19,6 +19,7 @@ public abstract class Player extends AnimatedSprite {
 	private boolean hasContact = false;
 	final long[] PLAYER_SLOW_ANIMATE = new long[] { 100, 100, 100 };
 	final long[] PLAYER_FAST_ANIMATE = new long[] { 50, 50, 50 };
+	final int PIXELS_TO_METERS = 32;
 	private Vector2 speed;
 
 	public Player(float pX, float pY, VertexBufferObjectManager vbo,
@@ -45,7 +46,7 @@ public abstract class Player extends AnimatedSprite {
 				if (getY() <= 0) {
 					onDie();
 				}
-				
+
 				movePlayer(pSecondsElapsed);
 
 				if (Math.abs(body.getLinearVelocity().x) < 0.5) {
@@ -55,10 +56,9 @@ public abstract class Player extends AnimatedSprite {
 		});
 	}
 
-	public void movePlayer(float pSecondsElapsed){
+	public void movePlayer(float pSecondsElapsed) {
 		if (speed != null) {
-			body.applyForce(speed.mul(50*pSecondsElapsed),
-					body.getPosition());
+			body.applyForce(speed.mul(50 * pSecondsElapsed), body.getPosition());
 			if (Math.abs(body.getLinearVelocity().x) >= 15) {
 				body.setLinearVelocity(
 						Math.signum(body.getLinearVelocity().x) * 15,
@@ -66,7 +66,12 @@ public abstract class Player extends AnimatedSprite {
 			}
 		}
 	}
-	
+
+	public void setRealPosition(int x, int y) {
+		body.setTransform(x / PIXELS_TO_METERS, y / PIXELS_TO_METERS,
+				body.getAngle());
+	}
+
 	public void setContact(boolean b) {
 		hasContact = b;
 	}
