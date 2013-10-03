@@ -60,6 +60,7 @@ public class LevelSelectionScene extends BaseScene implements
 		final IMenuItem[] button = new IMenuItem[nmbrOfLevels];
 		
 		for (int i = 1; i <= nmbrOfLevels; i++) {
+			System.out.println("Unlockedslevels" + unlockedLevels);
 			if(i <= unlockedLevels +1 ){
 				button[i-1] = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
 					resourcesManager.level_button, vbom), 1.2f, 1);
@@ -81,13 +82,16 @@ public class LevelSelectionScene extends BaseScene implements
 		SceneManager.getInstance().loadGameScene(engine, pMenuItem.getID());
 		return true;
 	}
+	public void setUnlockedLevels(int nbr){
+		System.out.println("setting unlockedlevels " + nbr);
+		unlockedLevels = nbr;
+	}
 
 	@Override
 	public void createScene() {
-		// TODO Auto-generated method stub
-		
+		createBackground();
 	}
-	public void setUnlockedLevels(int nbr){
-		unlockedLevels = nbr;
+	public void updateScene(){
+		createSelectionChildScene();
 	}
 }

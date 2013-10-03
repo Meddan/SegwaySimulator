@@ -38,7 +38,7 @@ public class SceneManager {
 	}
 
 	// ---------------------------------------------
-	// CREATION AND DsynchronizedISPOSAL
+	// CREATION AND DISPOSAL
 	// ---------------------------------------------
 
 	public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback) {
@@ -110,6 +110,7 @@ public class SceneManager {
 						ResourcesManager.getInstance().loadSelectionResources();
 						selectionScene = new LevelSelectionScene();
 						((LevelSelectionScene) selectionScene).setUnlockedLevels(playerData.getHighestLevelCleared());
+						((LevelSelectionScene) selectionScene).updateScene();
 						setScene(selectionScene);
 					}
 				}));
