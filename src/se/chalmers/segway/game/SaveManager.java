@@ -28,27 +28,29 @@ public class SaveManager {
 	 */
 	public static void loadUpgrades() {
 		File file = new File("upgrades");
-		try {
-			//TODO: Needs testing
-			FileInputStream fis = new FileInputStream(file);
-			BufferedInputStream bis = new BufferedInputStream(fis);
-			ObjectInputStream ois = new ObjectInputStream(bis);
-			Object obj = ois.readObject();
-			while (obj != null){
-				if (obj != null && obj instanceof Upgrades){
-					for (Upgrades upg : Upgrades.values()){
-						if(upg.getName().equals(((Upgrades) obj).getName())){
-							upg.setActive(((Upgrades) obj).isActivated());
+		if(file.exists()){
+			try {
+				//TODO: Needs testing
+				FileInputStream fis = new FileInputStream(file);
+				BufferedInputStream bis = new BufferedInputStream(fis);
+				ObjectInputStream ois = new ObjectInputStream(bis);
+				Object obj = ois.readObject();
+				while (obj != null){
+					if (obj != null && obj instanceof Upgrades){
+						for (Upgrades upg : Upgrades.values()){
+							if(upg.getName().equals(((Upgrades) obj).getName())){
+								upg.setActive(((Upgrades) obj).isActivated());
+							}
 						}
 					}
+					obj = ois.readObject();
 				}
-				obj = ois.readObject();
+				ois.close();
+				bis.close();
+				fis.close();
+			} catch (Exception e){
+				e.printStackTrace();
 			}
-			ois.close();
-			bis.close();
-			fis.close();
-		} catch (Exception e){
-			e.printStackTrace();
 		}
 		
 	}
@@ -94,21 +96,27 @@ public class SaveManager {
 	 */
 	public static PlayerData loadPlayerData(){
 		File file = new File("upgrades");
-		try {
-			//TODO: Needs testing
-			FileInputStream fis = new FileInputStream(file);
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			Object obj = ois.readObject();
-			obj = ois.readObject();
-			ois.close();
-			fis.close();
-			if (obj != null && obj instanceof PlayerData){
-				return (PlayerData) obj;
-			} else {
+		if(file.exists()){
+			try {
+				//TODO: Needs testing
+				FileInputStream fis = new FileInputStream(file);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				Object obj = ois.readObject();
+				obj = ois.readObject();
+				ois.close();
+				fis.close();
+				if (obj != null && obj instanceof PlayerData){
+					return (PlayerData) obj;
+				} else {
+					return null;
+				}
+			} catch (Exception e){
+				e.printStackTrace();
 				return null;
 			}
-		} catch (Exception e){
+		} else {
 			return null;
 		}
 	}
+		
 }
