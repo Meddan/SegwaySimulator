@@ -21,9 +21,12 @@ import se.chalmers.segway.resources.ResourcesManager;
 import se.chalmers.segway.scenes.GameScene;
 import se.chalmers.segway.scenes.SceneManager;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 
@@ -35,6 +38,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1 = "platform1";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2 = "platform2";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM = "curvyPlatform";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
@@ -85,6 +89,27 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3)) {
 			levelObject = loadPlatform(x, y, "platform3",
 					resourcesManager.platform3_region);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM)) {
+			// TODO: WIP
+			Sprite mSprite = new Sprite(x, y,
+					resourcesManager.curvyPlatform_region, vbom);
+			final float width = mSprite.getX() * mSprite.getScaleX();
+			final float height = mSprite.getY() * mSprite.getScaleY();
+			Vector2[] mVertices = {
+					new Vector2(-0.49662f * width, -0.50000f * height),
+					new Vector2(-0.07770f * width, -0.14935f * height),
+					new Vector2(+0.09459f * width, -0.14286f * height),
+					new Vector2(+0.27027f * width, -0.26623f * height),
+					new Vector2(+0.48649f * width, -0.50000f * height),
+					new Vector2(+0.48986f * width, +0.48701f * height),
+					new Vector2(-0.50000f * width, +0.47403f * height), };
+			final Body mBody = PhysicsFactory.createPolygonBody(physicsWorld, mSprite, mVertices, BodyType.StaticBody, FIXTURE_DEF);
+			mBody.setUserData(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM);
+
+			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
+					mSprite, mBody, true, false));
+			
+			levelObject = mSprite;
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 			ITextureRegion cookie = resourcesManager.cookies_region
 					.getTextureRegion((int) (Math.random() * 8 - 1));

@@ -120,7 +120,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	private void createPlayer() {
-		player = new Player(50, 5200, vbom, camera, physicsWorld) {
+		player = new Player(50, 300, vbom, camera, physicsWorld) {
 			@Override
 			public void onDie() {
 				if (!gameOverDisplayed) {

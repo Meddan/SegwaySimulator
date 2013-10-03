@@ -61,7 +61,7 @@ public class ResourcesManager {
 	public ITextureRegion platform1_region;
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
-	public ITextureRegion curvyPlatform1_region;
+	public ITextureRegion curvyPlatform_region;
 	public ITextureRegion coin_region;
 	public ITextureRegion golden_cookie;
 
@@ -222,9 +222,9 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		platform3_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
-		curvyPlatform1_region = BitmapTextureAtlasTextureRegionFactory
+		curvyPlatform_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity,
-						"curvyPlatform1.png");
+						"curvyPlatform.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "cookie.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory
