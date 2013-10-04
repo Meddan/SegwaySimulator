@@ -3,6 +3,8 @@ package se.chalmers.segway.scenes;
 import java.io.IOException;
 
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -55,12 +57,31 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private boolean gameOverDisplayed = false;
 	private boolean boost = false;
+	private int boostAmount = 20;
 
 	private Player player;
 	private PlayerContact contactListener;
 
 	private long stopWatchTime = 0;
 	private ParallaxLayer parallaxLayer;
+	
+	private TimerHandler boostTimer = new TimerHandler(0.1f, new ITimerCallback() {
+		public void onTimePassed(final TimerHandler pTimerHandler) {
+			pTimerHandler.reset();
+			
+			if(boostAmount <= 0){
+				engine.unregisterUpdateHandler(boostTimer);
+				Text boostMessage = new Text(camera.getCenterX() + 80, camera.getCenterY() + 200 / 2,
+						resourcesManager.tipFont, "Out of boost!", vbom);
+				gameHUD.attachChild(boostMessage);
+				boost = false;
+			} else {
+				System.out.println("Boosting");
+				System.out.println("Boost left: " + boostAmount);
+				boostAmount--;
+			}
+		}
+	});
 
 	/**
 	 * Methods
@@ -257,13 +278,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					startTimer();
 				} else if(pSceneTouchEvent.getX() > camera.getCenterX()) {
 					player.jump();
-				} else {
+				} else if(boostAmount > 0){
 					boost = true;
+					engine.registerUpdateHandler(boostTimer);
 				}
 			}
 		} else if (pSceneTouchEvent.isActionUp()){
 			boost = false;
-			System.out.println("Resetting boost");
+			engine.unregisterUpdateHandler(boostTimer);
 		} else {
 			takeInput = true;
 			tip.setVisible(false);
