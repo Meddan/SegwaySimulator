@@ -123,7 +123,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 		parallaxLayer.attachParallaxEntity(new ParallaxEntity(10, back, false,
 				1));
-		parallaxLayer.attachParallaxEntity(new ParallaxEntity(5, front, true));
+//		parallaxLayer.attachParallaxEntity(new ParallaxEntity(5, front, true));
 		
 		setBackground(new Background(Color.CYAN));
 		this.attachChild(parallaxLayer);
