@@ -234,7 +234,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-		System.out.println(camera.getCenterX());
 		if (pSceneTouchEvent.isActionDown()) {
 			if (takeInput) {
 				if (gameOverDisplayed) {
@@ -246,8 +245,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					boost = true;
 				}
 			}
-		} else {
+		} else if (pSceneTouchEvent.isActionUp()){
 			boost = false;
+			System.out.println("Resetting boost");
+		} else {
 			takeInput = true;
 			tip.setVisible(false);
 		}
@@ -271,7 +272,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			}
 			
 			if(boost == true){
-				multiplier = 3;
+				multiplier = 15;
 			}
 
 			player.setRotation(tiltSpeedX * 18f);
