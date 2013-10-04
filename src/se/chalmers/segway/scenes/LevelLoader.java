@@ -5,10 +5,12 @@ import java.io.IOException;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
+import org.andengine.extension.physics.box2d.util.constants.PhysicsConstants;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.SAXUtils;
@@ -17,6 +19,7 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
+import se.chalmers.segway.game.PhysicsEditorShapeLibrary;
 import se.chalmers.segway.resources.ResourcesManager;
 
 import com.badlogic.gdx.math.Vector2;
@@ -39,6 +42,8 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
 
+	private PhysicsEditorShapeLibrary pesl;
+	
 	private Player player;
 	private ResourcesManager resourcesManager;
 	private SceneManager sceneManager;
@@ -57,6 +62,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		sceneManager = SceneManager.getInstance();
 		resourcesManager = ResourcesManager.getInstance();
 		vbom = resourcesManager.vbom;
+		pesl = resourcesManager.pesl;
 	}
 
 	final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f,
@@ -87,20 +93,21 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			levelObject = loadPlatform(x, y, "platform3",
 					resourcesManager.platform3_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM)) {
-			// TODO: WIP
+//			 TODO: WIP
 			Sprite mSprite = new Sprite(x, y,
 					resourcesManager.curvyPlatform_region, vbom);
-			final float width = mSprite.getWidth() / 32;//* mSprite.getScaleX() / 32;
-			final float height = mSprite.getHeight() / 32;// * mSprite.getScaleY() / 32;
-			Vector2[] mVertices = {
-					new Vector2(-0.49662f * width, -0.50000f * height),
-					new Vector2(-0.07770f * width, -0.14935f * height),
-					new Vector2(+0.09459f * width, -0.14286f * height),
-					new Vector2(+0.27027f * width, -0.26623f * height),
-					new Vector2(+0.48649f * width, -0.50000f * height),
-					new Vector2(+0.48986f * width, +0.48701f * height),
-					new Vector2(-0.50000f * width, +0.47403f * height), };
-			final Body mBody = PhysicsFactory.createPolygonBody(physicsWorld, mSprite, mVertices, BodyType.StaticBody, FIXTURE_DEF);
+			final Body mBody = pesl.createBody("curvyPlatform", mSprite, physicsWorld);
+//			final float width = mSprite.getWidth() / 32;//* mSprite.getScaleX() / 32;
+//			final float height = mSprite.getHeight() / 32;// * mSprite.getScaleY() / 32;
+//			Vector2[] mVertices = {
+//					new Vector2(-0.49662f * width, -0.50000f * height),
+//					new Vector2(-0.07770f * width, -0.14935f * height),
+//					new Vector2(+0.09459f * width, -0.14286f * height),
+//					new Vector2(+0.27027f * width, -0.26623f * height),
+//					new Vector2(+0.48649f * width, -0.50000f * height),
+//					new Vector2(+0.48986f * width, +0.48701f * height),
+//					new Vector2(-0.50000f * width, +0.47403f * height), };
+//			final Body mBody = PhysicsFactory.createPolygonBody(physicsWorld, mSprite, mVertices, BodyType.StaticBody, FIXTURE_DEF);
 			mBody.setUserData(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM);
 
 			physicsWorld.registerPhysicsConnector(new PhysicsConnector(

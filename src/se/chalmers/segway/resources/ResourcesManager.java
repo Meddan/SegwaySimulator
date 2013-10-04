@@ -21,6 +21,7 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
+import se.chalmers.segway.game.PhysicsEditorShapeLibrary;
 import se.chalmers.segway.main.MainActivity;
 import android.graphics.Color;
 
@@ -41,6 +42,7 @@ public class ResourcesManager {
 	public Font tipFont;
 	public Music music;
 	public Music music2;
+	public PhysicsEditorShapeLibrary pesl;
 
 	// ---------------------------------------------
 	// TEXTURES & TEXTURE REGIONS
@@ -110,6 +112,7 @@ public class ResourcesManager {
 		loadGameGraphics();
 		loadGameFonts();
 		loadGameAudio();
+		pesl.open(activity, "shapes/curvyPlatform.xml");
 	}
 
 	public void loadSelectionResources() {
@@ -291,6 +294,7 @@ public class ResourcesManager {
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
+		getInstance().pesl = new PhysicsEditorShapeLibrary(32f);
 
 	}
 
