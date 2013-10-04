@@ -55,8 +55,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private Player player;
 	private PlayerContact contactListener;
-	
-	private long stopWatchTime=0;
+
+	private long stopWatchTime = 0;
 
 	/**
 	 * Methods
@@ -88,8 +88,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public void disposeScene() {
-		this.resourcesManager.music2.pause();
-		this.resourcesManager.music.resume();
+		if (this.resourcesManager.music2.isPlaying()) {
+			this.resourcesManager.music2.pause();
+			this.resourcesManager.music.resume();
+		}
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
@@ -147,26 +149,30 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		//Score is calculated: 10*amount of cookies + 1000/1 + time in seconds
-		score = (int) (score + 1000/(1 + stopTimerAndReturnTime()/1000));
+		// Score is calculated: 10*amount of cookies + 1000/1 + time in seconds
+		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
 		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
 				+ score, vbom);
 		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
+
 	/**
 	 * Adds a value to the current score
-	 * @param i the value to add.
+	 * 
+	 * @param i
+	 *            the value to add.
 	 */
 	public void addToScore(int i) {
 		score += i;
 	}
-	
+
 	private void createPhysics() {
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
 	}
+
 	/**
 	 * Pauses the music playing and starts the song connected to the level
 	 */
@@ -213,7 +219,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					}
 				});
 
-		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player, this));
+		levelLoader.registerEntityLoader(new LevelLoader(physicsWorld, player,
+				this));
 
 		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID
 				+ ".lvl");
@@ -265,18 +272,22 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			Vector2Pool.recycle(tiltGravity);
 		}
 	}
+
 	/**
 	 * Starts the timer.
 	 */
-	private void startTimer(){
+	private void startTimer() {
 		stopWatchTime = System.currentTimeMillis();
 	}
+
 	/**
-	 * Stops the timer and returns the amount of time it was running in milliseconds
+	 * Stops the timer and returns the amount of time it was running in
+	 * milliseconds
+	 * 
 	 * @return time in millseconds
 	 */
-	private long stopTimerAndReturnTime(){
-		long temp = System.currentTimeMillis()-stopWatchTime;
+	private long stopTimerAndReturnTime() {
+		long temp = System.currentTimeMillis() - stopWatchTime;
 		stopWatchTime = 0;
 		return temp;
 	}
