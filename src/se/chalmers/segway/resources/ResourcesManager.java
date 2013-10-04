@@ -63,6 +63,7 @@ public class ResourcesManager {
 	public ITextureRegion platform1_region;
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
+	public ITextureRegion testPlatform_region;
 	public ITextureRegion curvyPlatform_region;
 	public ITextureRegion coin_region;
 	public ITextureRegion golden_cookie;
@@ -112,11 +113,16 @@ public class ResourcesManager {
 		loadGameGraphics();
 		loadGameFonts();
 		loadGameAudio();
-		pesl.open(activity, "shapes/curvyPlatform.xml");
+		loadShapes();
 	}
 
 	public void loadSelectionResources() {
 		loadSelectionGraphics();
+	}
+	
+	public void loadShapes() {
+		pesl.open(activity, "shapes/curvyPlatform.xml");
+		pesl.open(activity, "shapes/testPlatform.xml");
 	}
 
 	public void loadSelectionGraphics() {
@@ -227,6 +233,8 @@ public class ResourcesManager {
 		curvyPlatform_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity,
 						"curvyPlatform.png");
+		testPlatform_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "testPlatform.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "cookie.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory

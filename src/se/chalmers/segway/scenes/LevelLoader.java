@@ -38,18 +38,20 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2 = "platform2";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM = "curvyPlatform";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TESTPLATFORM = "testPlatform";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
 
 	private PhysicsEditorShapeLibrary pesl;
-	
+
 	private Player player;
 	private ResourcesManager resourcesManager;
 	private SceneManager sceneManager;
 	private PhysicsWorld physicsWorld;
 	private VertexBufferObjectManager vbom;
 	private GameScene gameScene;
+
 	public LevelLoader(PhysicsWorld pw, Player p, GameScene gs) {
 		super(TAG_ENTITY);
 		this.init();
@@ -93,25 +95,40 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			levelObject = loadPlatform(x, y, "platform3",
 					resourcesManager.platform3_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM)) {
-//			 TODO: WIP
+			// TODO: WIP
 			Sprite mSprite = new Sprite(x, y,
 					resourcesManager.curvyPlatform_region, vbom);
-			final Body mBody = pesl.createBody("curvyPlatform", mSprite, physicsWorld);
-//			final float width = mSprite.getWidth() / 32;//* mSprite.getScaleX() / 32;
-//			final float height = mSprite.getHeight() / 32;// * mSprite.getScaleY() / 32;
-//			Vector2[] mVertices = {
-//					new Vector2(-0.49662f * width, -0.50000f * height),
-//					new Vector2(-0.07770f * width, -0.14935f * height),
-//					new Vector2(+0.09459f * width, -0.14286f * height),
-//					new Vector2(+0.27027f * width, -0.26623f * height),
-//					new Vector2(+0.48649f * width, -0.50000f * height),
-//					new Vector2(+0.48986f * width, +0.48701f * height),
-//					new Vector2(-0.50000f * width, +0.47403f * height), };
-//			final Body mBody = PhysicsFactory.createPolygonBody(physicsWorld, mSprite, mVertices, BodyType.StaticBody, FIXTURE_DEF);
+			final Body mBody = pesl.createBody("curvyPlatform", mSprite,
+					physicsWorld);
+			// final float width = mSprite.getWidth() / 32;//*
+			// mSprite.getScaleX() / 32;
+			// final float height = mSprite.getHeight() / 32;// *
+			// mSprite.getScaleY() / 32;
+			// Vector2[] mVertices = {
+			// new Vector2(-0.49662f * width, -0.50000f * height),
+			// new Vector2(-0.07770f * width, -0.14935f * height),
+			// new Vector2(+0.09459f * width, -0.14286f * height),
+			// new Vector2(+0.27027f * width, -0.26623f * height),
+			// new Vector2(+0.48649f * width, -0.50000f * height),
+			// new Vector2(+0.48986f * width, +0.48701f * height),
+			// new Vector2(-0.50000f * width, +0.47403f * height), };
+			// final Body mBody = PhysicsFactory.createPolygonBody(physicsWorld,
+			// mSprite, mVertices, BodyType.StaticBody, FIXTURE_DEF);
 			mBody.setUserData(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CURVYPLATFORM);
 
-			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
-					mSprite, mBody, true, false));
+			physicsWorld.registerPhysicsConnector(new PhysicsConnector(mSprite,
+					mBody, true, false));
+
+			levelObject = mSprite;
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TESTPLATFORM)) {
+			Sprite mSprite = new Sprite(x, y,
+					resourcesManager.testPlatform_region, vbom);
+			final Body mBody = pesl.createBody("testPlatform", mSprite,
+					physicsWorld);
+
+			mBody.setUserData(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TESTPLATFORM);
+			physicsWorld.registerPhysicsConnector(new PhysicsConnector(mSprite,
+					mBody, true, false));
 			
 			levelObject = mSprite;
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
