@@ -139,6 +139,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 						GameScene gs = (GameScene) sceneManager
 								.getCurrentScene();
 						gs.showLevelComplete();
+						player.stop();
 					}
 				}
 			};

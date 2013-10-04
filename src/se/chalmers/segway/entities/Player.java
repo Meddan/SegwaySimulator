@@ -100,6 +100,12 @@ public abstract class Player extends AnimatedSprite {
 		body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 6));
 
 	}
+	
+	public void stop(){
+		
+		body.setType(BodyType.StaticBody);
+		
+	}
 
 	public abstract void onDie();
 
