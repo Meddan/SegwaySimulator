@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.io.Writer;
 import java.util.LinkedList;
 
+import se.chalmers.segway.resources.ResourcesManager;
 import android.content.Context;
 
 /**
@@ -78,25 +79,36 @@ public class SaveManager {
 	 * @param data the playerdata to be saved
 	 */
 	public static void savePlayerData(PlayerData data){
-		File file = new File("player");
+		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
+		path.mkdir();
 		FileOutputStream fos;
+		File file = new File(path, "player");
 		try {
+			System.out.println("TRYING TO WRITE BITCH");
 			fos = new FileOutputStream(file);
+			
+			System.out.println("FOS CREATED BITCH");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			System.out.println("OOS CREATED BITCH");
 			oos.writeObject(data);
+			System.out.println("WROTE DATA BITCH");
 			oos.close();
-			fos.close();
+			System.out.println("CLOSED BITCH");
+			System.out.println("Exactly after it is " + file.exists() + " BITCH");
 		} catch (Exception e) {
+			System.out.println("EXCEPTION BITCH");
 			e.printStackTrace();
 		}
+		//System.out.println(new File("player").exists() + " BITCH");
 	}
 	/**
 	 * Returns the players saved data
 	 * @return PlayerData from file, null if something went wrong, the file doesn't exist
 	 */
 	public static PlayerData loadPlayerData(){
-		File file = new File("upgrades");
+		File file = new File("player");
 		if(file.exists()){
+			System.out.println("FOUND FILE BITCH");
 			try {
 				//TODO: Needs testing
 				FileInputStream fis = new FileInputStream(file);
@@ -115,6 +127,7 @@ public class SaveManager {
 				return null;
 			}
 		} else {
+			System.out.println("NO FILE BITCH");
 			return null;
 		}
 	}

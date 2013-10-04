@@ -5,6 +5,8 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
+import android.app.Activity;
+import android.content.Context;
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.SaveManager;
 import se.chalmers.segway.resources.ResourcesManager;
@@ -118,9 +120,9 @@ public class SceneManager {
 
 	public void loadGameScene(final Engine mEngine, final int level) {
 		//TODO: remove this
-//		System.out.println("fucking playerdata up in this bitch");
-//		playerData.setHighestLevelCleared(1);
-//		SaveManager.savePlayerData(playerData);
+		System.out.println("fucking playerdata up in this bitch");
+		playerData.setHighestLevelCleared(1);
+		SaveManager.savePlayerData(playerData);
 		
 		setScene(loadingScene);
 		ResourcesManager.getInstance().unloadSelectionTextures();

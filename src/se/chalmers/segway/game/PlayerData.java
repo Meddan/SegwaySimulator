@@ -1,11 +1,13 @@
 package se.chalmers.segway.game;
 
+import java.io.Serializable;
+
 /**
  * A class to sava data about the player
  * @author meddan
  *
  */
-public class PlayerData {
+public class PlayerData implements Serializable{
 	private String name;
 	private int cash;
 	private int highestLevelFinished;
