@@ -54,7 +54,8 @@ public class PlayerContact implements ContactListener {
 
 		if (x1.getBody().getUserData() != null
 				&& x2.getBody().getUserData() != null) {
-			if (((String)x2.getBody().getUserData()).contains("platform")) {
+			if (((String)x2.getBody().getUserData()).contains("platform")
+					|| ((String)x2.getBody().getUserData()).contains("Platform")) {
 				player.setContact(true);
 			}
 		}

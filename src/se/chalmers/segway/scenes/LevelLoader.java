@@ -90,8 +90,8 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			// TODO: WIP
 			Sprite mSprite = new Sprite(x, y,
 					resourcesManager.curvyPlatform_region, vbom);
-			final float width = mSprite.getX() * mSprite.getScaleX();
-			final float height = mSprite.getY() * mSprite.getScaleY();
+			final float width = mSprite.getWidth() / 32;//* mSprite.getScaleX() / 32;
+			final float height = mSprite.getHeight() / 32;// * mSprite.getScaleY() / 32;
 			Vector2[] mVertices = {
 					new Vector2(-0.49662f * width, -0.50000f * height),
 					new Vector2(-0.07770f * width, -0.14935f * height),
