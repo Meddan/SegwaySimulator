@@ -9,12 +9,12 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
-import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {
-	private boolean sound = true;
+	// If music is on default
+	private boolean sound = false;
 	IMenuItem soundonMenuItem;
 	IMenuItem soundoffMenuItem;
 
@@ -29,7 +29,7 @@ public class MainMenuScene extends BaseScene implements
 	 * Starts music if none is running and makes it loop forever.
 	 */
 	private void playMusic() {
-		if (!this.resourcesManager.music.isPlaying()) {
+		if (!this.resourcesManager.music.isPlaying() && sound) {
 			this.resourcesManager.music.play();
 			this.resourcesManager.music.setLooping(true);
 		}
@@ -94,7 +94,8 @@ public class MainMenuScene extends BaseScene implements
 				soundonMenuItem.getY() - 80);
 		soundoffMenuItem.setPosition(soundonMenuItem.getX(),
 				soundonMenuItem.getY());
-		soundoffMenuItem.setVisible(false);
+		soundoffMenuItem.setVisible(!sound);
+		soundonMenuItem.setVisible(sound);
 
 		menuChildScene.setOnMenuItemClickListener(this);
 
@@ -107,17 +108,17 @@ public class MainMenuScene extends BaseScene implements
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
 			SceneManager.getInstance().loadSelectionScene(engine);
-//			SceneManager.getInstance().loadGameScene(engine);
+			// SceneManager.getInstance().loadGameScene(engine);
 			return true;
 		case MENU_OPTIONS:
 			soundoffMenuItem.setVisible(sound);
 			soundonMenuItem.setVisible(!sound);
 			sound = !sound;
 			if (sound) {
-				resourcesManager.music.getMediaPlayer().setVolume(1,1);
+				resourcesManager.music.getMediaPlayer().setVolume(1, 1);
 				resourcesManager.music.resume();
 			} else {
-				resourcesManager.music.getMediaPlayer().setVolume(0,0);
+				resourcesManager.music.getMediaPlayer().setVolume(0, 0);
 				resourcesManager.music.pause();
 			}
 			return true;
