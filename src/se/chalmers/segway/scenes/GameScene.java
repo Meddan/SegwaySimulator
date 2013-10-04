@@ -7,6 +7,7 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -22,6 +23,7 @@ import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.game.PlayerContact;
+import se.chalmers.segway.scenes.ParallaxLayer.ParallaxEntity;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 import android.content.Context;
 import android.hardware.Sensor;
@@ -58,6 +60,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private PlayerContact contactListener;
 
 	private long stopWatchTime = 0;
+	private ParallaxLayer parallaxLayer;
 
 	/**
 	 * Methods
@@ -65,13 +68,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	@Override
 	public void createScene() {
 		createBackground();
-		createHUD();
+
 		createPhysics();
 		createSensorManager();
 		createPlayer();
 		// TODO: Temporary fix, should be retrieved from a manager.
 		// currentLvl = 4;
-
+		createHUD();
 		setOnSceneTouchListener(this);
 		playMusic();
 		createLocalScenes();
@@ -96,6 +99,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
+		
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
@@ -110,7 +114,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	private void createBackground() {
+		parallaxLayer = new ParallaxLayer(camera, true, 4000);
+		Sprite back = new Sprite(0, camera.getCenterY(), camera.getWidth(),
+				camera.getHeight(), resourcesManager.backgroundBackRegion, vbom);
+
+		Sprite front = new Sprite(0, camera.getCenterY(),
+				resourcesManager.backgroundFrontRegion, vbom);
+
+		parallaxLayer.attachParallaxEntity(new ParallaxEntity(10, back, false,
+				1));
+		parallaxLayer.attachParallaxEntity(new ParallaxEntity(5, front, true));
+		
 		setBackground(new Background(Color.CYAN));
+		this.attachChild(parallaxLayer);
 	}
 
 	private void createLocalScenes() {
@@ -264,6 +280,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		int multiplier = 1;
+
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
 

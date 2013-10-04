@@ -1,8 +1,5 @@
 package se.chalmers.segway.scenes;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
@@ -19,10 +16,9 @@ public class LevelSelectionScene extends BaseScene implements
 		IOnMenuItemClickListener {
 
 	private MenuScene selectionChildScene;
-	private final int BACK = 0;
-	private final int LEVEL_1 = 1;
-	private final int nmbrOfLevels = 4;//new File("assets/level/").list().length;
+	private final int nmbrOfLevels = 5;//new File("assets/level/").list().length;
 	private int unlockedLevels = 1;
+	
 	public void createScene(PlayerData playerData) {
 		createBackground();
 		createSelectionChildScene();
@@ -61,7 +57,7 @@ public class LevelSelectionScene extends BaseScene implements
 		
 		for (int i = 1; i <= nmbrOfLevels; i++) {
 			System.out.println("Unlockedslevels" + unlockedLevels);
-			if(i <= unlockedLevels +1 ){
+			if(i <= unlockedLevels +3 ){
 				button[i-1] = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
 					resourcesManager.level_button, vbom), 1.2f, 1);
 				button[i-1].setPosition(i*100, 300);

@@ -18,6 +18,7 @@ import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtla
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
@@ -49,6 +50,7 @@ public class ResourcesManager {
 	// ---------------------------------------------
 	// Game Texture
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
+	public BitmapTextureAtlas backgroundTextureAtlas;
 
 	// Level Complete Window
 	public ITextureRegion complete_window_region;
@@ -83,6 +85,11 @@ public class ResourcesManager {
 	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
 
+	// Backgrounds
+	public TextureRegion backgroundFrontRegion;
+	public TextureRegion backgroundBackRegion;
+	private BitmapTextureAtlas background2TextureAtlas;
+
 	// ---------------------------------------------
 	// CLASS LOGIC
 	// ---------------------------------------------
@@ -114,6 +121,7 @@ public class ResourcesManager {
 		loadGameFonts();
 		loadGameAudio();
 		loadShapes();
+		loadGameBackground();
 	}
 
 	public void loadSelectionResources() {
@@ -268,6 +276,29 @@ public class ResourcesManager {
 
 	private void loadGameAudio() {
 
+	}
+
+	private void loadGameBackground() {
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath("gfx/background/");
+		backgroundTextureAtlas = new BitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		background2TextureAtlas = new BitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		
+		backgroundBackRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(backgroundTextureAtlas, activity, "back.png",
+						0, 0);
+
+		backgroundFrontRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(background2TextureAtlas, activity, "front.png",
+						0, 0);
+		
+
+		backgroundTextureAtlas.load();
+		background2TextureAtlas.load();
 	}
 
 	public void loadSplashScreen() {
