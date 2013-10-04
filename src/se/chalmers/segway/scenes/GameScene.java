@@ -52,6 +52,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private DeathScene deathScene;
 
 	private boolean gameOverDisplayed = false;
+	private boolean boost = false;
 
 	private Player player;
 	private PlayerContact contactListener;
@@ -233,16 +234,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
+		System.out.println(camera.getCenterX());
 		if (pSceneTouchEvent.isActionDown()) {
 			if (takeInput) {
 				if (gameOverDisplayed) {
 					SceneManager.getInstance().loadMenuScene(engine);
 					startTimer();
-				} else {
+				} else if(pSceneTouchEvent.getX() > camera.getCenterX()) {
 					player.jump();
+				} else {
+					boost = true;
 				}
 			}
 		} else {
+			boost = false;
 			takeInput = true;
 			tip.setVisible(false);
 		}
@@ -257,16 +262,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public void onSensorChanged(SensorEvent event) {
+		int multiplier = 1;
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
 
 			if (Math.abs(tiltSpeedX) > 3) {
 				tiltSpeedX = Math.signum(tiltSpeedX) * 3;
 			}
+			
+			if(boost == true){
+				multiplier = 3;
+			}
 
 			player.setRotation(tiltSpeedX * 18f);
 
-			final Vector2 tiltGravity = Vector2Pool.obtain(2 * tiltSpeedX, 0);
+			final Vector2 tiltGravity = Vector2Pool.obtain(2 * multiplier * tiltSpeedX, 0);
 
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
