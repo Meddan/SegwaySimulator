@@ -106,7 +106,8 @@ public class SaveManager {
 	 * @return PlayerData from file, null if something went wrong, the file doesn't exist
 	 */
 	public static PlayerData loadPlayerData(){
-		File file = new File("player");
+		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
+		File file = new File(path, "player");
 		if(file.exists()){
 			System.out.println("FOUND FILE BITCH");
 			try {
@@ -116,7 +117,6 @@ public class SaveManager {
 				Object obj = ois.readObject();
 				obj = ois.readObject();
 				ois.close();
-				fis.close();
 				if (obj != null && obj instanceof PlayerData){
 					return (PlayerData) obj;
 				} else {
