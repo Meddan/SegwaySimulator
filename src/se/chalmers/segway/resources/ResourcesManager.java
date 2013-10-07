@@ -94,6 +94,8 @@ public class ResourcesManager {
 	public TextureRegion backgroundFrontRegion;
 	public TextureRegion backgroundBackRegion;
 	private BitmapTextureAtlas background2TextureAtlas;
+	public ITextureRegion backgroundFront2Region;
+	private BitmapTextureAtlas background3TextureAtlas;
 
 	// ---------------------------------------------
 	// CLASS LOGIC
@@ -298,6 +300,9 @@ public class ResourcesManager {
 		background2TextureAtlas = new BitmapTextureAtlas(
 				activity.getTextureManager(), 1024, 1024,
 				TextureOptions.BILINEAR);
+		background3TextureAtlas = new BitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
 
 		backgroundBackRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(backgroundTextureAtlas, activity, "back.png",
@@ -306,9 +311,14 @@ public class ResourcesManager {
 		backgroundFrontRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(background2TextureAtlas, activity,
 						"front.png", 0, 0);
+		
+		backgroundFront2Region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(background3TextureAtlas, activity,
+						"front2.png", 0, 0);
 
 		backgroundTextureAtlas.load();
 		background2TextureAtlas.load();
+		background3TextureAtlas.load();
 	}
 
 	public void loadSplashScreen() {

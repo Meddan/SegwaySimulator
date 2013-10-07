@@ -97,20 +97,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					}
 				}
 			});
+	protected int level_width;
 
 	/**
 	 * Methods
 	 */
 	@Override
 	public void createScene() {
-		createBackground();
-
 		createPhysics();
 		createSensorManager();
 		createPlayer();
 		createHUD();
 		setOnSceneTouchListener(this);
 		createLocalScenes();
+		createBackground();
 		initTrail();
 	}
 
@@ -167,17 +167,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	private void createBackground() {
-		parallaxLayer = new ParallaxLayer(camera, true, 4000);
+		parallaxLayer = new ParallaxLayer(camera, true, 10000);
 		Sprite back = new Sprite(0, camera.getCenterY(), camera.getWidth(),
 				camera.getHeight(), resourcesManager.backgroundBackRegion, vbom);
 
 		Sprite front = new Sprite(0, camera.getCenterY(),
 				resourcesManager.backgroundFrontRegion, vbom);
+		Sprite front2 = new Sprite(0, camera.getCenterY(),
+				resourcesManager.backgroundFront2Region, vbom);
 
-		parallaxLayer.attachParallaxEntity(new ParallaxEntity(10, back, false,
+		parallaxLayer.attachParallaxEntity(new ParallaxEntity(6, back, false,
 				1));
-		// parallaxLayer.attachParallaxEntity(new ParallaxEntity(5, front,
-		// true));
+		parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front, true));
+		parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2, true));
 
 		setBackground(new Background(Color.CYAN));
 		this.attachChild(parallaxLayer);
@@ -263,6 +265,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
 						LevelConstants.TAG_LEVEL) {
+
 					public IEntity onLoadEntity(
 							final String pEntityName,
 							final IEntity pParent,
@@ -272,6 +275,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						final int width = SAXUtils.getIntAttributeOrThrow(
 								pAttributes,
 								LevelConstants.TAG_LEVEL_ATTRIBUTE_WIDTH);
+						level_width = width;
 						final int height = SAXUtils.getIntAttributeOrThrow(
 								pAttributes,
 								LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
@@ -337,7 +341,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			}
 
 			if (boost == true) {
-				if(Upgrades.RocketBoost.isActivated()){
+				if (Upgrades.RocketBoost.isActivated()) {
 					multiplier = 20;
 				} else {
 					multiplier = 10;
