@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.SaveManager;
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.resources.ResourcesManager;
 
 public class SceneManager {
@@ -160,6 +161,7 @@ public class SceneManager {
 
 	public static synchronized SceneManager getInstance() {
 		if(!isCreated){
+			SaveManager.loadUpgrades();
 			isCreated = true;
 			INSTANCE = new SceneManager();
 			INSTANCE.initPlayerData();
