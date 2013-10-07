@@ -33,6 +33,7 @@ import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.game.PlayerContact;
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.scenes.ParallaxLayer.ParallaxEntity;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 import android.content.Context;
@@ -324,7 +325,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		int multiplier = 1;
-
 		if (takeInput) {
 			tiltSpeedX = event.values[1];
 
@@ -333,7 +333,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			}
 
 			if (boost == true) {
-				multiplier = 15;
+				if(Upgrades.RocketBoost.isActivated()){
+					multiplier = 20;
+				} else {
+					multiplier = 10;
+				}
 				particleEmitter.setCenter(player.getX(), player.getY());
 			}
 
