@@ -6,6 +6,14 @@ import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.particle.SpriteParticleSystem;
+import org.andengine.entity.particle.emitter.PointParticleEmitter;
+import org.andengine.entity.particle.initializer.AlphaParticleInitializer;
+import org.andengine.entity.particle.initializer.BlendFunctionParticleInitializer;
+import org.andengine.entity.particle.initializer.ExpireParticleInitializer;
+import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
+import org.andengine.entity.particle.modifier.AlphaParticleModifier;
+import org.andengine.entity.particle.modifier.ScaleParticleModifier;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -32,6 +40,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.opengl.GLES20;
 
 import com.badlogic.gdx.math.Vector2;
 
@@ -64,24 +73,29 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private long stopWatchTime = 0;
 	private ParallaxLayer parallaxLayer;
-	
-	private TimerHandler boostTimer = new TimerHandler(0.1f, new ITimerCallback() {
-		public void onTimePassed(final TimerHandler pTimerHandler) {
-			pTimerHandler.reset();
-			
-			if(boostAmount <= 0){
-				engine.unregisterUpdateHandler(boostTimer);
-				Text boostMessage = new Text(camera.getCenterX() + 80, camera.getCenterY() + 200 / 2,
-						resourcesManager.tipFont, "Out of boost!", vbom);
-				gameHUD.attachChild(boostMessage);
-				boost = false;
-			} else {
-				System.out.println("Boosting");
-				System.out.println("Boost left: " + boostAmount);
-				boostAmount--;
-			}
-		}
-	});
+
+	private PointParticleEmitter particleEmitter;
+	private SpriteParticleSystem particleSystem;
+
+	private TimerHandler boostTimer = new TimerHandler(0.1f,
+			new ITimerCallback() {
+				public void onTimePassed(final TimerHandler pTimerHandler) {
+					pTimerHandler.reset();
+
+					if (boostAmount <= 0) {
+						engine.unregisterUpdateHandler(boostTimer);
+						Text boostMessage = new Text(camera.getCenterX() + 80,
+								camera.getCenterY() + 200 / 2,
+								resourcesManager.tipFont, "Out of boost!", vbom);
+						gameHUD.attachChild(boostMessage);
+						boost = false;
+					} else {
+						System.out.println("Boosting");
+						System.out.println("Boost left: " + boostAmount);
+						boostAmount--;
+					}
+				}
+			});
 
 	/**
 	 * Methods
@@ -99,6 +113,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		setOnSceneTouchListener(this);
 		playMusic();
 		createLocalScenes();
+		initTrail();
 	}
 
 	@Override
@@ -120,9 +135,32 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
-		
+
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
+	}
+
+	private void initTrail() {
+		this.particleEmitter = new PointParticleEmitter(player.getX(),
+				player.getY());
+		this.particleSystem = new SpriteParticleSystem(particleEmitter, 30, 30,
+				120, resourcesManager.player_region, vbom);
+
+		particleSystem
+				.addParticleInitializer(new AlphaParticleInitializer<Sprite>(0));
+		particleSystem
+				.addParticleInitializer(new BlendFunctionParticleInitializer<Sprite>(
+						GLES20.GL_SRC_ALPHA, GLES20.GL_ONE));
+		particleSystem
+				.addParticleInitializer(new VelocityParticleInitializer<Sprite>(
+						0));
+		particleSystem
+				.addParticleInitializer(new ExpireParticleInitializer<Sprite>(2));
+		particleSystem.addParticleModifier(new ScaleParticleModifier<Sprite>(0,
+				2, 1, .5f));
+		particleSystem.addParticleModifier(new AlphaParticleModifier<Sprite>(0,
+				2, 1, 0));
+		this.attachChild(particleSystem);
 	}
 
 	public void showLevelComplete() {
@@ -144,8 +182,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 		parallaxLayer.attachParallaxEntity(new ParallaxEntity(10, back, false,
 				1));
-//		parallaxLayer.attachParallaxEntity(new ParallaxEntity(5, front, true));
-		
+		// parallaxLayer.attachParallaxEntity(new ParallaxEntity(5, front,
+		// true));
+
 		setBackground(new Background(Color.CYAN));
 		this.attachChild(parallaxLayer);
 	}
@@ -276,14 +315,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				if (gameOverDisplayed) {
 					SceneManager.getInstance().loadMenuScene(engine);
 					startTimer();
-				} else if(pSceneTouchEvent.getX() > camera.getCenterX()) {
+				} else if (pSceneTouchEvent.getX() > camera.getCenterX()) {
 					player.jump();
-				} else if(boostAmount > 0){
+				} else if (boostAmount > 0) {
 					boost = true;
 					engine.registerUpdateHandler(boostTimer);
 				}
 			}
-		} else if (pSceneTouchEvent.isActionUp()){
+		} else if (pSceneTouchEvent.isActionUp()) {
 			boost = false;
 			engine.unregisterUpdateHandler(boostTimer);
 		} else {
@@ -309,14 +348,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			if (Math.abs(tiltSpeedX) > 3) {
 				tiltSpeedX = Math.signum(tiltSpeedX) * 3;
 			}
-			
-			if(boost == true){
+
+			if (boost == true) {
 				multiplier = 15;
+				particleEmitter.setCenter(player.getX(), player.getY());
 			}
 
 			player.setRotation(tiltSpeedX * 18f);
 
-			final Vector2 tiltGravity = Vector2Pool.obtain(2 * multiplier * tiltSpeedX, 0);
+			final Vector2 tiltGravity = Vector2Pool.obtain(2 * multiplier
+					* tiltSpeedX, 0);
 
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
