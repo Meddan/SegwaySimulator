@@ -28,30 +28,31 @@ public class SaveManager {
 	 * sessions and enables them.
 	 */
 	public static void loadUpgrades() {
-		File file = new File("upgrades");
+		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
+		File file = new File(path, "upgrades");
 		if(file.exists()){
+			System.out.println("FOUND UPGRADE FILE BITCH");
 			try {
 				//TODO: Needs testing
 				FileInputStream fis = new FileInputStream(file);
-				BufferedInputStream bis = new BufferedInputStream(fis);
-				ObjectInputStream ois = new ObjectInputStream(bis);
+				ObjectInputStream ois = new ObjectInputStream(fis);
 				Object obj = ois.readObject();
-				while (obj != null){
-					if (obj != null && obj instanceof Upgrades){
-						for (Upgrades upg : Upgrades.values()){
-							if(upg.getName().equals(((Upgrades) obj).getName())){
-								upg.setActive(((Upgrades) obj).isActivated());
+				obj = ois.readObject();
+				ois.close();
+				if (obj != null && obj instanceof Upgrades){
+					for(Upgrades u : Upgrades.values()){
+						for(Upgrades v : Upgrades.values()){
+							if (u.getName().equals(v.getName())){
+								v.setActive(u.isActivated());
 							}
 						}
 					}
-					obj = ois.readObject();
 				}
-				ois.close();
-				bis.close();
-				fis.close();
 			} catch (Exception e){
 				e.printStackTrace();
 			}
+		} else {
+			System.out.println("NO UPGRADE FILE BITCH");
 		}
 		
 	}
@@ -60,18 +61,28 @@ public class SaveManager {
 	 * Writes which upgrades have been bought to a file.
 	 */
 	public static void saveUpgrades() {
-		File file = new File("upgrades");
+		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
+		System.out.println("BITCH IS DIR " +  path.isDirectory());
+		path.mkdir();
+		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		FileOutputStream fos;
+		File file = new File(path, "upgrades");
 		try {
+			System.out.println("TRYING TO WRITE UPGRADE BITCH");
 			fos = new FileOutputStream(file);
+			
+			System.out.println("FOS CREATED BITCH");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			for(Upgrades upg : Upgrades.values()){
-				oos.writeObject(upg);
-			}
+			System.out.println("OOS CREATED BITCH");
+			oos.writeObject(Upgrades.class);
+			System.out.println("WROTE UPGRADE DATA BITCH");
 			oos.close();
-			fos.close();
+			System.out.println("CLOSED BITCH");
+			System.out.println("Exactly after it is " + file.exists() + " BITCH");
 		} catch (Exception e) {
+			System.out.println("EXCEPTION BITCH");
 			e.printStackTrace();
+			
 		}
 	}
 	/**
@@ -86,7 +97,7 @@ public class SaveManager {
 		FileOutputStream fos;
 		File file = new File(path, "player");
 		try {
-			System.out.println("TRYING TO WRITE BITCH");
+			System.out.println("TRYING TO WRITE PLAYER BITCH");
 			fos = new FileOutputStream(file);
 			
 			System.out.println("FOS CREATED BITCH");
@@ -111,7 +122,7 @@ public class SaveManager {
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
 		File file = new File(path, "player");
 		if(file.exists()){
-			System.out.println("FOUND FILE BITCH");
+			System.out.println("FOUND PLAYER FILE BITCH");
 			try {
 				//TODO: Needs testing
 				FileInputStream fis = new FileInputStream(file);
@@ -129,7 +140,7 @@ public class SaveManager {
 				return null;
 			}
 		} else {
-			System.out.println("NO FILE BITCH");
+			System.out.println("NO PLAYER FILE BITCH");
 			return null;
 		}
 	}
