@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.music.MusicManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.opengl.font.Font;
@@ -18,9 +19,11 @@ import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtla
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
+import se.chalmers.segway.game.PhysicsEditorShapeLibrary;
 import se.chalmers.segway.main.MainActivity;
 import android.graphics.Color;
 
@@ -41,12 +44,17 @@ public class ResourcesManager {
 	public Font tipFont;
 	public Music music;
 	public Music music2;
+	public Music music3;
+	public Music crunch;
+	public MusicManager musicManager;
+	public PhysicsEditorShapeLibrary pesl;
 
 	// ---------------------------------------------
 	// TEXTURES & TEXTURE REGIONS
 	// ---------------------------------------------
 	// Game Texture
 	public BuildableBitmapTextureAtlas gameTextureAtlas;
+	public BitmapTextureAtlas backgroundTextureAtlas;
 
 	// Level Complete Window
 	public ITextureRegion complete_window_region;
@@ -57,30 +65,44 @@ public class ResourcesManager {
 	// Game Texture Regions
 	public ITiledTextureRegion player_region;
 	public ITiledTextureRegion player_backwards_region;
+	public ITiledTextureRegion cookies_region;
 	public ITextureRegion platform1_region;
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
-	public ITextureRegion curvyPlatform1_region;
+	public ITextureRegion testPlatform_region;
+	public ITextureRegion curvyPlatform_region;
 	public ITextureRegion coin_region;
 	public ITextureRegion golden_cookie;
+
+	// Selection Texture Regions
+	public BuildableBitmapTextureAtlas selectionTextureAtlas;
+	public ITextureRegion level_button;
+	public ITextureRegion selection_background_region;
 
 	// Other
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
 	public ITiledTextureRegion playerRegion;
+	public ITextureRegion gastank;
 	// public ITextureRegion options_region;
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
-	private ITexture tipFontTexture;
+
+	// Backgrounds
+	public TextureRegion backgroundFrontRegion;
+	public TextureRegion backgroundBackRegion;
+	private BitmapTextureAtlas background2TextureAtlas;
+	public ITextureRegion backgroundFront2Region;
+	private BitmapTextureAtlas background3TextureAtlas;
 
 	// ---------------------------------------------
 	// CLASS LOGIC
 	// ---------------------------------------------
 
 	public void unloadGameTextures() {
-		// TODO (Since we did not create any textures for game scene yet)
+		gameTextureAtlas.unload();
 	}
 
 	public void unloadMenuTextures() {
@@ -89,6 +111,10 @@ public class ResourcesManager {
 
 	public void loadMenuTextures() {
 		menuTextureAtlas.load();
+	}
+
+	public void unloadSelectionTextures() {
+		selectionTextureAtlas.unload();
 	}
 
 	public void loadMenuResources() {
@@ -101,6 +127,37 @@ public class ResourcesManager {
 		loadGameGraphics();
 		loadGameFonts();
 		loadGameAudio();
+		loadShapes();
+		loadGameBackground();
+	}
+
+	public void loadSelectionResources() {
+		loadSelectionGraphics();
+	}
+
+	public void loadShapes() {
+		pesl.open(activity, "shapes/curvyPlatform.xml");
+		pesl.open(activity, "shapes/testPlatform.xml");
+	}
+
+	public void loadSelectionGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
+		selectionTextureAtlas = new BuildableBitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		selection_background_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(selectionTextureAtlas, activity,
+						"levelselect_background.png");
+		level_button = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				selectionTextureAtlas, activity, "levelselect_button.png");
+		try {
+			this.selectionTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 0));
+			this.selectionTextureAtlas.load();
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
 	}
 
 	private void loadMenuGraphics() {
@@ -167,10 +224,14 @@ public class ResourcesManager {
 
 	private void loadMenuAudio() {
 		try {
-			music = MusicFactory.createMusicFromAsset(engine.getMusicManager(),
-					activity, "sfx/bigblue.ogg");
-			music2 = MusicFactory.createMusicFromAsset(
-					engine.getMusicManager(), activity, "sfx/shepard_tone.ogg");
+			music = MusicFactory.createMusicFromAsset(musicManager, activity,
+					"sfx/bigblue.ogg");
+			music2 = MusicFactory.createMusicFromAsset(musicManager, activity,
+					"sfx/shepard_tone.ogg");
+			music3 = MusicFactory.createMusicFromAsset(musicManager, activity,
+					"sfx/cliffsofdover.ogg");
+			crunch = MusicFactory.createMusicFromAsset(musicManager, activity, 
+					"sfx/bone_crack_1.ogg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -188,9 +249,11 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		platform3_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
-		curvyPlatform1_region = BitmapTextureAtlasTextureRegionFactory
+		curvyPlatform_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity,
-						"curvyPlatform1.png");
+						"curvyPlatform.png");
+		testPlatform_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "testPlatform.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "cookie.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory
@@ -203,9 +266,13 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "complete.png");
 		death_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "youdied2.png");
-		golden_cookie = BitmapTextureAtlasTextureRegionFactory.
-				createFromAsset(gameTextureAtlas, activity, "goldcookie.png");
-
+		golden_cookie = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "goldcookie2.png");
+		cookies_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(gameTextureAtlas, activity,
+						"cookie_sheet.png", 8, 1);
+		gastank = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "gastank.png");
 		try {
 			this.gameTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
@@ -222,6 +289,36 @@ public class ResourcesManager {
 
 	private void loadGameAudio() {
 
+	}
+
+	private void loadGameBackground() {
+		BitmapTextureAtlasTextureRegionFactory
+				.setAssetBasePath("gfx/background/");
+		backgroundTextureAtlas = new BitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		background2TextureAtlas = new BitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		background3TextureAtlas = new BitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+
+		backgroundBackRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(backgroundTextureAtlas, activity, "back.png",
+						0, 0);
+
+		backgroundFrontRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(background2TextureAtlas, activity,
+						"front.png", 0, 0);
+		
+		backgroundFront2Region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(background3TextureAtlas, activity,
+						"front2.png", 0, 0);
+
+		backgroundTextureAtlas.load();
+		background2TextureAtlas.load();
+		background3TextureAtlas.load();
 	}
 
 	public void loadSplashScreen() {
@@ -256,6 +353,8 @@ public class ResourcesManager {
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
+		getInstance().pesl = new PhysicsEditorShapeLibrary(32f);
+		getInstance().musicManager = new MusicManager();
 
 	}
 

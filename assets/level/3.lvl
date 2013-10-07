@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <level width="3000" height="780">  
-	<entity x="260" y="100" type="curvyPlatform1"/>
-    <entity x="50" y="300" type="player"/>
+	<entity x="50" y="200" type="platform1"/>
+	<entity x="0" y="100" type="curvyPlatform"/>
+	<entity x="170" y="100" type="curvyPlatform"/>
+	<entity x="330" y="120" type="curvyPlatform"/>
+	<entity x="490" y="140" type="curvyPlatform"/>
+	<entity x="650" y="160" type="curvyPlatform"/>
+	<entity x="840" y="100" type="testPlatform"/>
+	<entity x="50" y="300" type="player"/>
 </level>

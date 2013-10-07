@@ -5,6 +5,11 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
+import android.app.Activity;
+import android.content.Context;
+import se.chalmers.segway.game.PlayerData;
+import se.chalmers.segway.game.SaveManager;
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.resources.ResourcesManager;
 
 public class SceneManager {
@@ -16,12 +21,14 @@ public class SceneManager {
 	private BaseScene menuScene;
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
-
+	private BaseScene selectionScene;
+	private static boolean isCreated = false;
+	private PlayerData playerData;
 	// ---------------------------------------------
 	// VARIABLES
 	// ---------------------------------------------
 
-	private static final SceneManager INSTANCE = new SceneManager();
+	private static SceneManager INSTANCE = new SceneManager();
 
 	private SceneType currentSceneType = SceneType.SCENE_SPLASH;
 
@@ -30,7 +37,7 @@ public class SceneManager {
 	private Engine engine = ResourcesManager.getInstance().engine;
 
 	public enum SceneType {
-		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING,
+		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING, SCENE_SELECTION,
 	}
 
 	// ---------------------------------------------
@@ -82,29 +89,79 @@ public class SceneManager {
 		case SCENE_LOADING:
 			setScene(loadingScene);
 			break;
+		case SCENE_SELECTION:
+			setScene(selectionScene);
+			break;
 		default:
 			break;
 		}
 	}
 
-	public void loadGameScene(final Engine mEngine) {
+	// TODO: Unfinished
+	public void loadSelectionScene(final Engine mEngine) {
+		if (currentScene == gameScene) {
+			gameScene.disposeScene();
+			ResourcesManager.getInstance().unloadGameTextures();
+		} else if (currentScene == menuScene) {
+			ResourcesManager.getInstance().unloadMenuTextures();
+		}
 		setScene(loadingScene);
-		ResourcesManager.getInstance().unloadMenuTextures();
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						ResourcesManager.getInstance().loadSelectionResources();
+						selectionScene = new LevelSelectionScene();
+						((LevelSelectionScene) selectionScene)
+								.setUnlockedLevels(playerData
+										.getHighestLevelCleared());
+						((LevelSelectionScene) selectionScene).updateScene();
+						setScene(selectionScene);
+					}
+				}));
+	}
+
+	public void loadGameScene(final Engine mEngine, final int level) {
+		setScene(loadingScene);
+		ResourcesManager.getInstance().unloadSelectionTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
 						ResourcesManager.getInstance().loadGameResources();
 						gameScene = new GameScene();
+						((GameScene) gameScene).loadLevel(level);
 						setScene(gameScene);
+
+						if (ResourcesManager.getInstance().musicManager
+								.getMasterVolume() == 1) {
+							ResourcesManager.getInstance().music.pause();
+							if (level == 4) {
+								ResourcesManager.getInstance().music2.play();
+							} else if (level == 5) {
+								ResourcesManager.getInstance().music3.play();
+							} else {
+								ResourcesManager.getInstance().music.resume();
+							}
+						}
 					}
 				}));
 	}
 
 	public void loadMenuScene(final Engine mEngine) {
+		if (currentScene == gameScene) {
+			gameScene.disposeScene();
+			ResourcesManager.getInstance().unloadGameTextures();
+			if (ResourcesManager.getInstance().musicManager.getMasterVolume() == 1) {
+				ResourcesManager.getInstance().music.resume();
+				if (ResourcesManager.getInstance().music2.isPlaying()) {
+					ResourcesManager.getInstance().music2.pause();
+				} else if (ResourcesManager.getInstance().music3.isPlaying()) {
+					ResourcesManager.getInstance().music3.pause();
+				}
+			}
+		}
 		setScene(loadingScene);
-		gameScene.disposeScene();
-		ResourcesManager.getInstance().unloadGameTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
 				new ITimerCallback() {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -115,11 +172,24 @@ public class SceneManager {
 				}));
 	}
 
+	private void initPlayerData() {
+		playerData = SaveManager.loadPlayerData();
+		if (playerData == null) {
+			playerData = new PlayerData("Plebian " + Math.random() * 1000);
+		}
+	}
+
 	// ---------------------------------------------
 	// GETTERS AND SETTERS
 	// ---------------------------------------------
 
-	public static SceneManager getInstance() {
+	public static synchronized SceneManager getInstance() {
+		if (!isCreated) {
+			SaveManager.loadUpgrades();
+			isCreated = true;
+			INSTANCE = new SceneManager();
+			INSTANCE.initPlayerData();
+		}
 		return INSTANCE;
 	}
 

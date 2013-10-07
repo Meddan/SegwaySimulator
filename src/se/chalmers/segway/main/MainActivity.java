@@ -10,8 +10,10 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
+import org.andengine.input.touch.controller.MultiTouch;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.resources.ResourcesManager;
 import se.chalmers.segway.scenes.SceneManager;
 import android.view.KeyEvent;
@@ -19,7 +21,6 @@ import android.view.KeyEvent;
 public class MainActivity extends BaseGameActivity {
 
 	private BoundCamera camera;
-
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		camera = new BoundCamera(0, 0, 800, 480);
@@ -28,6 +29,7 @@ public class MainActivity extends BaseGameActivity {
 						800, 480), this.camera);
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
+		engineOptions.getTouchOptions().setNeedsMultiTouch(MultiTouch.isSupported(this)); //MultiTouch.isSupported(this)
 		return engineOptions;
 	}
 
