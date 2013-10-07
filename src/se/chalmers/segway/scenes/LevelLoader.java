@@ -140,6 +140,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					super.onManagedUpdate(pSecondsElapsed);
 
 					if (player.collidesWith(this)) {
+						resourcesManager.crunch.play();
 						gameScene.addToScore(10);
 						this.setVisible(false);
 						this.setIgnoreUpdate(true);

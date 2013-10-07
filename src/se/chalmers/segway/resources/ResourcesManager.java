@@ -45,6 +45,7 @@ public class ResourcesManager {
 	public Music music;
 	public Music music2;
 	public Music music3;
+	public Music crunch;
 	public MusicManager musicManager;
 	public PhysicsEditorShapeLibrary pesl;
 
@@ -226,6 +227,8 @@ public class ResourcesManager {
 					"sfx/shepard_tone.ogg");
 			music3 = MusicFactory.createMusicFromAsset(musicManager, activity,
 					"sfx/cliffsofdover.ogg");
+			crunch = MusicFactory.createMusicFromAsset(musicManager, activity, 
+					"sfx/bone_crack_1.ogg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
