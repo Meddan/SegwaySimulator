@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Writer;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import se.chalmers.segway.resources.ResourcesManager;
@@ -34,16 +35,22 @@ public class SaveManager {
 			System.out.println("FOUND UPGRADE FILE BITCH");
 			try {
 				//TODO: Needs testing
+				System.out.println("IN TRY BITCH");
 				FileInputStream fis = new FileInputStream(file);
+				System.out.println("FIS BITCH");
 				ObjectInputStream ois = new ObjectInputStream(fis);
+				System.out.println("OIS BITCH");
 				Object obj = ois.readObject();
-				obj = ois.readObject();
+				System.out.println("OBJ BITCH");
 				ois.close();
-				if (obj != null && obj instanceof Upgrades){
-					for(Upgrades u : Upgrades.values()){
-						for(Upgrades v : Upgrades.values()){
-							if (u.getName().equals(v.getName())){
-								v.setActive(u.isActivated());
+				if (obj != null && obj instanceof HashMap<?, ?>){
+					System.out.println("BITCH INSTANCEOF IS TRUE UPGRADES");
+					for(Object i : ((HashMap<?,?>)obj).keySet()){
+						System.out.println("IN FOR LOOP BITCH");
+						for(Upgrades u : Upgrades.values()){
+							if(u.getName().equals((String)i)){
+								System.out.println("IT EQUALED BITCH");
+								u.setActive((Boolean) ((HashMap<?,?>)obj).get(i));
 							}
 						}
 					}
@@ -61,6 +68,10 @@ public class SaveManager {
 	 * Writes which upgrades have been bought to a file.
 	 */
 	public static void saveUpgrades() {
+		HashMap<String,Boolean> saveMap = new HashMap<String, Boolean>();
+		for(Upgrades upg : Upgrades.values()){
+			saveMap.put(upg.getName(), upg.isActivated());
+		}
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
 		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		path.mkdir();
@@ -74,7 +85,7 @@ public class SaveManager {
 			System.out.println("FOS CREATED BITCH");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			System.out.println("OOS CREATED BITCH");
-			oos.writeObject(Upgrades.class);
+			oos.writeObject(saveMap);
 			System.out.println("WROTE UPGRADE DATA BITCH");
 			oos.close();
 			System.out.println("CLOSED BITCH");
