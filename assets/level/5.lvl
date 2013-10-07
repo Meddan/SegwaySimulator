@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level width="3000" height="780">  
+<level width="8500" height="780">  
 	<entity x="0" y="100" type="platform1"/>
 	<entity x="200" y="100" type="platform1"/>
 	<entity x="400" y="100" type="platform1"/>
@@ -17,6 +17,32 @@
 	<entity x="2800" y="100" type="platform1"/>
 	<entity x="3000" y="100" type="platform1"/>
 	<entity x="3200" y="100" type="platform1"/>
+	<entity x="3400" y="100" type="platform1"/>
+	<entity x="3600" y="100" type="platform1"/>
+	<entity x="3800" y="100" type="platform1"/>
+	<entity x="4000" y="100" type="platform1"/>
+	<entity x="4200" y="100" type="platform1"/>
+	<entity x="4400" y="100" type="platform1"/>
+	<entity x="4600" y="100" type="platform1"/>
+	<entity x="4800" y="100" type="platform1"/>
+	<entity x="5000" y="100" type="platform1"/>
+	<entity x="5200" y="100" type="platform1"/>
+	<entity x="5400" y="100" type="platform1"/>
+	<entity x="5600" y="100" type="platform1"/>
+	<entity x="5800" y="100" type="platform1"/>
+	<entity x="6000" y="100" type="platform1"/>
+	<entity x="6200" y="100" type="platform1"/>
+	<entity x="6400" y="100" type="platform1"/>
+	<entity x="6600" y="100" type="platform1"/>
+	<entity x="6800" y="100" type="platform1"/>
+	<entity x="7000" y="100" type="platform1"/>
+	<entity x="7200" y="100" type="platform1"/>
+	<entity x="7400" y="100" type="platform1"/>
+	<entity x="7600" y="100" type="platform1"/>
+	<entity x="7800" y="100" type="platform1"/>
+	<entity x="8000" y="100" type="platform1"/>
+	<entity x="8200" y="100" type="platform1"/>
+	<entity x="8400" y="100" type="platform1"/>
 	<entity x="100" y="150" type="coin"/>
 	<entity x="300" y="150" type="coin"/>
 	<entity x="500" y="150" type="coin"/>
