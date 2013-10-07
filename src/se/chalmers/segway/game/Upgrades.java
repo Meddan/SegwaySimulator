@@ -8,17 +8,19 @@ import java.io.Serializable;
  *
  */
 public enum Upgrades implements Serializable {
-		AntigravityWheels (100,false,"AntigravityWheels"),
-		SuperHelmet(300, false,"SuperHelmet"),
-		RocketBoost(500,false,"RocketBoost");
+		AntigravityWheels (100,false,"AntigravityWheels", "Jump higher!"),
+		SuperHelmet(300, false,"SuperHelmet","Protect dem braincells"),
+		RocketBoost(500,false,"RocketBoost","Go really really fast");
 		
 		private final int cost;
 		private boolean isActive;
 		private final String name;
-		private Upgrades(int cost, boolean isEnabled, String name) {
+		private final String info;
+		private Upgrades(int cost, boolean isEnabled, String name, String info) {
 			this.cost = cost; 
 			this.isActive = isEnabled;
 			this.name = name;
+			this.info = info;
 		}
 		/**
 		 * Returns the cost of the upgrade
@@ -48,5 +50,7 @@ public enum Upgrades implements Serializable {
 		public String getName(){
 			return this.name;
 		}
-		
+		public String getInfo(){
+			return this.info;
+		}
 }
