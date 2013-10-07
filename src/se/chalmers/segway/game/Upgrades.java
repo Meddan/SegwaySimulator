@@ -1,11 +1,13 @@
 package se.chalmers.segway.game;
 
+import java.io.Serializable;
+
 /**
  * An enum that keeps track of the upgrades, their costs and whether they are enabled or not.
  * @author meddan
  *
  */
-public enum Upgrades {
+public enum Upgrades implements Serializable {
 		AntigravityWheels (100,false,"AntigravityWheels"),
 		SuperHelmet(300, false,"SuperHelmet");
 		
