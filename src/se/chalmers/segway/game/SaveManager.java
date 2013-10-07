@@ -155,5 +155,55 @@ public class SaveManager {
 			return null;
 		}
 	}
+	public static void saveSettings(Settings settings){
+		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
+		System.out.println("BITCH IS DIR " +  path.isDirectory());
+		path.mkdir();
+		System.out.println("BITCH IS DIR " +  path.isDirectory());
+		FileOutputStream fos;
+		File file = new File(path, "settings");
+		try {
+			System.out.println("TRYING TO WRITE SETTINGS BITCH");
+			fos = new FileOutputStream(file);
+			System.out.println("FOS CREATED BITCH");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			System.out.println("OOS CREATED BITCH");
+			oos.writeObject(settings);
+			System.out.println("WROTE SETTINGS BITCH");
+			oos.close();
+			System.out.println("CLOSED BITCH");
+			System.out.println("Exactly after it is " + file.exists() + " BITCH");
+		} catch (Exception e) {
+			System.out.println("EXCEPTION BITCH");
+			e.printStackTrace();
+		}
+		//System.out.println(new File("player").exists() + " BITCH");
+	}
+	public static Settings loadSettings(){
+		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
+		File file = new File(path, "settings");
+		if(file.exists()){
+			System.out.println("FOUND SETTINGS FILE BITCH");
+			try {
+				//TODO: Needs testing
+				FileInputStream fis = new FileInputStream(file);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				Object obj = ois.readObject();
+				obj = ois.readObject();
+				ois.close();
+				if (obj != null && obj instanceof Settings){
+					return (Settings)obj;
+				} else {
+					return null;
+				}
+			} catch (Exception e){
+				e.printStackTrace();
+				return null;
+			}
+		} else {
+			System.out.println("NO PLAYER FILE BITCH");
+			return null;
+		}
+	}
 		
 }
