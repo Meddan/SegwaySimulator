@@ -10,6 +10,7 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
+import org.andengine.input.touch.controller.MultiTouch;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import se.chalmers.segway.game.PlayerData;
@@ -28,6 +29,7 @@ public class MainActivity extends BaseGameActivity {
 						800, 480), this.camera);
 		engineOptions.getAudioOptions().setNeedsMusic(true).setNeedsSound(true);
 		engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
+		engineOptions.getTouchOptions().setNeedsMultiTouch(MultiTouch.isSupported(this)); //MultiTouch.isSupported(this)
 		return engineOptions;
 	}
 
