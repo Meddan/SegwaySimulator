@@ -119,11 +119,6 @@ public class SceneManager {
 	}
 
 	public void loadGameScene(final Engine mEngine, final int level) {
-		//TODO: remove this
-		System.out.println("fucking playerdata up in this bitch");
-		playerData.setHighestLevelCleared(1);
-		SaveManager.savePlayerData(playerData);
-		
 		setScene(loadingScene);
 		ResourcesManager.getInstance().unloadSelectionTextures();
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,

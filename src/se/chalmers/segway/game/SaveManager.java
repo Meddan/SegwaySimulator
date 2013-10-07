@@ -80,7 +80,9 @@ public class SaveManager {
 	 */
 	public static void savePlayerData(PlayerData data){
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
+		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		path.mkdir();
+		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		FileOutputStream fos;
 		File file = new File(path, "player");
 		try {

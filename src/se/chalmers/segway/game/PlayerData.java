@@ -14,7 +14,7 @@ public class PlayerData implements Serializable{
 	public PlayerData(String name){
 		this.name = name;
 		this.cash = 200;
-		this.highestLevelFinished = 3;
+		this.highestLevelFinished = 6;
 	}
 	
 	public int getMoney(){

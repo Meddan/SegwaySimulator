@@ -56,8 +56,7 @@ public class LevelSelectionScene extends BaseScene implements
 		final IMenuItem[] button = new IMenuItem[nmbrOfLevels];
 		
 		for (int i = 1; i <= nmbrOfLevels; i++) {
-			System.out.println("Unlockedslevels" + unlockedLevels);
-			if(i <= unlockedLevels +3 ){
+			if(i <= unlockedLevels + 1 ){
 				button[i-1] = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
 					resourcesManager.level_button, vbom), 1.2f, 1);
 				button[i-1].setPosition(i*100, 300);
