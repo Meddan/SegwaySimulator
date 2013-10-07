@@ -84,6 +84,7 @@ public class ResourcesManager {
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
 	public ITiledTextureRegion playerRegion;
+	public ITextureRegion gastank;
 	// public ITextureRegion options_region;
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
@@ -268,6 +269,8 @@ public class ResourcesManager {
 		cookies_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity,
 						"cookie_sheet.png", 8, 1);
+		gastank = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "gastank.png");
 		try {
 			this.gameTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(

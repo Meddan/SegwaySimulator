@@ -237,6 +237,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void addToScore(int i) {
 		score += i;
 	}
+	
+	public void addToBoost(int i) {
+		boostAmount += i;
+	}
 
 	private void createPhysics() {
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
