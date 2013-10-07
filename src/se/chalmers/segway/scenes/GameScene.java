@@ -97,7 +97,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		// currentLvl = 4;
 		createHUD();
 		setOnSceneTouchListener(this);
-		playMusic();
 		createLocalScenes();
 	}
 
@@ -113,10 +112,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public void disposeScene() {
-		if (this.resourcesManager.music2.isPlaying()) {
-			this.resourcesManager.music2.pause();
-			this.resourcesManager.music.resume();
-		}
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
@@ -209,16 +204,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -17), false);
 		physicsWorld.setContactListener(contactListener());
 		registerUpdateHandler(physicsWorld);
-	}
-
-	/**
-	 * Pauses the music playing and starts the song connected to the level
-	 */
-	private void playMusic() {
-		if (!this.resourcesManager.music2.isPlaying() && currentLvl == 4) {
-			this.resourcesManager.music2.play();
-			this.resourcesManager.music.pause();
-		}
 	}
 
 	private void createSensorManager() {

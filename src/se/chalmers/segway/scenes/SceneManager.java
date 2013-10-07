@@ -111,7 +111,9 @@ public class SceneManager {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
 						ResourcesManager.getInstance().loadSelectionResources();
 						selectionScene = new LevelSelectionScene();
-						((LevelSelectionScene) selectionScene).setUnlockedLevels(playerData.getHighestLevelCleared());
+						((LevelSelectionScene) selectionScene)
+								.setUnlockedLevels(playerData
+										.getHighestLevelCleared());
 						((LevelSelectionScene) selectionScene).updateScene();
 						setScene(selectionScene);
 					}
@@ -129,6 +131,18 @@ public class SceneManager {
 						gameScene = new GameScene();
 						((GameScene) gameScene).loadLevel(level);
 						setScene(gameScene);
+
+						if (ResourcesManager.getInstance().musicManager
+								.getMasterVolume() == 1) {
+							ResourcesManager.getInstance().music.pause();
+							if (level == 4) {
+								ResourcesManager.getInstance().music2.play();
+							} else if (level == 5) {
+								ResourcesManager.getInstance().music3.play();
+							} else {
+								ResourcesManager.getInstance().music.resume();
+							}
+						}
 					}
 				}));
 	}
@@ -137,6 +151,14 @@ public class SceneManager {
 		if (currentScene == gameScene) {
 			gameScene.disposeScene();
 			ResourcesManager.getInstance().unloadGameTextures();
+			if (ResourcesManager.getInstance().musicManager.getMasterVolume() == 1) {
+				ResourcesManager.getInstance().music.resume();
+				if (ResourcesManager.getInstance().music2.isPlaying()) {
+					ResourcesManager.getInstance().music2.pause();
+				} else if (ResourcesManager.getInstance().music3.isPlaying()) {
+					ResourcesManager.getInstance().music3.pause();
+				}
+			}
 		}
 		setScene(loadingScene);
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
@@ -148,18 +170,20 @@ public class SceneManager {
 					}
 				}));
 	}
-	private void initPlayerData(){
+
+	private void initPlayerData() {
 		playerData = SaveManager.loadPlayerData();
-		if (playerData == null){
-			playerData = new PlayerData("Plebian " + Math.random()*1000);
+		if (playerData == null) {
+			playerData = new PlayerData("Plebian " + Math.random() * 1000);
 		}
 	}
+
 	// ---------------------------------------------
 	// GETTERS AND SETTERS
 	// ---------------------------------------------
 
 	public static synchronized SceneManager getInstance() {
-		if(!isCreated){
+		if (!isCreated) {
 			isCreated = true;
 			INSTANCE = new SceneManager();
 			INSTANCE.initPlayerData();

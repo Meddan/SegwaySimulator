@@ -1,6 +1,7 @@
 package se.chalmers.segway.scenes;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.options.MusicOptions;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
@@ -22,17 +23,17 @@ public class MainMenuScene extends BaseScene implements
 	public void createScene() {
 		createBackground();
 		createMenuChildScene();
-		playMusic();
+		initMusic();
 	}
 
 	/**
 	 * Starts music if none is running and makes it loop forever.
 	 */
-	private void playMusic() {
-		if (!this.resourcesManager.music.isPlaying() && sound) {
-			this.resourcesManager.music.play();
-			this.resourcesManager.music.setLooping(true);
-		}
+	private void initMusic() {
+		this.resourcesManager.musicManager.setMasterVolume(0);
+		this.resourcesManager.music.setLooping(true);
+		this.resourcesManager.music3.setLooping(true);
+		this.resourcesManager.music2.setLooping(true);
 	}
 
 	@Override
@@ -115,10 +116,10 @@ public class MainMenuScene extends BaseScene implements
 			soundonMenuItem.setVisible(!sound);
 			sound = !sound;
 			if (sound) {
-				resourcesManager.music.getMediaPlayer().setVolume(1, 1);
+				resourcesManager.musicManager.setMasterVolume(1);
 				resourcesManager.music.resume();
 			} else {
-				resourcesManager.music.getMediaPlayer().setVolume(0, 0);
+				resourcesManager.musicManager.setMasterVolume(0);
 				resourcesManager.music.pause();
 			}
 			return true;
