@@ -1,48 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<level width="8500" height="780">  
+<level width="10000" height="780">  
 	<entity x="0" y="100" type="platform1"/>
-	<entity x="200" y="100" type="platform1"/>
-	<entity x="400" y="100" type="platform1"/>
-	<entity x="600" y="100" type="platform1"/>
-	<entity x="800" y="100" type="platform1"/>
+	<entity x="250" y="100" type="platform1"/>
+	<entity x="500" y="100" type="platform1"/>
+	<entity x="750" y="100" type="platform1"/>
 	<entity x="1000" y="100" type="platform1"/>
-	<entity x="1200" y="100" type="platform1"/>
-	<entity x="1400" y="100" type="platform1"/>
-	<entity x="1600" y="100" type="platform1"/>
-	<entity x="1800" y="100" type="platform1"/>
+	<entity x="1250" y="100" type="platform1"/>
+	<entity x="1500" y="100" type="platform1"/>
+	<entity x="1750" y="100" type="platform1"/>
 	<entity x="2000" y="100" type="platform1"/>
-	<entity x="2200" y="100" type="platform1"/>
-	<entity x="2400" y="100" type="platform1"/>
-	<entity x="2600" y="100" type="platform1"/>
-	<entity x="2800" y="100" type="platform1"/>
+	<entity x="2250" y="100" type="platform1"/>
+	<entity x="2500" y="100" type="platform1"/>
+	<entity x="2750" y="100" type="platform1"/>
 	<entity x="3000" y="100" type="platform1"/>
-	<entity x="3200" y="100" type="platform1"/>
-	<entity x="3400" y="100" type="platform1"/>
-	<entity x="3600" y="100" type="platform1"/>
-	<entity x="3800" y="100" type="platform1"/>
+	<entity x="3250" y="100" type="platform1"/>
+	<entity x="3500" y="100" type="platform1"/>
+	<entity x="3750" y="100" type="platform1"/>
 	<entity x="4000" y="100" type="platform1"/>
-	<entity x="4200" y="100" type="platform1"/>
-	<entity x="4400" y="100" type="platform1"/>
-	<entity x="4600" y="100" type="platform1"/>
-	<entity x="4800" y="100" type="platform1"/>
+	<entity x="4250" y="100" type="platform1"/>
+	<entity x="4500" y="100" type="platform1"/>
+	<entity x="4750" y="100" type="platform1"/>
 	<entity x="5000" y="100" type="platform1"/>
-	<entity x="5200" y="100" type="platform1"/>
-	<entity x="5400" y="100" type="platform1"/>
-	<entity x="5600" y="100" type="platform1"/>
-	<entity x="5800" y="100" type="platform1"/>
+	<entity x="5250" y="100" type="platform1"/>
+	<entity x="5500" y="100" type="platform1"/>
+	<entity x="5750" y="100" type="platform1"/>
 	<entity x="6000" y="100" type="platform1"/>
-	<entity x="6200" y="100" type="platform1"/>
-	<entity x="6400" y="100" type="platform1"/>
-	<entity x="6600" y="100" type="platform1"/>
-	<entity x="6800" y="100" type="platform1"/>
+	<entity x="6250" y="100" type="platform1"/>
+	<entity x="6500" y="100" type="platform1"/>
+	<entity x="6750" y="100" type="platform1"/>
 	<entity x="7000" y="100" type="platform1"/>
-	<entity x="7200" y="100" type="platform1"/>
-	<entity x="7400" y="100" type="platform1"/>
-	<entity x="7600" y="100" type="platform1"/>
-	<entity x="7800" y="100" type="platform1"/>
+	<entity x="7250" y="100" type="platform1"/>
+	<entity x="7500" y="100" type="platform1"/>
+	<entity x="7750" y="100" type="platform1"/>
 	<entity x="8000" y="100" type="platform1"/>
-	<entity x="8200" y="100" type="platform1"/>
-	<entity x="8400" y="100" type="platform1"/>
+	<entity x="8250" y="100" type="platform1"/>
+	<entity x="8500" y="100" type="platform1"/>
+	<entity x="8750" y="100" type="platform1"/>
+	<entity x="9000" y="100" type="platform1"/>
+	<entity x="9250" y="100" type="platform1"/>
+	<entity x="9500" y="100" type="platform1"/>
+	<entity x="9750" y="100" type="platform1"/>
+	<entity x="10000" y="100" type="platform1"/>
 	<entity x="100" y="150" type="coin"/>
 	<entity x="300" y="150" type="coin"/>
 	<entity x="500" y="150" type="coin"/>
