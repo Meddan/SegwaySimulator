@@ -84,6 +84,7 @@ public class ResourcesManager {
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
 	public ITiledTextureRegion playerRegion;
+	public ITextureRegion gastank;
 	// public ITextureRegion options_region;
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
@@ -93,6 +94,8 @@ public class ResourcesManager {
 	public TextureRegion backgroundFrontRegion;
 	public TextureRegion backgroundBackRegion;
 	private BitmapTextureAtlas background2TextureAtlas;
+	public ITextureRegion backgroundFront2Region;
+	private BitmapTextureAtlas background3TextureAtlas;
 
 	// ---------------------------------------------
 	// CLASS LOGIC
@@ -268,6 +271,8 @@ public class ResourcesManager {
 		cookies_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity,
 						"cookie_sheet.png", 8, 1);
+		gastank = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "gastank.png");
 		try {
 			this.gameTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
@@ -295,6 +300,9 @@ public class ResourcesManager {
 		background2TextureAtlas = new BitmapTextureAtlas(
 				activity.getTextureManager(), 1024, 1024,
 				TextureOptions.BILINEAR);
+		background3TextureAtlas = new BitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
 
 		backgroundBackRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(backgroundTextureAtlas, activity, "back.png",
@@ -303,9 +311,14 @@ public class ResourcesManager {
 		backgroundFrontRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(background2TextureAtlas, activity,
 						"front.png", 0, 0);
+		
+		backgroundFront2Region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(background3TextureAtlas, activity,
+						"front2.png", 0, 0);
 
 		backgroundTextureAtlas.load();
 		background2TextureAtlas.load();
+		background3TextureAtlas.load();
 	}
 
 	public void loadSplashScreen() {

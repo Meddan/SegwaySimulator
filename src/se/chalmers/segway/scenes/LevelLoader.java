@@ -42,6 +42,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK = "gastank";
 
 	private PhysicsEditorShapeLibrary pesl;
 
@@ -169,6 +170,19 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 				}
 			};
 
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK)){
+			levelObject = new Sprite(x, y, resourcesManager.gastank, vbom) {
+				@Override
+				protected void onManagedUpdate(float pSecondsElapsed){
+					super.onManagedUpdate(pSecondsElapsed);
+					
+					if (player.collidesWith(this)){
+						gameScene.addToBoost(10);
+						this.setVisible(false);
+						this.setIgnoreUpdate(true);
+					}
+				}
+			};
 		} else {
 			throw new IllegalArgumentException();
 		}
