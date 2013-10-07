@@ -7,6 +7,7 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.resources.ResourcesManager;
 
 import com.badlogic.gdx.math.Vector2;
@@ -97,7 +98,11 @@ public abstract class Player extends AnimatedSprite {
 			return;
 		}
 		hasContact = false;
-		body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 7));
+		if(Upgrades.AntigravityWheels.isActivated()){
+			body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 14));
+		} else {
+			body.setLinearVelocity(new Vector2(body.getLinearVelocity().x, 7));
+		}
 
 	}
 	
