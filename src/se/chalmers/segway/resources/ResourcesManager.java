@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.music.MusicManager;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.opengl.font.Font;
@@ -43,6 +44,8 @@ public class ResourcesManager {
 	public Font tipFont;
 	public Music music;
 	public Music music2;
+	public Music music3;
+	public MusicManager musicManager;
 	public PhysicsEditorShapeLibrary pesl;
 
 	// ---------------------------------------------
@@ -127,7 +130,7 @@ public class ResourcesManager {
 	public void loadSelectionResources() {
 		loadSelectionGraphics();
 	}
-	
+
 	public void loadShapes() {
 		pesl.open(activity, "shapes/curvyPlatform.xml");
 		pesl.open(activity, "shapes/testPlatform.xml");
@@ -217,10 +220,12 @@ public class ResourcesManager {
 
 	private void loadMenuAudio() {
 		try {
-			music = MusicFactory.createMusicFromAsset(engine.getMusicManager(),
-					activity, "sfx/bigblue.ogg");
-			music2 = MusicFactory.createMusicFromAsset(
-					engine.getMusicManager(), activity, "sfx/shepard_tone.ogg");
+			music = MusicFactory.createMusicFromAsset(musicManager, activity,
+					"sfx/bigblue.ogg");
+			music2 = MusicFactory.createMusicFromAsset(musicManager, activity,
+					"sfx/shepard_tone.ogg");
+			music3 = MusicFactory.createMusicFromAsset(musicManager, activity,
+					"sfx/cliffsofdover.ogg");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -287,15 +292,14 @@ public class ResourcesManager {
 		background2TextureAtlas = new BitmapTextureAtlas(
 				activity.getTextureManager(), 1024, 1024,
 				TextureOptions.BILINEAR);
-		
+
 		backgroundBackRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(backgroundTextureAtlas, activity, "back.png",
 						0, 0);
 
 		backgroundFrontRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(background2TextureAtlas, activity, "front.png",
-						0, 0);
-		
+				.createFromAsset(background2TextureAtlas, activity,
+						"front.png", 0, 0);
 
 		backgroundTextureAtlas.load();
 		background2TextureAtlas.load();
@@ -334,6 +338,7 @@ public class ResourcesManager {
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
 		getInstance().pesl = new PhysicsEditorShapeLibrary(32f);
+		getInstance().musicManager = new MusicManager();
 
 	}
 
