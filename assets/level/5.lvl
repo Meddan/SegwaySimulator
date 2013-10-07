@@ -17,5 +17,14 @@
 	<entity x="2800" y="100" type="platform1"/>
 	<entity x="3000" y="100" type="platform1"/>
 	<entity x="3200" y="100" type="platform1"/>
+	<entity x="100" y="150" type="coin"/>
+	<entity x="300" y="150" type="coin"/>
+	<entity x="500" y="150" type="coin"/>
+	<entity x="700" y="150" type="coin"/>
+	<entity x="900" y="150" type="coin"/>
+	<entity x="1100" y="150" type="coin"/>
+	<entity x="1300" y="150" type="coin"/>
+	<entity x="1500" y="150" type="coin"/>
+	<entity x="1700" y="150" type="coin"/>
     <entity x="10" y="140" type="player"/>
 </level>
