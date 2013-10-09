@@ -33,6 +33,7 @@ import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.game.PlayerContact;
+import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.scenes.ParallaxLayer.ParallaxEntity;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
@@ -77,6 +78,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private PointParticleEmitter particleEmitter;
 	private SpriteParticleSystem particleSystem;
+	
+	private PlayerData playerData;
 
 	private TimerHandler boostTimer = new TimerHandler(0.1f,
 			new ITimerCallback() {
@@ -223,6 +226,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		camera.setChaseEntity(null);
 		// Score is calculated: 10*amount of cookies + 1000/1 + time in seconds
 		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
+		playerData.setMoney(playerData.getMoney() + score);
+		int currentHighestLevel = playerData.getHighestLevelCleared();
+		if(currentHighestLevel < this.currentLvl ){
+			playerData.setHighestLevelCleared(currentLvl);
+		}
 		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
 				+ score, vbom);
 		levelCompleteScene.attachChild(finalScore);
@@ -260,7 +268,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	// Handles all code for loading levels
 	public void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
-
+		this.currentLvl = levelID;
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
 						LevelConstants.TAG_LEVEL) {
@@ -375,5 +383,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		long temp = System.currentTimeMillis() - stopWatchTime;
 		stopWatchTime = 0;
 		return temp;
+	}
+	public void setPlayerData(PlayerData pd){
+		this.playerData = pd;
 	}
 }
