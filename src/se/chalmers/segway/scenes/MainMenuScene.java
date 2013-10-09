@@ -16,6 +16,7 @@ public class MainMenuScene extends BaseScene implements
 		IOnMenuItemClickListener {
 	// If music is on default
 	private boolean sound = false;
+	IMenuItem shopMenuItem;
 	IMenuItem soundonMenuItem;
 	IMenuItem soundoffMenuItem;
 
@@ -70,6 +71,7 @@ public class MainMenuScene extends BaseScene implements
 	private MenuScene menuChildScene;
 	private final int MENU_PLAY = 0;
 	private final int MENU_OPTIONS = 1;
+	private final int MENU_SHOP = 2;
 
 	private void createMenuChildScene() {
 		menuChildScene = new MenuScene(camera);
@@ -82,10 +84,14 @@ public class MainMenuScene extends BaseScene implements
 				MENU_OPTIONS, resourcesManager.soundon_region, vbom), 1.2f, 1);
 		soundoffMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
 				MENU_OPTIONS, resourcesManager.soundoff_region, vbom), 1.2f, 1);
+		shopMenuItem = new ScaleMenuItemDecorator(
+				new SpriteMenuItem(MENU_SHOP, resourcesManager.shop_region,
+						vbom), 1.2f, 1);
 
 		menuChildScene.addMenuItem(playMenuItem);
 		menuChildScene.addMenuItem(soundonMenuItem);
 		menuChildScene.addMenuItem(soundoffMenuItem);
+		menuChildScene.addMenuItem(shopMenuItem);
 
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
@@ -122,6 +128,9 @@ public class MainMenuScene extends BaseScene implements
 				resourcesManager.musicManager.setMasterVolume(0);
 				resourcesManager.music.pause();
 			}
+			return true;
+		case MENU_SHOP:
+			SceneManager.getInstance().loadShopScene(engine);
 			return true;
 		default:
 			return false;

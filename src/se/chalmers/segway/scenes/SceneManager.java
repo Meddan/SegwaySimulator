@@ -22,6 +22,7 @@ public class SceneManager {
 	private BaseScene gameScene;
 	private BaseScene loadingScene;
 	private BaseScene selectionScene;
+	private BaseScene shopScene;
 	private static boolean isCreated = false;
 	private PlayerData playerData;
 	// ---------------------------------------------
@@ -37,7 +38,7 @@ public class SceneManager {
 	private Engine engine = ResourcesManager.getInstance().engine;
 
 	public enum SceneType {
-		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING, SCENE_SELECTION,
+		SCENE_SPLASH, SCENE_MENU, SCENE_GAME, SCENE_LOADING, SCENE_SELECTION, SHOP_SCENE
 	}
 
 	// ---------------------------------------------
@@ -61,6 +62,7 @@ public class SceneManager {
 		ResourcesManager.getInstance().loadMenuResources();
 		menuScene = new MainMenuScene();
 		loadingScene = new LoadingScene();
+		shopScene = new ShopScene();
 		setScene(menuScene);
 		disposeSplashScene();
 	}
@@ -91,6 +93,9 @@ public class SceneManager {
 			break;
 		case SCENE_SELECTION:
 			setScene(selectionScene);
+			break;
+		case SHOP_SCENE:
+			setScene(shopScene);
 			break;
 		default:
 			break;
@@ -177,6 +182,23 @@ public class SceneManager {
 		if (playerData == null) {
 			playerData = new PlayerData("Plebian " + Math.random() * 1000);
 		}
+	}
+
+	public void loadShopScene(final Engine mEngine) {
+		if (currentScene == gameScene) {
+			gameScene.disposeScene();
+			ResourcesManager.getInstance().unloadGameTextures();
+		}
+		setScene(shopScene);
+		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
+				new ITimerCallback() {
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						mEngine.unregisterUpdateHandler(pTimerHandler);
+						ResourcesManager.getInstance().loadMenuTextures();
+						setScene(shopScene);
+					}
+				}));
+
 	}
 
 	// ---------------------------------------------

@@ -89,6 +89,7 @@ public class ResourcesManager {
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
+	public ITextureRegion shop_region;
 
 	// Backgrounds
 	public TextureRegion backgroundFrontRegion;
@@ -121,6 +122,10 @@ public class ResourcesManager {
 		loadMenuGraphics();
 		loadMenuAudio();
 		loadMenuFonts();
+	}
+
+	public void loadShopResources() {
+		loadShopGraphics();
 	}
 
 	public void loadGameResources() {
@@ -175,6 +180,8 @@ public class ResourcesManager {
 				.createFromAsset(menuTextureAtlas, activity, "soundon.png");
 		soundoff_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity, "soundoff.png");
+		shop_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				menuTextureAtlas, activity, "shop.png");
 
 		try {
 			this.menuTextureAtlas
@@ -185,6 +192,24 @@ public class ResourcesManager {
 			Debug.e(e);
 		}
 
+	}
+
+	private void loadShopGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
+		menuTextureAtlas = new BuildableBitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR);
+		menu_background_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity,
+						"menu_background.png");
+		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				menuTextureAtlas, activity, "play.png");
+		soundon_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity, "soundon.png");
+		soundoff_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity, "soundoff.png");
+		shop_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				menuTextureAtlas, activity, "shop.png");
 	}
 
 	private void loadMenuFonts() {
@@ -230,7 +255,7 @@ public class ResourcesManager {
 					"sfx/shepard_tone.ogg");
 			music3 = MusicFactory.createMusicFromAsset(musicManager, activity,
 					"sfx/cliffsofdover.ogg");
-			crunch = MusicFactory.createMusicFromAsset(musicManager, activity, 
+			crunch = MusicFactory.createMusicFromAsset(musicManager, activity,
 					"sfx/bone_crack_1.ogg");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -311,7 +336,7 @@ public class ResourcesManager {
 		backgroundFrontRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(background2TextureAtlas, activity,
 						"front.png", 0, 0);
-		
+
 		backgroundFront2Region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(background3TextureAtlas, activity,
 						"front2.png", 0, 0);
