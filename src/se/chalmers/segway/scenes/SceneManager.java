@@ -63,6 +63,8 @@ public class SceneManager {
 		menuScene = new MainMenuScene();
 		loadingScene = new LoadingScene();
 		shopScene = new ShopScene();
+		((MainMenuScene) menuScene).setPlayerData(playerData);
+		((MainMenuScene) menuScene).updateHUD();
 		setScene(menuScene);
 		disposeSplashScene();
 	}
@@ -173,6 +175,8 @@ public class SceneManager {
 					public void onTimePassed(final TimerHandler pTimerHandler) {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
 						ResourcesManager.getInstance().loadMenuTextures();
+						((MainMenuScene) menuScene).setPlayerData(playerData);
+						((MainMenuScene) menuScene).updateHUD();
 						setScene(menuScene);
 					}
 				}));

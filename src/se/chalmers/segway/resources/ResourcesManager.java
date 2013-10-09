@@ -72,6 +72,7 @@ public class ResourcesManager {
 	public ITextureRegion testPlatform_region;
 	public ITextureRegion curvyPlatform_region;
 	public ITextureRegion coin_region;
+	public ITextureRegion cookieCounter_region;
 	public ITextureRegion golden_cookie;
 
 	// Selection Texture Regions
@@ -182,6 +183,8 @@ public class ResourcesManager {
 				.createFromAsset(menuTextureAtlas, activity, "soundoff.png");
 		shop_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				menuTextureAtlas, activity, "shop.png");
+		cookieCounter_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				menuTextureAtlas, activity, "cookie.png");
 
 		try {
 			this.menuTextureAtlas

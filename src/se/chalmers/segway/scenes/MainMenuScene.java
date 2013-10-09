@@ -1,14 +1,19 @@
 package se.chalmers.segway.scenes;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.options.MusicOptions;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
+import org.andengine.entity.scene.menu.item.decorator.BaseMenuItemDecorator;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.opengl.util.GLState;
+
+import android.R.integer;
 
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
@@ -20,15 +25,16 @@ public class MainMenuScene extends BaseScene implements
 	IMenuItem shopMenuItem;
 	IMenuItem soundonMenuItem;
 	IMenuItem soundoffMenuItem;
-	private PlayerData playerData; 
+	private PlayerData playerData;
 
 	@Override
 	public void createScene() {
 		createBackground();
 		createMenuChildScene();
 		initMusic();
+		createHUD();
 	}
-	
+
 	public void setPlayerData(PlayerData data) {
 		this.playerData = data;
 	}
@@ -56,8 +62,6 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void disposeScene() {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**
@@ -75,9 +79,27 @@ public class MainMenuScene extends BaseScene implements
 	}
 
 	private MenuScene menuChildScene;
+	private HUD hud;
 	private final int MENU_PLAY = 0;
 	private final int MENU_OPTIONS = 1;
 	private final int MENU_SHOP = 2;
+
+	private void createHUD() {
+		hud = new HUD();
+		camera.setHUD(hud);
+	}
+
+	public void updateHUD() {
+		camera.setHUD(hud);
+		hud.detachChildren();
+		final Sprite cookieCounter = new Sprite(580, 453,
+				resourcesManager.cookieCounter_region, vbom);
+		final Text cookieAmount = new Text(620, 450,
+				resourcesManager.loadingFont, ":" + playerData.getMoney(), vbom);
+		cookieAmount.setPosition(620 + (14 * Integer.toString(playerData.getMoney()).length()), 450);
+		hud.attachChild(cookieAmount);
+		hud.attachChild(cookieCounter);
+	}
 
 	private void createMenuChildScene() {
 		menuChildScene = new MenuScene(camera);
@@ -90,9 +112,8 @@ public class MainMenuScene extends BaseScene implements
 				MENU_OPTIONS, resourcesManager.soundon_region, vbom), 1.2f, 1);
 		soundoffMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
 				MENU_OPTIONS, resourcesManager.soundoff_region, vbom), 1.2f, 1);
-		shopMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_SHOP, resourcesManager.shop_region,
-						vbom), 1.2f, 1);
+		shopMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_SHOP,
+				resourcesManager.shop_region, vbom), 1.2f, 1);
 
 		menuChildScene.addMenuItem(playMenuItem);
 		menuChildScene.addMenuItem(soundonMenuItem);
@@ -120,8 +141,8 @@ public class MainMenuScene extends BaseScene implements
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		switch (pMenuItem.getID()) {
 		case MENU_PLAY:
+			disposeScene();
 			SceneManager.getInstance().loadSelectionScene(engine);
-			// SceneManager.getInstance().loadGameScene(engine);
 			return true;
 		case MENU_OPTIONS:
 			soundoffMenuItem.setVisible(sound);
@@ -136,6 +157,7 @@ public class MainMenuScene extends BaseScene implements
 			}
 			return true;
 		case MENU_SHOP:
+			disposeScene();
 			SceneManager.getInstance().loadShopScene(engine);
 			return true;
 		default:
