@@ -10,6 +10,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
+import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
@@ -19,12 +20,17 @@ public class MainMenuScene extends BaseScene implements
 	IMenuItem shopMenuItem;
 	IMenuItem soundonMenuItem;
 	IMenuItem soundoffMenuItem;
+	private PlayerData playerData; 
 
 	@Override
 	public void createScene() {
 		createBackground();
 		createMenuChildScene();
 		initMusic();
+	}
+	
+	public void setPlayerData(PlayerData data) {
+		this.playerData = data;
 	}
 
 	/**
