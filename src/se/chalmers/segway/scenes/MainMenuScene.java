@@ -16,6 +16,8 @@ import org.andengine.opengl.util.GLState;
 import android.R.integer;
 
 import se.chalmers.segway.game.PlayerData;
+import se.chalmers.segway.game.SaveManager;
+
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
@@ -51,6 +53,9 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void onBackKeyPressed() {
+		SaveManager.savePlayerData(data);
+		SaveManager.saveSettings(settings);
+		SaveManager.saveUpgrades();
 		System.exit(0);
 
 	}
