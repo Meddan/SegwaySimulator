@@ -215,21 +215,26 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		player = new Player(0, 0, vbom, camera, physicsWorld) {
 			@Override
 			public void onDie() {
-				if (!gameOverDisplayed) {
-					stopTimerAndReturnTime();
-					deathScene.display(GameScene.this, camera);
-					camera.setChaseEntity(null);
-					gameOverDisplayed = true;
-					/*
-					 * levelCompleteScene.display(GameScene.this, camera);
-					 * addToScore((int) player.getX() / 20);
-					 * displayScoreAtGameOver();
-					 */
-				}
+				showGameOver();
+//				if (!gameOverDisplayed) {
+//					stopTimerAndReturnTime();
+//					deathScene.display(GameScene.this, camera);
+//					camera.setChaseEntity(null);
+//					gameOverDisplayed = true;
+//				}
 			}
 		};
 		contactListener.setPlayer(player);
 		contactListener.setEngine(engine);
+	}
+
+	public void showGameOver() {
+		if (!gameOverDisplayed) {
+			stopTimerAndReturnTime();
+			deathScene.display(GameScene.this, camera);
+			camera.setChaseEntity(null);
+			gameOverDisplayed = true;
+		}
 	}
 
 	private void displayScoreAtGameOver() {
