@@ -16,7 +16,7 @@ public class LevelSelectionScene extends BaseScene implements
 		IOnMenuItemClickListener {
 
 	private MenuScene selectionChildScene;
-	private final int nmbrOfLevels = 5;//new File("assets/level/").list().length;
+	private final int nmbrOfLevels = 4;//new File("assets/level/").list().length;
 	private int unlockedLevels = 1;
 	
 	public void createScene(PlayerData playerData) {

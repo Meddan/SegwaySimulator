@@ -23,7 +23,6 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
 
-import se.chalmers.segway.game.PhysicsEditorShapeLibrary;
 import se.chalmers.segway.main.MainActivity;
 import android.graphics.Color;
 
@@ -47,7 +46,6 @@ public class ResourcesManager {
 	public Music music3;
 	public Music crunch;
 	public MusicManager musicManager;
-	public PhysicsEditorShapeLibrary pesl;
 
 	// ---------------------------------------------
 	// TEXTURES & TEXTURE REGIONS
@@ -69,8 +67,6 @@ public class ResourcesManager {
 	public ITextureRegion platform1_region;
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
-	public ITextureRegion testPlatform_region;
-	public ITextureRegion curvyPlatform_region;
 	public ITextureRegion coin_region;
 	public ITextureRegion cookieCounter_region;
 	public ITextureRegion golden_cookie;
@@ -86,7 +82,6 @@ public class ResourcesManager {
 	public ITextureRegion play_region;
 	public ITiledTextureRegion playerRegion;
 	public ITextureRegion gastank;
-	// public ITextureRegion options_region;
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
@@ -133,17 +128,11 @@ public class ResourcesManager {
 		loadGameGraphics();
 		loadGameFonts();
 		loadGameAudio();
-		loadShapes();
 		loadGameBackground();
 	}
 
 	public void loadSelectionResources() {
 		loadSelectionGraphics();
-	}
-
-	public void loadShapes() {
-		pesl.open(activity, "shapes/curvyPlatform.xml");
-		pesl.open(activity, "shapes/testPlatform.xml");
 	}
 
 	public void loadSelectionGraphics() {
@@ -277,11 +266,6 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		platform3_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
-		curvyPlatform_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gameTextureAtlas, activity,
-						"curvyPlatform.png");
-		testPlatform_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gameTextureAtlas, activity, "testPlatform.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "cookie.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory
@@ -381,7 +365,6 @@ public class ResourcesManager {
 		getInstance().activity = activity;
 		getInstance().camera = camera;
 		getInstance().vbom = vbom;
-		getInstance().pesl = new PhysicsEditorShapeLibrary(32f);
 		getInstance().musicManager = new MusicManager();
 
 	}
