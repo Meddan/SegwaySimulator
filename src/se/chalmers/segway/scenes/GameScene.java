@@ -68,7 +68,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private boolean gameOverDisplayed = false;
 	private boolean boost = false;
-	private int boostAmount = 20;
+	private int boostAmount;
+	private Sprite boostCounter;
+	private Text boostText;
 
 	private Player player;
 	private PlayerContact contactListener;
@@ -88,15 +90,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 					if (boostAmount <= 0) {
 						engine.unregisterUpdateHandler(boostTimer);
-						Text boostMessage = new Text(camera.getCenterX() + 80,
-								camera.getCenterY() + 200 / 2,
-								resourcesManager.tipFont, "Out of boost!", vbom);
-						gameHUD.attachChild(boostMessage);
 						boost = false;
 					} else {
-						System.out.println("Boosting");
-						System.out.println("Boost left: " + boostAmount);
-						boostAmount--;
+						addToBoost(-1);
 					}
 				}
 			});
@@ -168,6 +164,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			displayScoreAtGameOver();
 		}
 	}
+	
+	private void createBoostCounter() {
+		boostAmount = 20;
+		boostCounter = new Sprite(580, 453,
+				resourcesManager.gastank, vbom);
+		boostText = new Text(620, 450,
+				resourcesManager.loadingFont, ": 1234567890", vbom);
+	}
 
 	private void createBackground() {
 		parallaxLayer = new ParallaxLayer(camera, true, 10000);
@@ -195,8 +199,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
+		
 		tip = new Text(camera.getCenterX() + 80, camera.getCenterY() + 200 / 2,
 				resourcesManager.tipFont, "Tap screen to start!", vbom);
+		
+		createBoostCounter();
+		setBoostCounter(boostAmount);
+		
+		gameHUD.attachChild(boostCounter);
+		gameHUD.attachChild(boostText);
 		gameHUD.attachChild(tip);
 	}
 
@@ -249,6 +260,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	
 	public void addToBoost(int i) {
 		boostAmount += i;
+		setBoostCounter(boostAmount);
+	}
+	
+	private void setBoostCounter(int i) {
+		boostText.setText(":" + i);
+		boostText.setPosition(620 + (14 * Integer.toString(i).length()), 450);
 	}
 
 	private void createPhysics() {
