@@ -2,6 +2,7 @@
 <level width="2000" height="780">    
     <entity x="100" y="100" type="platform1"/>
     <entity x="200" y="300" type="platform1"/>
+    <entity x="700" y="100" type="spikes"/>
     <entity x="500" y="330" type="platform2"/>
     <entity x="800" y="360" type="platform1"/>
     <entity x="1100" y="390" type="platform1"/>

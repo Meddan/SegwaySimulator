@@ -37,6 +37,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK = "gastank";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPIKES = "spikes";
 
 	private Player player;
 	private ResourcesManager resourcesManager;
@@ -86,6 +87,26 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3)) {
 			levelObject = loadPlatform(x, y, "platform3",
 					resourcesManager.platform3_region);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPIKES)) {
+			levelObject = new Sprite(x, y, resourcesManager.spikes_region, vbom) {
+				@Override
+				protected void onManagedUpdate(float pSecondsElapsed) {
+					super.onManagedUpdate(pSecondsElapsed);
+					
+					if (player.collidesWith(this)) {
+						GameScene gs = (GameScene) sceneManager
+								.getCurrentScene();
+						gs.showGameOver();
+						player.stop();
+					}
+				}
+			};
+			final Body body = PhysicsFactory.createBoxBody(physicsWorld,
+					levelObject, BodyType.StaticBody, FIXTURE_DEF);
+			body.setUserData("spikes");
+			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
+					levelObject, body, true, false));
+					
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 			ITextureRegion cookie = resourcesManager.cookies_region
 					.getTextureRegion((int) (Math.random() * 8));
@@ -124,13 +145,13 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 				}
 			};
 
-		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK)){
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK)) {
 			levelObject = new Sprite(x, y, resourcesManager.gastank, vbom) {
 				@Override
-				protected void onManagedUpdate(float pSecondsElapsed){
+				protected void onManagedUpdate(float pSecondsElapsed) {
 					super.onManagedUpdate(pSecondsElapsed);
-					
-					if (player.collidesWith(this)){
+
+					if (player.collidesWith(this)) {
 						gameScene.addToBoost(10);
 						this.setVisible(false);
 						this.setIgnoreUpdate(true);
