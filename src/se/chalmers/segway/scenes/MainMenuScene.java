@@ -14,10 +14,9 @@ import org.andengine.entity.text.Text;
 import org.andengine.opengl.util.GLState;
 
 import android.R.integer;
-
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.SaveManager;
-
+import se.chalmers.segway.game.Settings;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements
@@ -29,6 +28,7 @@ public class MainMenuScene extends BaseScene implements
 	IMenuItem soundoffMenuItem;
 	IMenuItem playMenuItem;
 	private PlayerData playerData;
+	private Settings settings;
 
 	@Override
 	public void createScene() {
@@ -59,7 +59,7 @@ public class MainMenuScene extends BaseScene implements
 		if(playerData == null){
 			System.out.println("PLAYERDATA IS NULL BITCH");
 		}
-		//TODO: -SaveManager.saveSettings(settings);
+		SaveManager.saveSettings(settings);
 		SaveManager.savePlayerData(playerData);
 		SaveManager.saveUpgrades();
 		System.exit(0);
@@ -175,5 +175,10 @@ public class MainMenuScene extends BaseScene implements
 		default:
 			return false;
 		}
+	}
+
+	public void setSettings(Settings settings) {
+		this.settings = settings;
+		
 	}
 }

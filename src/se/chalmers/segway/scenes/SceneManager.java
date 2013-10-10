@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.SaveManager;
+import se.chalmers.segway.game.Settings;
 import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.resources.ResourcesManager;
 
@@ -24,10 +25,12 @@ public class SceneManager {
 	private BaseScene selectionScene;
 	private BaseScene shopScene;
 	private static boolean isCreated = false;
-	private PlayerData playerData;
+	
 	// ---------------------------------------------
 	// VARIABLES
 	// ---------------------------------------------
+	private PlayerData playerData;
+	private Settings settings;
 
 	private static SceneManager INSTANCE = new SceneManager();
 
@@ -144,12 +147,14 @@ public class SceneManager {
 						if (ResourcesManager.getInstance().musicManager
 								.getMasterVolume() == 1) {
 							ResourcesManager.getInstance().music.pause();
-							if (level == 4) {
-								ResourcesManager.getInstance().music2.play();
-							} else if (level == 3) {
-								ResourcesManager.getInstance().music3.play();
-							} else {
-								ResourcesManager.getInstance().music.resume();
+							if(settings.isSoundOn()){
+								if (level == 4) {
+									ResourcesManager.getInstance().music2.play();
+								} else if (level == 3) {
+									ResourcesManager.getInstance().music3.play();
+								} else {
+									ResourcesManager.getInstance().music.resume();
+								}
 							}
 						}
 					}
@@ -176,6 +181,7 @@ public class SceneManager {
 						mEngine.unregisterUpdateHandler(pTimerHandler);
 						ResourcesManager.getInstance().loadMenuTextures();
 						((MainMenuScene) menuScene).setPlayerData(playerData);
+						((MainMenuScene) menuScene).setSettings(settings);
 						((MainMenuScene) menuScene).updateHUD();
 						setScene(menuScene);
 					}
@@ -186,6 +192,12 @@ public class SceneManager {
 		playerData = SaveManager.loadPlayerData();
 		if (playerData == null) {
 			playerData = new PlayerData("Plebian " + Math.random() * 1000);
+		}
+	}
+	private void initSettings(){
+		settings = SaveManager.loadSettings();
+		if (settings == null){
+			settings = new Settings(true);
 		}
 	}
 
@@ -216,6 +228,7 @@ public class SceneManager {
 			isCreated = true;
 			INSTANCE = new SceneManager();
 			INSTANCE.initPlayerData();
+			INSTANCE.initSettings();
 		}
 		return INSTANCE;
 	}
