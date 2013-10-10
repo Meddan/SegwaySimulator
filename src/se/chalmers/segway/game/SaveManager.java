@@ -137,11 +137,15 @@ public class SaveManager {
 			try {
 				//TODO: Needs testing
 				FileInputStream fis = new FileInputStream(file);
+				System.out.println("FIS BITCH");
 				ObjectInputStream ois = new ObjectInputStream(fis);
+				System.out.println("OIS BITCH");
 				Object obj = ois.readObject();
-				obj = ois.readObject();
+				System.out.println("OBJ BITCH");
 				ois.close();
+				
 				if (obj != null && obj instanceof PlayerData){
+					System.out.println("PLAYERCASH LOADED BITCH: " + ((PlayerData) obj).getMoney());
 					return (PlayerData) obj;
 				} else {
 					return null;
