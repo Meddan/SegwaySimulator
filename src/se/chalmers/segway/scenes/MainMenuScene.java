@@ -53,8 +53,8 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void onBackKeyPressed() {
-		SaveManager.savePlayerData(data);
-		SaveManager.saveSettings(settings);
+		SaveManager.savePlayerData(playerData);
+		//TODO: SaveManager.saveSettings(settings);
 		SaveManager.saveUpgrades();
 		System.exit(0);
 
