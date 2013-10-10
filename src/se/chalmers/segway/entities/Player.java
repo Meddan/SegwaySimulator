@@ -28,6 +28,7 @@ public abstract class Player extends AnimatedSprite {
 		super(pX, pY, ResourcesManager.getInstance().player_region, vbo);
 		createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
+		this.setRotationCenter(getRotationCenterX(), getRotationCenterY()-0.3f);
 	}
 
 	private void createPhysics(final Camera camera, PhysicsWorld physicsWorld) {
