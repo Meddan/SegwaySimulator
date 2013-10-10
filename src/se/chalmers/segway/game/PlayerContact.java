@@ -89,7 +89,6 @@ public class PlayerContact implements ContactListener {
 				&& x2.getBody().getUserData() != null) {
 			if (!x2.getBody().getUserData().equals("player")) {
 				player.setContact(false);
-				System.out.println("End contact");
 			}
 		}
 
