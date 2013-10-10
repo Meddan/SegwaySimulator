@@ -146,7 +146,7 @@ public class SceneManager {
 							ResourcesManager.getInstance().music.pause();
 							if (level == 4) {
 								ResourcesManager.getInstance().music2.play();
-							} else if (level == 5) {
+							} else if (level == 3) {
 								ResourcesManager.getInstance().music3.play();
 							} else {
 								ResourcesManager.getInstance().music.resume();
