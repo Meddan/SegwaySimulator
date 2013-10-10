@@ -179,7 +179,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		Sprite front2 = new Sprite(0, camera.getCenterY(),
 				resourcesManager.backgroundFront2Region, vbom);
 
-//		parallaxLayer.attachParallaxEntity(new ParallaxEntity(6, back, false,1));
+		parallaxLayer.attachParallaxEntity(new ParallaxEntity(6, back, false,1));
 //		parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front, true));
 //		parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2, true));
 
