@@ -27,6 +27,7 @@ public class MainMenuScene extends BaseScene implements
 	IMenuItem shopMenuItem;
 	IMenuItem soundonMenuItem;
 	IMenuItem soundoffMenuItem;
+	IMenuItem playMenuItem;
 	private PlayerData playerData;
 
 	@Override
@@ -54,7 +55,7 @@ public class MainMenuScene extends BaseScene implements
 	@Override
 	public void onBackKeyPressed() {
 		SaveManager.savePlayerData(playerData);
-		//TODO: SaveManager.saveSettings(settings);
+		// TODO: SaveManager.saveSettings(settings);
 		SaveManager.saveUpgrades();
 		System.exit(0);
 
@@ -101,7 +102,9 @@ public class MainMenuScene extends BaseScene implements
 				resourcesManager.cookieCounter_region, vbom);
 		final Text cookieAmount = new Text(620, 450,
 				resourcesManager.loadingFont, ":" + playerData.getMoney(), vbom);
-		cookieAmount.setPosition(620 + (14 * Integer.toString(playerData.getMoney()).length()), 450);
+		cookieAmount.setPosition(
+				620 + (14 * Integer.toString(playerData.getMoney()).length()),
+				450);
 		hud.attachChild(cookieAmount);
 		hud.attachChild(cookieCounter);
 	}
@@ -110,9 +113,8 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene = new MenuScene(camera);
 		menuChildScene.setPosition(0, 0);
 
-		final IMenuItem playMenuItem = new ScaleMenuItemDecorator(
-				new SpriteMenuItem(MENU_PLAY, resourcesManager.play_region,
-						vbom), 1.2f, 1);
+		playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY,
+				resourcesManager.play_region, vbom), 1.2f, 1);
 		soundonMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
 				MENU_OPTIONS, resourcesManager.soundon_region, vbom), 1.2f, 1);
 		soundoffMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
@@ -121,18 +123,18 @@ public class MainMenuScene extends BaseScene implements
 				resourcesManager.shop_region, vbom), 1.2f, 1);
 
 		menuChildScene.addMenuItem(playMenuItem);
-		menuChildScene.addMenuItem(soundonMenuItem);
-		menuChildScene.addMenuItem(soundoffMenuItem);
 		menuChildScene.addMenuItem(shopMenuItem);
+		menuChildScene.addMenuItem(soundoffMenuItem);
+		menuChildScene.addMenuItem(soundonMenuItem);
 
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 
-		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() - 30);
-		soundonMenuItem.setPosition(soundonMenuItem.getX(),
-				soundonMenuItem.getY() - 80);
-		soundoffMenuItem.setPosition(soundonMenuItem.getX(),
-				soundonMenuItem.getY());
+		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() - 70);
+		shopMenuItem.setPosition(shopMenuItem.getX(), shopMenuItem.getY() - 70);
+		soundoffMenuItem.setPosition(soundoffMenuItem.getX(), soundoffMenuItem.getY()-70);
+		soundonMenuItem.setPosition(soundoffMenuItem.getX(), soundoffMenuItem.getY());
+		
 		soundoffMenuItem.setVisible(!sound);
 		soundonMenuItem.setVisible(sound);
 
