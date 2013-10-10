@@ -54,8 +54,13 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void onBackKeyPressed() {
+		System.out.println("CLEAN EXIT BITCH");
+		System.out.println("BITCH CASH WRITTEN IS: " + playerData.getMoney());
+		if(playerData == null){
+			System.out.println("PLAYERDATA IS NULL BITCH");
+		}
+		//TODO: -SaveManager.saveSettings(settings);
 		SaveManager.savePlayerData(playerData);
-		// TODO: SaveManager.saveSettings(settings);
 		SaveManager.saveUpgrades();
 		System.exit(0);
 
