@@ -248,7 +248,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		// Score is calculated: 10*amount of cookies + 1000/1 + time in seconds
+		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in seconds
 		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
 		playerData.setMoney(playerData.getMoney() + score);
 		int currentHighestLevel = playerData.getHighestLevelCleared();
@@ -357,8 +357,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				}
 			}
 		} else if (pSceneTouchEvent.isActionUp()) {
-			boost = false;
-			engine.unregisterUpdateHandler(boostTimer);
+			if(pSceneTouchEvent.getX() < camera.getCenterX()){
+				boost = false;
+				engine.unregisterUpdateHandler(boostTimer);
+			}
 		} else {
 			takeInput = true;
 			tip.setVisible(false);
