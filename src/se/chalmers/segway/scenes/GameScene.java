@@ -274,6 +274,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		boostAmount += i;
 		setBoostCounter(boostAmount);
 	}
+	
+	public PhysicsWorld getPhysicsWorld() {
+		return physicsWorld;
+	}
 
 	private void setBoostCounter(int i) {
 		boostText.setText(":" + i);
