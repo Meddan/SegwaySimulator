@@ -1,7 +1,5 @@
 package se.chalmers.segway.scenes;
 
-import java.io.File;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
