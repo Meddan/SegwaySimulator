@@ -114,6 +114,7 @@ public class SceneManager {
 			ResourcesManager.getInstance().unloadGameTextures();
 		} else if (currentScene == menuScene) {
 			ResourcesManager.getInstance().unloadMenuTextures();
+			menuScene.disposeScene();
 		}
 		setScene(loadingScene);
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,
