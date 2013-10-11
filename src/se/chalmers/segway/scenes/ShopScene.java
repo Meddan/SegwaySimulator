@@ -6,56 +6,83 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
+import org.andengine.entity.scene.menu.item.SpriteMenuItem;
+import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
+import org.andengine.entity.sprite.ButtonSprite;
+import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
+import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
+import org.andengine.opengl.font.Font;
 import org.andengine.util.adt.color.Color;
 
 import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
-public class ShopScene extends BaseScene implements
-		IOnMenuItemClickListener {
-	
-	LinkedList<Upgrades> upgrades = new LinkedList<Upgrades>();
+public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
+
+	private Font headerFont;
+	private Font listFont;
+	private Upgrades selected;
+	private MenuScene upgradeChildScene;
+	private LinkedList<Upgrades> upgrades;
 
 	@Override
 	public void createScene() {
+		upgrades = new LinkedList<Upgrades>();
+		upgradeChildScene = new MenuScene(camera);
+		loadFonts();
 		createBackground();
 		showUpgrades();
-		createTheRest();
+		showInfo();
 		System.out.println("Skapa shop");
 	}
 
+	private void loadFonts() {
+		headerFont = resourcesManager.headingFont;
+		listFont = resourcesManager.listFont;
+	}
+
 	private void createBackground() {
-		setBackground(new Background(Color.CYAN));
+		setBackground(new Background(Color.WHITE));
 	}
-	
-	private void createTheRest() {
-		
-		System.out.println("ttt");
-//		Text head = generateText("test", 1, 1);
-//		attachChild(head);
-	}
-	
+
 	private void showUpgrades() {
-		Text test = generateText("Upgrades", -260, 400);
+		upgradeChildScene.detachChildren();
+		upgradeChildScene.attachChild(generateText("Upgrades", 200, 420, headerFont));
 
-		for(int i = 0; i < 10; i++) {
-			attachChild(generateText("Upgrade", -260, 320-i*80));
-		}
-
-		/*
 		int n = 0;
-		for(Upgrades t : upgrades) {
-			attachChild(generateText(t.getName(), -260, 320-n*80));
+		for (Upgrades t : Upgrades.values()) {
+			if (!t.isActivated()) {
+				upgrades.add(t);
+				IMenuItem upgrade = new ScaleMenuItemDecorator(new SpriteMenuItem(n,
+						resourcesManager.upgrade_region, vbom), 1.05f, 1);
+				upgrade.attachChild(generateText(t.getName(), (int)upgrade.getWidth()/2, (int)upgrade.getHeight()/2, resourcesManager.listFont));
+				upgrade.setPosition(210, 320-n*65);
+
+				upgradeChildScene.addMenuItem(upgrade);
+			}
 			n++;
 		}
-		*/
-		
-		attachChild(test);
+		upgradeChildScene.setBackgroundEnabled(false);
+
+		upgradeChildScene.setOnMenuItemClickListener(this);
+
+		setChildScene(upgradeChildScene);
 	}
-	
+
 	private void showInfo() {
-		
+		showUpgrades();
+		upgradeChildScene.attachChild(generateText("Shop", 600, 420, headerFont));
+		int x = 550;
+
+		if (selected == null) {
+			upgradeChildScene.attachChild(generateText("Välj uppgradering", x, 380, listFont, true));
+		} else {
+			upgradeChildScene.attachChild(generateText(selected.getName(), x, 380, listFont, true));
+			upgradeChildScene.attachChild(generateText(selected.getInfo(), x, 260, listFont, true));
+			upgradeChildScene.attachChild(generateText("Price: "+selected.getCost(), x, 210, listFont, true));
+			// TODO: Köpknapp
+		}
 	}
 
 	@Override
@@ -70,18 +97,28 @@ public class ShopScene extends BaseScene implements
 
 	@Override
 	public void disposeScene() {
-		
+
 	}
 
 	@Override
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
 			float pMenuItemLocalX, float pMenuItemLocalY) {
+		selected = upgrades.get(pMenuItem.getID());
 		System.out.println(pMenuItem.getID());
+		showInfo();
 		return true;
 	}
+
+	private Text generateText(String text, int xOffset, int yOffset, Font font) {
+		Text t = new Text(xOffset, yOffset, font, text, vbom);
+		return t;
+	}
 	
-	private Text generateText(String text, int xOffset, int yOffset) {
-		return new Text(camera.getCenterX()+xOffset, camera.getCenterY()+yOffset / 2,
-				resourcesManager.tipFont, text, vbom);
+	private Text generateText(String text, int xOffset, int yOffset, Font font, boolean wrap) {
+		Text t = generateText(text, xOffset, yOffset, font);
+		if(wrap)
+			t.setAutoWrap(AutoWrap.WORDS);
+			t.setAutoWrapWidth(250);
+		return t;
 	}
 }

@@ -41,6 +41,8 @@ public class ResourcesManager {
 	public Font loadingFont;
 	public Font fancyFont;
 	public Font tipFont;
+	public Font headingFont;
+	public Font listFont;
 	public Music music;
 	public Music music2;
 	public Music music3;
@@ -92,6 +94,7 @@ public class ResourcesManager {
 	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
 	public ITextureRegion shop_region;
+	public ITextureRegion upgrade_region;
 	
 	//Zones
 	public ITextureRegion zone_down;
@@ -194,6 +197,8 @@ public class ResourcesManager {
 				menuTextureAtlas, activity, "shop.png");
 		cookieCounter_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity, "cookie.png");
+		upgrade_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity, "upgrade_button.png");
 
 		try {
 			this.menuTextureAtlas
@@ -207,21 +212,7 @@ public class ResourcesManager {
 	}
 
 	private void loadShopGraphics() {
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
-		menuTextureAtlas = new BuildableBitmapTextureAtlas(
-				activity.getTextureManager(), 1024, 1024,
-				TextureOptions.BILINEAR);
-		menu_background_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(menuTextureAtlas, activity,
-						"menu_background.png");
-		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				menuTextureAtlas, activity, "play.png");
-		soundon_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(menuTextureAtlas, activity, "soundon.png");
-		soundoff_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(menuTextureAtlas, activity, "soundoff.png");
-		shop_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				menuTextureAtlas, activity, "shop.png");
+		
 	}
 
 	private void loadMenuFonts() {
@@ -235,6 +226,14 @@ public class ResourcesManager {
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
 		final ITexture tipFontTexture = new BitmapTextureAtlas(
+				activity.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		
+		final ITexture headingTexture = new BitmapTextureAtlas(
+				activity.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		
+		final ITexture listTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
@@ -257,6 +256,18 @@ public class ResourcesManager {
 				tipFontTexture, activity.getAssets(), "start2p.ttf", 30, true,
 				Color.GREEN, 2, Color.BLACK);
 		tipFont.load();
+		
+		// headingFont
+			headingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
+					headingTexture, activity.getAssets(), "start2p.ttf", 30, true,
+					Color.WHITE, 2, Color.BLACK);
+			headingFont.load();
+		
+		// listFont
+		listFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
+				listTexture, activity.getAssets(), "start2p.ttf", 22, true,
+				Color.BLACK, 2, Color.BLACK);
+		listFont.load();
 	}
 
 	private void loadMenuAudio() {
