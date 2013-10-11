@@ -91,9 +91,9 @@ public class PlayerContact implements ContactListener {
 			} else if (x2.getBody().getUserData().equals("zone_down")){
 				gs.getPhysicsWorld().setGravity(new Vector2(0, -34));
 			} else if (x2.getBody().getUserData().equals("zone_left")){
-				gs.getPhysicsWorld().setGravity(new Vector2(-17, 17));
+				gs.getPhysicsWorld().setGravity(new Vector2(-17, -17));
 			} else if (x2.getBody().getUserData().equals("zone_right")){
-				gs.getPhysicsWorld().setGravity(new Vector2(17, 17));
+				gs.getPhysicsWorld().setGravity(new Vector2(17, -17));
 			}
 		}
 
