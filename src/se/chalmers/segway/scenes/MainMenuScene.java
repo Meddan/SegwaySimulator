@@ -2,18 +2,15 @@ package se.chalmers.segway.scenes;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.engine.options.MusicOptions;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
-import org.andengine.entity.scene.menu.item.decorator.BaseMenuItemDecorator;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.util.GLState;
 
-import android.R.integer;
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.SaveManager;
 import se.chalmers.segway.game.Settings;

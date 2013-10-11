@@ -2,13 +2,10 @@ package se.chalmers.segway.scenes;
 
 import java.util.LinkedList;
 
-import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
-import org.andengine.entity.scene.menu.item.SpriteMenuItem;
-import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.text.Text;
 import org.andengine.util.adt.color.Color;
 
