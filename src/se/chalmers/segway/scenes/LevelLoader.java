@@ -94,10 +94,8 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					super.onManagedUpdate(pSecondsElapsed);
 					
 					if (player.collidesWith(this)) {
-						GameScene gs = (GameScene) sceneManager
-								.getCurrentScene();
-						gs.showGameOver();
 						player.stop();
+						player.onDie();
 					}
 				}
 			};

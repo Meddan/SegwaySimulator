@@ -80,7 +80,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private PointParticleEmitter particleEmitter;
 	private SpriteParticleSystem particleSystem;
-	
+
 	private PlayerData playerData;
 
 	private TimerHandler boostTimer = new TimerHandler(0.1f,
@@ -164,13 +164,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			displayScoreAtGameOver();
 		}
 	}
-	
+
 	private void createBoostCounter() {
 		boostAmount = 20;
-		boostCounter = new Sprite(580, 453,
-				resourcesManager.gastank, vbom);
-		boostText = new Text(620, 450,
-				resourcesManager.loadingFont, ": 1234567890", vbom);
+		boostCounter = new Sprite(580, 453, resourcesManager.gastank, vbom);
+		boostText = new Text(620, 450, resourcesManager.loadingFont,
+				": 1234567890", vbom);
 	}
 
 	private void createBackground() {
@@ -183,9 +182,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		Sprite front2 = new Sprite(0, camera.getCenterY(),
 				resourcesManager.backgroundFront2Region, vbom);
 
-		parallaxLayer.attachParallaxEntity(new ParallaxEntity(6, back, false,1));
-//		parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front, true));
-//		parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2, true));
+		parallaxLayer
+				.attachParallaxEntity(new ParallaxEntity(6, back, false, 1));
+		// parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front,
+		// true));
+		// parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2,
+		// true));
 
 		setBackground(new Background(Color.CYAN));
 		this.attachChild(parallaxLayer);
@@ -199,13 +201,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
-		
+
 		tip = new Text(camera.getCenterX() + 80, camera.getCenterY() + 200 / 2,
 				resourcesManager.tipFont, "Tap screen to start!", vbom);
-		
+
 		createBoostCounter();
 		setBoostCounter(boostAmount);
-		
+
 		gameHUD.attachChild(boostCounter);
 		gameHUD.attachChild(boostText);
 		gameHUD.attachChild(tip);
@@ -216,12 +218,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 			@Override
 			public void onDie() {
 				showGameOver();
-//				if (!gameOverDisplayed) {
-//					stopTimerAndReturnTime();
-//					deathScene.display(GameScene.this, camera);
-//					camera.setChaseEntity(null);
-//					gameOverDisplayed = true;
-//				}
 			}
 		};
 		contactListener.setPlayer(player);
@@ -231,9 +227,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void showGameOver() {
 		if (!gameOverDisplayed) {
 			stopTimerAndReturnTime();
-			deathScene.display(GameScene.this, camera);
-			camera.setChaseEntity(null);
-			gameOverDisplayed = true;
+			engine.registerUpdateHandler(new TimerHandler(0.5f,
+					new ITimerCallback() {
+						public void onTimePassed(
+								final TimerHandler pTimerHandler) {
+							pTimerHandler.reset();
+							engine.unregisterUpdateHandler(pTimerHandler);
+							if (!gameOverDisplayed) {
+								System.out.println("display deathscene");
+								deathScene.display(GameScene.this, camera);
+								camera.setChaseEntity(null);
+								gameOverDisplayed = true;
+							}
+						}
+					}));
 		}
 	}
 
@@ -244,7 +251,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
 		playerData.setMoney(playerData.getMoney() + score);
 		int currentHighestLevel = playerData.getHighestLevelCleared();
-		if(currentHighestLevel < this.currentLvl ){
+		if (currentHighestLevel < this.currentLvl) {
 			playerData.setHighestLevelCleared(currentLvl);
 		}
 		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
@@ -262,12 +269,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void addToScore(int i) {
 		score += i;
 	}
-	
+
 	public void addToBoost(int i) {
 		boostAmount += i;
 		setBoostCounter(boostAmount);
 	}
-	
+
 	private void setBoostCounter(int i) {
 		boostText.setText(":" + i);
 		boostText.setPosition(620 + (14 * Integer.toString(i).length()), 450);
@@ -406,7 +413,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		stopWatchTime = 0;
 		return temp;
 	}
-	public void setPlayerData(PlayerData pd){
+
+	public void setPlayerData(PlayerData pd) {
 		this.playerData = pd;
 	}
 }
