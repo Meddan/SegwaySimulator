@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
@@ -124,13 +125,16 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					levelObject, body, true, false));
 
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRING)) {
-			levelObject = new Sprite(x, y, resourcesManager.spring_region, vbom) {
+			levelObject = new AnimatedSprite(x, y,
+					resourcesManager.spring_region, vbom) {
 				@Override
 				protected void onManagedUpdate(float pSecondsElapsed) {
 					super.onManagedUpdate(pSecondsElapsed);
 
-					if (player.collidesWith(this) && player.getY()-40 > y) {
+					if (player.collidesWith(this) && player.getY() - 40 > y) {
 						player.applyStaticForce(new Vector2(0, 15));
+						animate(new long[] { 100, 100, 100, 100, 100, 100, 100,
+								100 }, 0, 7, false);
 					}
 				}
 			};
@@ -195,8 +199,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			levelObject = loadZone(x, y, "zone_down",
 					resourcesManager.zone_down);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_UP)) {
-			levelObject = loadZone(x, y, "zone_up",
-					resourcesManager.zone_up);
+			levelObject = loadZone(x, y, "zone_up", resourcesManager.zone_up);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_LEFT)) {
 			levelObject = loadZone(x, y, "zone_left",
 					resourcesManager.zone_left);
