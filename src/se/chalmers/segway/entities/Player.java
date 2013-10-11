@@ -90,6 +90,10 @@ public abstract class Player extends AnimatedSprite {
 	public void setSpeed(Vector2 v) {
 		speed = v;
 	}
+	
+	public void applyStaticForce(Vector2 v) {
+		body.applyLinearImpulse(v, body.getPosition());
+	}
 
 	/**
 	 * Makes the Player jump if it has contact with the ground.
