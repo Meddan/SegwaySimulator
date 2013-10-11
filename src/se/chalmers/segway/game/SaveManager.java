@@ -201,11 +201,12 @@ public class SaveManager {
 					return null;
 				}
 			} catch (Exception e){
+				System.out.println("SETTINGS EXCEPTION");
 				e.printStackTrace();
 				return null;
 			}
 		} else {
-			System.out.println("NO PLAYER FILE BITCH");
+			System.out.println("NO SETTINGS FILE BITCH");
 			return null;
 		}
 	}
