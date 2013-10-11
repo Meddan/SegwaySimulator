@@ -34,6 +34,7 @@ import org.xml.sax.Attributes;
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.game.PlayerContact;
 import se.chalmers.segway.game.PlayerData;
+import se.chalmers.segway.game.SaveManager;
 import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.scenes.ParallaxLayer.ParallaxEntity;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
@@ -254,8 +255,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (currentHighestLevel < this.currentLvl) {
 			playerData.setHighestLevelCleared(currentLvl);
 		}
-		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: "
-				+ score, vbom);
+		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: " + score, vbom);
+		SaveManager.savePlayerData(playerData);
+			
 		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
