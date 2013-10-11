@@ -111,9 +111,9 @@ public class PlayerContact implements ContactListener {
 				GameScene gs = (GameScene) SceneManager.getInstance().getCurrentScene();
 				gs.getPhysicsWorld().setGravity(new Vector2(0, -17));
 			}
-			if (!x2.getBody().getUserData().equals("player")) {
-				player.setContact(false);
-			}
+//			if (!x2.getBody().getUserData().equals("player")) {
+//				player.setContact(false);
+//			}
 		}
 
 	}
