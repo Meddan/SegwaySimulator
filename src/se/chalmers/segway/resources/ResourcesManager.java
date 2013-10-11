@@ -74,7 +74,9 @@ public class ResourcesManager {
 
 	// Selection Texture Regions
 	public BuildableBitmapTextureAtlas selectionTextureAtlas;
-	public ITextureRegion level_button;
+	public ITextureRegion level_button_green;
+	public ITextureRegion level_button_purple;
+	public ITextureRegion level_lock;
 	public ITextureRegion selection_background_region;
 
 	// Other
@@ -144,8 +146,15 @@ public class ResourcesManager {
 		selection_background_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(selectionTextureAtlas, activity,
 						"levelselect_background.png");
-		level_button = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+		level_button_purple = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				selectionTextureAtlas, activity, "levelselect_button.png");
+		
+		level_button_green = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				selectionTextureAtlas, activity, "levelselect_button_green.png");
+		
+		level_lock = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				selectionTextureAtlas, activity, "levelselect_lock.png");
+		
 		try {
 			this.selectionTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
