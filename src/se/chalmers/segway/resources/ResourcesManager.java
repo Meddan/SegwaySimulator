@@ -67,7 +67,8 @@ public class ResourcesManager {
 	public ITextureRegion platform1_region;
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
-	public ITextureRegion platform4_region;
+	public ITextureRegion StandingPlatform_region;
+	public ITextureRegion platform_cube_region;
 	public ITiledTextureRegion spring_region;
 	public ITextureRegion spikes_region;
 	public ITextureRegion coin_region;
@@ -284,10 +285,12 @@ public class ResourcesManager {
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		platform3_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
+		StandingPlatform_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "standing_platform.png");
+		platform_cube_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "platform_cube.png");
 		spring_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity, "springSeq.png", 8, 1);
-		platform4_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		spikes_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "spikes.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(

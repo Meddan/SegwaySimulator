@@ -35,7 +35,8 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1 = "platform1";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2 = "platform2";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM4 = "platform4";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STANDINGPLATFORM = "StandingPlatform";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_CUBE = "Platform_Cube";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRING = "spring";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
@@ -102,9 +103,12 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3)) {
 			levelObject = loadPlatform(x, y, "platform3",
 					resourcesManager.platform3_region);
-		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM4)) {
-			levelObject = loadPlatform(x, y, "platform4",
-					resourcesManager.platform4_region);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STANDINGPLATFORM)) {
+			levelObject = loadPlatform(x, y, "StandingPlatform",
+					resourcesManager.StandingPlatform_region);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_CUBE)) {
+			levelObject = loadPlatform(x, y, "Platform_Cube",
+					resourcesManager.platform_cube_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPIKES)) {
 			levelObject = new Sprite(x, y, resourcesManager.spikes_region, vbom) {
 				@Override
