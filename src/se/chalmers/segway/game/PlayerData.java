@@ -13,7 +13,7 @@ public class PlayerData implements Serializable{
 	private int highestLevelFinished;
 	public PlayerData(String name){
 		this.name = name;
-		this.highestLevelFinished = 6;
+		this.highestLevelFinished = 0;
 	}
 	
 	public int getMoney(){
