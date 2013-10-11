@@ -34,7 +34,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM1 = "platform1";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM2 = "platform2";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_SPRING = "platform_boost";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRING = "spring";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
@@ -118,14 +118,14 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
 					levelObject, body, true, false));
 
-		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_SPRING)) {
-			levelObject = new Sprite(x, y, resourcesManager.platform_spring_region, vbom) {
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRING)) {
+			levelObject = new Sprite(x, y, resourcesManager.spring_region, vbom) {
 				@Override
 				protected void onManagedUpdate(float pSecondsElapsed) {
 					super.onManagedUpdate(pSecondsElapsed);
 
-					if (player.collidesWith(this)) {
-						player.applyStaticForce(new Vector2(0, 200));
+					if (player.collidesWith(this) && player.getY()-40 > y) {
+						player.applyStaticForce(new Vector2(0, 15));
 					}
 				}
 			};
