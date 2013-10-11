@@ -37,7 +37,6 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3 = "platform3";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM4 = "platform4";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRING = "spring";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_SPRING = "platform_boost";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN = "coin";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
@@ -112,7 +111,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 				protected void onManagedUpdate(float pSecondsElapsed) {
 					super.onManagedUpdate(pSecondsElapsed);
 
-					if (player.collidesWith(this)) {
+					if (player.collidesWith(this) && player.getY()-48 >= y) {
 						player.stop();
 						player.onDie();
 					}
