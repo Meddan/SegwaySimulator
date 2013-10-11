@@ -265,7 +265,7 @@ public class ResourcesManager {
 		
 		// listFont
 		listFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
-				listTexture, activity.getAssets(), "start2p.ttf", 22, true,
+				listTexture, activity.getAssets(), "start2p.ttf", 20, true,
 				Color.BLACK, 2, Color.BLACK);
 		listFont.load();
 	}

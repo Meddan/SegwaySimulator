@@ -73,15 +73,19 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 	private void showInfo() {
 		showUpgrades();
 		upgradeChildScene.attachChild(generateText("Shop", 600, 420, headerFont));
-		int x = 550;
+		int x = 580;
 
 		if (selected == null) {
 			upgradeChildScene.attachChild(generateText("Välj uppgradering", x, 380, listFont, true));
 		} else {
+			IMenuItem buyButton;
 			upgradeChildScene.attachChild(generateText(selected.getName(), x, 380, listFont, true));
 			upgradeChildScene.attachChild(generateText(selected.getInfo(), x, 260, listFont, true));
 			upgradeChildScene.attachChild(generateText("Price: "+selected.getCost(), x, 210, listFont, true));
-			// TODO: Köpknapp
+			buyButton = new ScaleMenuItemDecorator(new SpriteMenuItem(11, resourcesManager.upgrade_region, vbom), 0.6f, 0.7f);
+			buyButton.attachChild(generateText("Buy", (int)buyButton.getWidth()/2, (int)buyButton.getHeight()/2, listFont));
+			buyButton.setPosition(x, 120);
+			upgradeChildScene.addMenuItem(buyButton);
 		}
 	}
 
