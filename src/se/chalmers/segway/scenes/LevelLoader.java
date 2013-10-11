@@ -19,6 +19,7 @@ import org.xml.sax.Attributes;
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.resources.ResourcesManager;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -38,6 +39,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK = "gastank";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPIKES = "spikes";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN = "zone_down";
 
 	private Player player;
 	private ResourcesManager resourcesManager;
@@ -45,6 +47,9 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private PhysicsWorld physicsWorld;
 	private VertexBufferObjectManager vbom;
 	private GameScene gameScene;
+
+	private FixtureDef FIXTURE_DEF;
+	private FixtureDef zoneFixtureDef;
 
 	public LevelLoader(PhysicsWorld pw, Player p, GameScene gs) {
 		super(TAG_ENTITY);
@@ -58,10 +63,14 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		sceneManager = SceneManager.getInstance();
 		resourcesManager = ResourcesManager.getInstance();
 		vbom = resourcesManager.vbom;
+		createFixtureDefs();
 	}
 
-	final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f,
-			0.5f);
+	private void createFixtureDefs() {
+		FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
+		zoneFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 0);
+		zoneFixtureDef.isSensor = true;
+	}
 
 	public IEntity onLoadEntity(final String pEntityName,
 			final IEntity pParent, final Attributes pAttributes,
@@ -92,7 +101,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 				@Override
 				protected void onManagedUpdate(float pSecondsElapsed) {
 					super.onManagedUpdate(pSecondsElapsed);
-					
+
 					if (player.collidesWith(this)) {
 						player.stop();
 						player.onDie();
@@ -104,7 +113,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			body.setUserData("spikes");
 			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
 					levelObject, body, true, false));
-					
+
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN)) {
 			ITextureRegion cookie = resourcesManager.cookies_region
 					.getTextureRegion((int) (Math.random() * 8));
@@ -156,6 +165,13 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 					}
 				}
 			};
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN)) {
+			levelObject = new Sprite(x, y, resourcesManager.zone_down, vbom);
+			final Body body = PhysicsFactory.createBoxBody(physicsWorld,
+					levelObject, BodyType.StaticBody, zoneFixtureDef);
+			body.setUserData(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN);
+			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
+					levelObject, body, true, false));
 		} else {
 			throw new IllegalArgumentException();
 		}
