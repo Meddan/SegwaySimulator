@@ -90,7 +90,12 @@ public class ResourcesManager {
 	public ITextureRegion soundoff_region;
 	public ITextureRegion splash_region;
 	public ITextureRegion shop_region;
+	
+	//Zones
 	public ITextureRegion zone_down;
+	public ITextureRegion zone_up;
+	public ITextureRegion zone_left;
+	public ITextureRegion zone_right;
 
 	// Backgrounds
 	public TextureRegion backgroundFrontRegion;
@@ -303,6 +308,12 @@ public class ResourcesManager {
 				gameTextureAtlas, activity, "gastank.png");
 		zone_down = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "zone_down.png");
+		zone_up = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "zone_up.png");
+		zone_left = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "zone_left.png");
+		zone_right = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "zone_right.png");
 		try {
 			this.gameTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(

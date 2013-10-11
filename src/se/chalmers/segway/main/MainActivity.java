@@ -13,7 +13,6 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.input.touch.controller.MultiTouch;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.resources.ResourcesManager;
 import se.chalmers.segway.scenes.SceneManager;
 import android.view.KeyEvent;

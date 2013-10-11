@@ -2,18 +2,15 @@ package se.chalmers.segway.scenes;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
-import org.andengine.engine.options.MusicOptions;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
-import org.andengine.entity.scene.menu.item.decorator.BaseMenuItemDecorator;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.util.GLState;
 
-import android.R.integer;
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.SaveManager;
 import se.chalmers.segway.game.Settings;
@@ -73,6 +70,8 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void disposeScene() {
+		cookieCounter.setVisible(false);
+		cookieAmount.setVisible(false);
 	}
 
 	/**
@@ -94,6 +93,8 @@ public class MainMenuScene extends BaseScene implements
 	private final int MENU_PLAY = 0;
 	private final int MENU_OPTIONS = 1;
 	private final int MENU_SHOP = 2;
+	private Sprite cookieCounter;
+	private Text cookieAmount;
 
 	private void createHUD() {
 		hud = new HUD();
@@ -103,9 +104,9 @@ public class MainMenuScene extends BaseScene implements
 	public void updateHUD() {
 		camera.setHUD(hud);
 		hud.detachChildren();
-		final Sprite cookieCounter = new Sprite(580, 453,
+		cookieCounter = new Sprite(580, 453,
 				resourcesManager.cookieCounter_region, vbom);
-		final Text cookieAmount = new Text(620, 450,
+		cookieAmount = new Text(620, 450,
 				resourcesManager.loadingFont, ":" + playerData.getMoney(), vbom);
 		cookieAmount.setPosition(
 				620 + (14 * Integer.toString(playerData.getMoney()).length()),

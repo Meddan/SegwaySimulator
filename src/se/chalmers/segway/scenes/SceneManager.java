@@ -5,12 +5,9 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
 
-import android.app.Activity;
-import android.content.Context;
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.SaveManager;
 import se.chalmers.segway.game.Settings;
-import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.resources.ResourcesManager;
 
 public class SceneManager {
@@ -114,6 +111,7 @@ public class SceneManager {
 			ResourcesManager.getInstance().unloadGameTextures();
 		} else if (currentScene == menuScene) {
 			ResourcesManager.getInstance().unloadMenuTextures();
+			menuScene.disposeScene();
 		}
 		setScene(loadingScene);
 		mEngine.registerUpdateHandler(new TimerHandler(0.1f,

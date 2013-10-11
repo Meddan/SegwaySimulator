@@ -19,7 +19,6 @@ import org.xml.sax.Attributes;
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.resources.ResourcesManager;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -41,6 +40,9 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK = "gastank";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPIKES = "spikes";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN = "zone_down";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_UP = "zone_up";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_LEFT = "zone_left";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_RIGHT = "zone_right";
 
 	private Player player;
 	private ResourcesManager resourcesManager;
@@ -184,12 +186,17 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 				}
 			};
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN)) {
-			levelObject = new Sprite(x, y, resourcesManager.zone_down, vbom);
-			final Body body = PhysicsFactory.createBoxBody(physicsWorld,
-					levelObject, BodyType.StaticBody, zoneFixtureDef);
-			body.setUserData(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN);
-			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
-					levelObject, body, true, false));
+			levelObject = loadZone(x, y, "zone_down",
+					resourcesManager.zone_down);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_UP)) {
+			levelObject = loadZone(x, y, "zone_up",
+					resourcesManager.zone_up);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_LEFT)) {
+			levelObject = loadZone(x, y, "zone_left",
+					resourcesManager.zone_left);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_RIGHT)) {
+			levelObject = loadZone(x, y, "zone_right",
+					resourcesManager.zone_right);
 		} else {
 			throw new IllegalArgumentException();
 		}
@@ -197,6 +204,17 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		levelObject.setCullingEnabled(true);
 
 		return levelObject;
+	}
+
+	private Sprite loadZone(int x, int y, String zone, ITextureRegion zoneRegion) {
+		Sprite zoneSprite = new Sprite(x, y, zoneRegion, vbom);
+		final Body body = PhysicsFactory.createBoxBody(physicsWorld,
+				zoneSprite, BodyType.StaticBody, zoneFixtureDef);
+		body.setUserData(zone);
+		physicsWorld.registerPhysicsConnector(new PhysicsConnector(zoneSprite,
+				body, true, false));
+
+		return zoneSprite;
 	}
 
 	private Sprite loadPlatform(int x, int y, String platform,
