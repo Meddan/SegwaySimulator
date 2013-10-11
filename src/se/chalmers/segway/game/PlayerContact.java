@@ -84,9 +84,17 @@ public class PlayerContact implements ContactListener {
 		}
 
 		if (x1.getBody().getUserData().equals("player")
-				&& x2.getBody().getUserData().equals("zone_down")) {
+				&& ((String)x2.getBody().getUserData()).contains("zone")) {
 			GameScene gs = (GameScene) SceneManager.getInstance().getCurrentScene();
-			gs.getPhysicsWorld().setGravity(new Vector2(0, 17));
+			if(x2.getBody().getUserData().equals("zone_up")){
+				gs.getPhysicsWorld().setGravity(new Vector2(0, 17));
+			} else if (x2.getBody().getUserData().equals("zone_down")){
+				gs.getPhysicsWorld().setGravity(new Vector2(0, -34));
+			} else if (x2.getBody().getUserData().equals("zone_left")){
+				gs.getPhysicsWorld().setGravity(new Vector2(-17, 17));
+			} else if (x2.getBody().getUserData().equals("zone_right")){
+				gs.getPhysicsWorld().setGravity(new Vector2(17, 17));
+			}
 		}
 
 	}
@@ -99,7 +107,7 @@ public class PlayerContact implements ContactListener {
 		if (x1.getBody().getUserData() != null
 				&& x2.getBody().getUserData() != null) {
 			if (x1.getBody().getUserData().equals("player")
-					&& x2.getBody().getUserData().equals("zone_down")) {
+					&& ((String)x2.getBody().getUserData()).contains("zone")) {
 				GameScene gs = (GameScene) SceneManager.getInstance().getCurrentScene();
 				gs.getPhysicsWorld().setGravity(new Vector2(0, -17));
 			}
