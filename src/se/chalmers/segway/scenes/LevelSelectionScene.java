@@ -7,6 +7,7 @@ import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.opengl.util.GLState;
 
 import se.chalmers.segway.game.PlayerData;
@@ -58,10 +59,13 @@ public class LevelSelectionScene extends BaseScene implements
 		
 		for (int i = 1; i <= nmbrOfLevels; i++) {
 			if(i <= unlockedLevels + 1 ){
+				
 				button[i-1] = new ScaleMenuItemDecorator(new SpriteMenuItem(i,
 					resourcesManager.level_button, vbom), 1.2f, 1);
 				button[i-1].setPosition(i*100, 300);
 				selectionChildScene.addMenuItem(button[i-1]);
+				Text lvl = new Text(button[i-1].getX(),button[i-1].getY(), resourcesManager.fancyFont, ""+i, vbom);
+				selectionChildScene.attachChild(lvl);
 			}
 		}
 
