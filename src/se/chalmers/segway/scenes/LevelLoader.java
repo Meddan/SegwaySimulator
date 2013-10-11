@@ -39,6 +39,9 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK = "gastank";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPIKES = "spikes";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN = "zone_down";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_UP = "zone_up";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_LEFT = "zone_left";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_RIGHT = "zone_right";
 
 	private Player player;
 	private ResourcesManager resourcesManager;
@@ -167,6 +170,15 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN)) {
 			levelObject = loadZone(x, y, "zone_down",
 					resourcesManager.zone_down);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_UP)) {
+			levelObject = loadZone(x, y, "zone_up",
+					resourcesManager.zone_up);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_LEFT)) {
+			levelObject = loadZone(x, y, "zone_left",
+					resourcesManager.zone_left);
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_RIGHT)) {
+			levelObject = loadZone(x, y, "zone_right",
+					resourcesManager.zone_right);
 		} else {
 			throw new IllegalArgumentException();
 		}
