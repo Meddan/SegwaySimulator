@@ -8,7 +8,7 @@
     <entity x="1275" y="430" type="spikes"/>
     <entity x="1450" y="440" type="platform1"/>
     <entity x="1700" y="440" type="platform1"/>
-    <entity x="1800" y="460" type="spring"/>
+    <entity x="1800" y="470" type="spring"/>
     <entity x="2000" y="565" type="platform1"/>
     <entity x="2100" y="650" type="golden_cookie"/>
     <entity x="50" y="610" type="player"/>
