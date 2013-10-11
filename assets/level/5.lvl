@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<level width="2000" height="780">
+    <entity x="150" y="320" type="player"/>  
+    <entity x="100" y="100" type="platform1"/>
+    <entity x="351" y="100" type="platform1"/>
+    <entity x="601" y="115" type="platform1"/>
+    
+    <entity x="720" y="150" type="coin"/>
+    <entity x="1300" y="150" type="golden_cookie"/>
+</level>
