@@ -123,7 +123,7 @@ public class SceneManager {
 						ResourcesManager.getInstance().loadSelectionResources();
 						selectionScene = new LevelSelectionScene();
 						((LevelSelectionScene) selectionScene)
-								.setUnlockedLevels(playerData
+								.setBeatenLevels(playerData
 										.getHighestLevelCleared());
 						((LevelSelectionScene) selectionScene).updateScene();
 						setScene(selectionScene);

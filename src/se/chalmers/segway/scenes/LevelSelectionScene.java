@@ -20,7 +20,7 @@ public class LevelSelectionScene extends BaseScene implements
 	private MenuScene selectionChildScene;
 	private final int nmbrOfLevels = ResourcesManager.getInstance()
 			.getNumberOfLevels();
-	private int unlockedLevels = 1;
+	private int beatenLevels = 1;
 
 	public void createScene(PlayerData playerData) {
 		createBackground();
@@ -61,7 +61,7 @@ public class LevelSelectionScene extends BaseScene implements
 		for (int i = 1; i <= nmbrOfLevels; i++) {
 			Sprite lock = null;
 
-			if (i <= unlockedLevels) {
+			if (i <= beatenLevels) {
 				button[i - 1] = new ScaleMenuItemDecorator(new SpriteMenuItem(
 						i, resourcesManager.level_button_green, vbom), 1.2f, 1);
 				button[i - 1].setPosition(i * 100, 300);
@@ -74,7 +74,7 @@ public class LevelSelectionScene extends BaseScene implements
 			}
 			selectionChildScene.addMenuItem(button[i - 1]);
 
-			if (lock != null) {
+			if (lock != null && i > beatenLevels+1) {
 				selectionChildScene.attachChild(lock);
 				lock = null;
 			}
@@ -98,9 +98,9 @@ public class LevelSelectionScene extends BaseScene implements
 		return true;
 	}
 
-	public void setUnlockedLevels(int nbr) {
+	public void setBeatenLevels(int nbr) {
 		System.out.println("setting unlockedlevels " + nbr);
-		unlockedLevels = nbr;
+		beatenLevels = nbr;
 	}
 
 	@Override
