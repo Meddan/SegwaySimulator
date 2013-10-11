@@ -254,7 +254,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (currentHighestLevel < this.currentLvl) {
 			playerData.setHighestLevelCleared(currentLvl);
 		}
-		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
+		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: "
 				+ score, vbom);
 		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
