@@ -379,4 +379,14 @@ public class ResourcesManager {
 	public static ResourcesManager getInstance() {
 		return INSTANCE;
 	}
+	
+	public int getNumberOfLevels(){
+		try {
+			return activity.getResources().getAssets().list("level").length;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return 0;
+			
+		}
+	}
 }

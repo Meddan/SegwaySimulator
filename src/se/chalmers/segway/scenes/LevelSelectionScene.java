@@ -1,5 +1,7 @@
 package se.chalmers.segway.scenes;
 
+import java.io.File;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
@@ -10,13 +12,14 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
 import se.chalmers.segway.game.PlayerData;
+import se.chalmers.segway.resources.ResourcesManager;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class LevelSelectionScene extends BaseScene implements
 		IOnMenuItemClickListener {
 
 	private MenuScene selectionChildScene;
-	private final int nmbrOfLevels = 4;//new File("assets/level/").list().length;
+	private final int nmbrOfLevels = ResourcesManager.getInstance().getNumberOfLevels();
 	private int unlockedLevels = 1;
 	
 	public void createScene(PlayerData playerData) {
