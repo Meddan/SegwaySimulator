@@ -34,4 +34,12 @@ public class PlayerData implements Serializable{
 	public int getHighestLevelCleared(){
 		return this.highestLevelFinished;
 	}
+	/**
+	 * Resets the players money and level progress and saves.
+	 */
+	public void resetPlayerData(){
+		this.cash = 0;
+		this.highestLevelFinished = 0;
+		SaveManager.savePlayerData(this);
+	}
 }
