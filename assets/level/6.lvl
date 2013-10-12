@@ -12,6 +12,5 @@
     <entity x="1760" y="430" type="spring"/>
     <entity x="2250" y="150" type="platform1"/>
     <entity x="2350" y="245" type="golden_cookie"/>
-    
     <entity x="60" y="320" type="player"/>
 </level>

@@ -61,6 +61,7 @@ public class PlayerContact implements ContactListener {
 			if (((String) x2.getBody().getUserData()).contains("platform")
 					|| ((String) x2.getBody().getUserData())
 							.contains("Platform")) {
+				//TODO: Platform med stort P?
 				player.setContact(true);
 			}
 		}
@@ -95,6 +96,12 @@ public class PlayerContact implements ContactListener {
 			} else if (x2.getBody().getUserData().equals("zone_right")){
 				gs.getPhysicsWorld().setGravity(new Vector2(17, 0));
 			}
+		}
+		
+		//Reduce lagging on my slow phone
+		if (x1.getBody().getUserData().equals("fallSpike")
+				&& ((String)x2.getBody().getUserData()).contains("platform")) {
+			x1.getBody().setType(BodyType.StaticBody);
 		}
 
 	}

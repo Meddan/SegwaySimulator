@@ -105,6 +105,7 @@ public class ResourcesManager {
 	private BitmapTextureAtlas background2TextureAtlas;
 	public ITextureRegion backgroundFront2Region;
 	private BitmapTextureAtlas background3TextureAtlas;
+	public TextureRegion fallSpike_region;
 
 	// ---------------------------------------------
 	// CLASS LOGIC
@@ -293,6 +294,8 @@ public class ResourcesManager {
 				.createTiledFromAsset(gameTextureAtlas, activity, "springSeq.png", 8, 1);
 		spikes_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "spikes.png");
+		fallSpike_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "fallSpike.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "cookie.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory

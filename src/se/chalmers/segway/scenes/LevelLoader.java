@@ -17,6 +17,7 @@ import org.andengine.util.level.EntityLoader;
 import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.xml.sax.Attributes;
 
+import se.chalmers.segway.entities.FallSpike;
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.resources.ResourcesManager;
 
@@ -43,6 +44,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GOLDEN_COOKIE = "golden_cookie";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK = "gastank";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPIKES = "spikes";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_FALLING_SPIKE = "fallspike";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN = "zone_down";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_UP = "zone_up";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_LEFT = "zone_left";
@@ -103,7 +105,8 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM3)) {
 			levelObject = loadPlatform(x, y, "platform3",
 					resourcesManager.platform3_region);
-		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STANDINGPLATFORM)) {
+		} else if (type
+				.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STANDINGPLATFORM)) {
 			levelObject = loadPlatform(x, y, "StandingPlatform",
 					resourcesManager.StandingPlatform_region);
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_CUBE)) {
@@ -115,7 +118,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 				protected void onManagedUpdate(float pSecondsElapsed) {
 					super.onManagedUpdate(pSecondsElapsed);
 
-					if (player.collidesWith(this) && player.getY()-48 >= y) {
+					if (player.collidesWith(this) && player.getY() - 48 >= y) {
 						player.stop();
 						player.onDie();
 					}
@@ -126,6 +129,10 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			body.setUserData("spikes");
 			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
 					levelObject, body, true, false));
+
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_FALLING_SPIKE)) {
+
+			levelObject = new FallSpike(x, y, physicsWorld, FIXTURE_DEF, player);
 
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRING)) {
 			levelObject = new AnimatedSprite(x, y,
