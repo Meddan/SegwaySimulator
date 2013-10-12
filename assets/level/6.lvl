@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level width="3000" height="600">  
+    <entity x="50" y="300" type="platform1"/>
+    <entity x="150" y="340" type="spring"/>
+    <entity x="310" y="300" type="spring"/>
+    <entity x="460" y="300" type="spring"/>
+    <entity x="700" y="250" type="spring"/>
+    <entity x="830" y="280" type="spring"/>
+    <entity x="950" y="250" type="spring"/>
+    <entity x="1050" y="200" type="platform1"/>
+    <entity x="1660" y="350" type="spring"/>
+    <entity x="1760" y="430" type="spring"/>
+    <entity x="2250" y="150" type="platform1"/>
+    <entity x="2350" y="245" type="golden_cookie"/>
+    
+    <entity x="60" y="320" type="player"/>
+</level>
