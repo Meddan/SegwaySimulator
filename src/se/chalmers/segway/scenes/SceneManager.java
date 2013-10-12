@@ -63,6 +63,7 @@ public class SceneManager {
 		menuScene = new MainMenuScene();
 		loadingScene = new LoadingScene();
 		shopScene = new ShopScene();
+		((ShopScene) shopScene).setPlayerData(playerData);
 		((MainMenuScene) menuScene).setPlayerData(playerData);
 		((MainMenuScene) menuScene).updateHUD();
 		setScene(menuScene);

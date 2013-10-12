@@ -16,6 +16,7 @@ import org.andengine.opengl.font.Font;
 import org.andengine.util.adt.color.Color;
 
 import se.chalmers.segway.game.Upgrades;
+import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
@@ -25,6 +26,7 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 	private Upgrades selected;
 	private MenuScene upgradeChildScene;
 	private LinkedList<Upgrades> upgrades;
+	private PlayerData player;
 
 	@Override
 	public void createScene() {
@@ -35,6 +37,10 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 		showUpgrades();
 		showInfo();
 		System.out.println("Skapa shop");
+	}
+
+	public void setPlayerData(PlayerData player) {
+		this.player = player;
 	}
 
 	private void loadFonts() {
@@ -48,20 +54,26 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 
 	private void showUpgrades() {
 		upgradeChildScene.detachChildren();
-		upgradeChildScene.attachChild(generateText("Upgrades", 200, 420, headerFont));
+		upgradeChildScene.attachChild(generateText("Upgrades", 200, 420,
+				headerFont));
 
 		int n = 0;
 		for (Upgrades t : Upgrades.values()) {
 			if (!t.isActivated()) {
 				upgrades.add(t);
-				IMenuItem upgrade = new ScaleMenuItemDecorator(new SpriteMenuItem(n,
-						resourcesManager.upgrade_region, vbom), 1.05f, 1);
-				upgrade.attachChild(generateText(t.getName(), (int)upgrade.getWidth()/2, (int)upgrade.getHeight()/2, resourcesManager.listFont));
-				upgrade.setPosition(210, 320-n*65);
+				IMenuItem upgrade = new ScaleMenuItemDecorator(
+						new SpriteMenuItem(n + 10,
+								resourcesManager.upgrade_region, vbom), 1.05f,
+						1);
+				upgrade.attachChild(generateText(t.getName(),
+						(int) upgrade.getWidth() / 2,
+						(int) upgrade.getHeight() / 2,
+						resourcesManager.listFont));
+				upgrade.setPosition(210, 320 - n * 65);
 
 				upgradeChildScene.addMenuItem(upgrade);
+				n++;
 			}
-			n++;
 		}
 		upgradeChildScene.setBackgroundEnabled(false);
 
@@ -72,20 +84,37 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 
 	private void showInfo() {
 		showUpgrades();
-		upgradeChildScene.attachChild(generateText("Shop", 600, 420, headerFont));
+		upgradeChildScene
+				.attachChild(generateText("Shop", 600, 420, headerFont));
 		int x = 580;
 
 		if (selected == null) {
-			upgradeChildScene.attachChild(generateText("Välj uppgradering", x, 380, listFont, true));
+			upgradeChildScene.attachChild(generateText("Välj uppgradering", x,
+					380, listFont, true));
 		} else {
 			IMenuItem buyButton;
-			upgradeChildScene.attachChild(generateText(selected.getName(), x, 380, listFont, true));
-			upgradeChildScene.attachChild(generateText(selected.getInfo(), x, 260, listFont, true));
-			upgradeChildScene.attachChild(generateText("Price: "+selected.getCost(), x, 210, listFont, true));
-			buyButton = new ScaleMenuItemDecorator(new SpriteMenuItem(11, resourcesManager.upgrade_region, vbom), 0.6f, 0.7f);
-			buyButton.attachChild(generateText("Buy", (int)buyButton.getWidth()/2, (int)buyButton.getHeight()/2, listFont));
+			upgradeChildScene.attachChild(generateText(selected.getName(), x,
+					380, listFont, true));
+			upgradeChildScene.attachChild(generateText(selected.getInfo(), x,
+					260, listFont, true));
+			upgradeChildScene.attachChild(generateText(
+					"Price: " + selected.getCost(), x, 210, listFont, true));
+			buyButton = new ScaleMenuItemDecorator(new SpriteMenuItem(5,
+					resourcesManager.upgrade_region, vbom), 0.6f, 0.7f);
+			buyButton.attachChild(generateText("Buy",
+					(int) buyButton.getWidth() / 2,
+					(int) buyButton.getHeight() / 2, listFont));
 			buyButton.setPosition(x, 120);
 			upgradeChildScene.addMenuItem(buyButton);
+		}
+	}
+
+	private void buy() {
+		if (player.getMoney() >= selected.getCost()) {
+			selected.setActive(true);
+			player.setMoney(player.getMoney() - selected.getCost());
+		} else {
+			System.out.println("Not enough monies");
 		}
 	}
 
@@ -107,7 +136,13 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 	@Override
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
 			float pMenuItemLocalX, float pMenuItemLocalY) {
-		selected = upgrades.get(pMenuItem.getID());
+
+		if (pMenuItem.getID() == 5) {
+			buy();
+		} else if (pMenuItem.getID() >= 10) {
+			selected = upgrades.get(pMenuItem.getID() - 10);
+		}
+
 		System.out.println(pMenuItem.getID());
 		showInfo();
 		return true;
@@ -117,12 +152,13 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 		Text t = new Text(xOffset, yOffset, font, text, vbom);
 		return t;
 	}
-	
-	private Text generateText(String text, int xOffset, int yOffset, Font font, boolean wrap) {
+
+	private Text generateText(String text, int xOffset, int yOffset, Font font,
+			boolean wrap) {
 		Text t = generateText(text, xOffset, yOffset, font);
-		if(wrap)
+		if (wrap)
 			t.setAutoWrap(AutoWrap.WORDS);
-			t.setAutoWrapWidth(250);
+		t.setAutoWrapWidth(250);
 		return t;
 	}
 }
