@@ -23,5 +23,5 @@
     <entity x="800" y="175" type="platform1"/>
     <entity x="1250" y="175" type="platform1"/>
     <entity x="1700" y="175" type="platform1"/>
-    
+    <entity x="1900" y="200" type="golden_cookie"/>
 </level>
