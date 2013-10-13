@@ -42,57 +42,57 @@
 	<entity x="9828" y="100" type="platform1"/>
 	<entity x="4000" y="550" type="boulder"/>
 	<entity x="9900" y="200" type ="golden_cookie"/>
-	<entity x="2000" y="220" type="fallspike"/>
-	<entity x="2040" y="220" type="fallspike"/>
-	<entity x="2080" y="220" type="fallspike"/>
-	<entity x="2120" y="220" type="fallspike"/>
-	<entity x="2160" y="220" type="fallspike"/>
-	<entity x="2200" y="220" type="fallspike"/>
-	<entity x="2240" y="220" type="fallspike"/>
-	<entity x="2280" y="220" type="fallspike"/>
-	<entity x="2320" y="220" type="fallspike"/>
-	<entity x="2360" y="220" type="fallspike"/>
-	<entity x="2400" y="220" type="fallspike"/>
-	<entity x="2440" y="220" type="fallspike"/>
-	<entity x="2480" y="220" type="fallspike"/>
-	<entity x="2520" y="220" type="fallspike"/>
-	<entity x="2560" y="220" type="fallspike"/>
-	<entity x="2600" y="220" type="fallspike"/>
-	<entity x="2640" y="220" type="fallspike"/>
-	<entity x="2680" y="220" type="fallspike"/>
-	<entity x="2720" y="220" type="fallspike"/>
-	<entity x="2760" y="220" type="fallspike"/>
-	<entity x="2800" y="220" type="fallspike"/>
-	<entity x="2840" y="220" type="fallspike"/>
-	<entity x="2880" y="220" type="fallspike"/>
-	<entity x="2920" y="220" type="fallspike"/>
-	<entity x="2960" y="220" type="fallspike"/>
-	<entity x="3000" y="220" type="fallspike"/>
-	<entity x="3040" y="220" type="fallspike"/>
-	<entity x="3080" y="220" type="fallspike"/>
-	<entity x="3120" y="220" type="fallspike"/>
-	<entity x="3160" y="220" type="fallspike"/>
-	<entity x="3200" y="220" type="fallspike"/>
-	<entity x="3240" y="220" type="fallspike"/>
-	<entity x="3280" y="220" type="fallspike"/>
-	<entity x="3320" y="220" type="fallspike"/>
-	<entity x="3360" y="220" type="fallspike"/>
-	<entity x="3400" y="220" type="fallspike"/>
-	<entity x="3440" y="220" type="fallspike"/>
-	<entity x="3480" y="220" type="fallspike"/>
-	<entity x="3520" y="220" type="fallspike"/>
-	<entity x="3560" y="220" type="fallspike"/>
-	<entity x="3600" y="220" type="fallspike"/>
-	<entity x="3640" y="220" type="fallspike"/>
-	<entity x="3680" y="220" type="fallspike"/>
-	<entity x="3720" y="220" type="fallspike"/>
-	<entity x="3760" y="220" type="fallspike"/>
-	<entity x="3800" y="220" type="fallspike"/>
-	<entity x="3840" y="220" type="fallspike"/>
-	<entity x="3880" y="220" type="fallspike"/>
-	<entity x="3920" y="220" type="fallspike"/>
-	<entity x="3960" y="220" type="fallspike"/>
-	<entity x="4000" y="220" type="fallspike"/>
+	<entity x="2000" y="210" type="fallspike"/>
+	<entity x="2040" y="210" type="fallspike"/>
+	<entity x="2080" y="210" type="fallspike"/>
+	<entity x="2120" y="210" type="fallspike"/>
+	<entity x="2160" y="210" type="fallspike"/>
+	<entity x="2200" y="210" type="fallspike"/>
+	<entity x="2240" y="210" type="fallspike"/>
+	<entity x="2280" y="210" type="fallspike"/>
+	<entity x="2320" y="210" type="fallspike"/>
+	<entity x="2360" y="210" type="fallspike"/>
+	<entity x="2400" y="210" type="fallspike"/>
+	<entity x="2440" y="210" type="fallspike"/>
+	<entity x="2480" y="210" type="fallspike"/>
+	<entity x="2520" y="210" type="fallspike"/>
+	<entity x="2560" y="210" type="fallspike"/>
+	<entity x="2600" y="210" type="fallspike"/>
+	<entity x="2640" y="210" type="fallspike"/>
+	<entity x="2680" y="210" type="fallspike"/>
+	<entity x="2720" y="210" type="fallspike"/>
+	<entity x="2760" y="210" type="fallspike"/>
+	<entity x="2800" y="210" type="fallspike"/>
+	<entity x="2840" y="210" type="fallspike"/>
+	<entity x="2880" y="210" type="fallspike"/>
+	<entity x="2920" y="210" type="fallspike"/>
+	<entity x="2960" y="210" type="fallspike"/>
+	<entity x="3000" y="210" type="fallspike"/>
+	<entity x="3040" y="210" type="fallspike"/>
+	<entity x="3080" y="210" type="fallspike"/>
+	<entity x="3120" y="210" type="fallspike"/>
+	<entity x="3160" y="210" type="fallspike"/>
+	<entity x="3200" y="210" type="fallspike"/>
+	<entity x="3240" y="210" type="fallspike"/>
+	<entity x="3280" y="210" type="fallspike"/>
+	<entity x="3320" y="210" type="fallspike"/>
+	<entity x="3360" y="210" type="fallspike"/>
+	<entity x="3400" y="210" type="fallspike"/>
+	<entity x="3440" y="210" type="fallspike"/>
+	<entity x="3480" y="210" type="fallspike"/>
+	<entity x="3520" y="210" type="fallspike"/>
+	<entity x="3560" y="210" type="fallspike"/>
+	<entity x="3600" y="210" type="fallspike"/>
+	<entity x="3640" y="210" type="fallspike"/>
+	<entity x="3680" y="210" type="fallspike"/>
+	<entity x="3720" y="210" type="fallspike"/>
+	<entity x="3760" y="210" type="fallspike"/>
+	<entity x="3800" y="210" type="fallspike"/>
+	<entity x="3840" y="210" type="fallspike"/>
+	<entity x="3880" y="210" type="fallspike"/>
+	<entity x="3920" y="210" type="fallspike"/>
+	<entity x="3960" y="210" type="fallspike"/>
+	<entity x="4000" y="210" type="fallspike"/>
 	<entity x="100" y="150" type="coin"/>
 	<entity x="300" y="150" type="coin"/>
 	<entity x="500" y="150" type="coin"/>
@@ -103,7 +103,7 @@
 	<entity x="1500" y="150" type="coin"/>
 	<entity x="1700" y="150" type="coin"/>
 	<entity x="450" y="150" type="gastank" />
-	<entity x="4400" y="150" type="gastank" />
+	<entity x="5000" y="150" type="gastank" />
 	<entity x="650" y="143" type="zone_up" />
 	<entity x="750" y="143" type="zone_up" />
 	<entity x="850" y="143" type="zone_up" />

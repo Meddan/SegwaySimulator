@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <level width="14000" height="5500">  
 	<entity x="100" y="5000" type="platform1"/>
-	<entity x="150" y="5400" type="boulder"/>
+	<entity x="1500" y="5000" type="boulder"/>
 	<entity x="400" y="4900" type="platform1"/>
 	<entity x="700" y="4800" type="platform1"/>
 	<entity x="1000" y="4700" type="platform1"/>

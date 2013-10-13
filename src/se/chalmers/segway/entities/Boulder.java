@@ -26,6 +26,7 @@ public class Boulder extends Sprite {
 
 					if (speed <= 0) {
 						ResourcesManager.getInstance().engine.unregisterUpdateHandler(speedTimer);
+						stop();
 					} else {
 						speed += -1;
 					}
@@ -44,7 +45,7 @@ public class Boulder extends Sprite {
 		this.player = player;
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(this, body,
 				true, false));
-		speed = 30;
+		speed = 35;
 
 	}
 
