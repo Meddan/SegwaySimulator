@@ -77,6 +77,8 @@ public class ResourcesManager {
 	public ITextureRegion cookieCounter_region;
 	public ITextureRegion golden_cookie;
 
+	public ITextureRegion boulder_region;
+
 	// Selection Texture Regions
 	public BuildableBitmapTextureAtlas selectionTextureAtlas;
 	public ITextureRegion level_button_green;
@@ -95,8 +97,8 @@ public class ResourcesManager {
 	public ITextureRegion splash_region;
 	public ITextureRegion shop_region;
 	public ITextureRegion upgrade_region;
-	
-	//Zones
+
+	// Zones
 	public ITextureRegion zone_down;
 	public ITextureRegion zone_up;
 	public ITextureRegion zone_left;
@@ -159,15 +161,17 @@ public class ResourcesManager {
 		selection_background_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(selectionTextureAtlas, activity,
 						"levelselect_background.png");
-		level_button_purple = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				selectionTextureAtlas, activity, "levelselect_button.png");
-		
-		level_button_green = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				selectionTextureAtlas, activity, "levelselect_button_green.png");
-		
+		level_button_purple = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(selectionTextureAtlas, activity,
+						"levelselect_button.png");
+
+		level_button_green = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(selectionTextureAtlas, activity,
+						"levelselect_button_green.png");
+
 		level_lock = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				selectionTextureAtlas, activity, "levelselect_lock.png");
-		
+
 		try {
 			this.selectionTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
@@ -198,7 +202,8 @@ public class ResourcesManager {
 		cookieCounter_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity, "cookie.png");
 		upgrade_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(menuTextureAtlas, activity, "upgrade_button.png");
+				.createFromAsset(menuTextureAtlas, activity,
+						"upgrade_button.png");
 
 		try {
 			this.menuTextureAtlas
@@ -212,7 +217,7 @@ public class ResourcesManager {
 	}
 
 	private void loadShopGraphics() {
-		
+
 	}
 
 	private void loadMenuFonts() {
@@ -228,11 +233,11 @@ public class ResourcesManager {
 		final ITexture tipFontTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		
+
 		final ITexture headingTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		
+
 		final ITexture listTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -256,13 +261,14 @@ public class ResourcesManager {
 				tipFontTexture, activity.getAssets(), "start2p.ttf", 30, true,
 				Color.GREEN, 2, Color.BLACK);
 		tipFont.load();
-		
+
 		// headingFont
-			headingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
-					headingTexture, activity.getAssets(), "start2p.ttf", 30, true,
-					Color.WHITE, 2, Color.BLACK);
-			headingFont.load();
-		
+		headingFont = FontFactory.createStrokeFromAsset(
+				activity.getFontManager(), headingTexture,
+				activity.getAssets(), "start2p.ttf", 30, true, Color.WHITE, 2,
+				Color.BLACK);
+		headingFont.load();
+
 		// listFont
 		listFont = FontFactory.createStrokeFromAsset(activity.getFontManager(),
 				listTexture, activity.getAssets(), "start2p.ttf", 20, true,
@@ -298,15 +304,18 @@ public class ResourcesManager {
 		platform3_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "platform1.png");
 		StandingPlatform_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gameTextureAtlas, activity, "standing_platform.png");
+				.createFromAsset(gameTextureAtlas, activity,
+						"standing_platform.png");
 		platform_cube_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gameTextureAtlas, activity, "platform_cube.png");
+				.createFromAsset(gameTextureAtlas, activity,
+						"platform_cube.png");
 		spring_region = BitmapTextureAtlasTextureRegionFactory
-				.createTiledFromAsset(gameTextureAtlas, activity, "springSeq.png", 8, 1);
+				.createTiledFromAsset(gameTextureAtlas, activity,
+						"springSeq.png", 8, 1);
 		spikes_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "spikes.png");
-		fallSpike_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				gameTextureAtlas, activity, "fallSpike.png");
+		fallSpike_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "fallSpike.png");
 		coin_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "cookie.png");
 		player_region = BitmapTextureAtlasTextureRegionFactory
@@ -315,6 +324,8 @@ public class ResourcesManager {
 		player_backwards_region = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity,
 						"segwayBackwards.png", 3, 1);
+		boulder_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameTextureAtlas, activity, "boulder.png");
 		complete_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gameTextureAtlas, activity, "complete.png");
 		death_window_region = BitmapTextureAtlasTextureRegionFactory
@@ -425,14 +436,14 @@ public class ResourcesManager {
 	public static ResourcesManager getInstance() {
 		return INSTANCE;
 	}
-	
-	public int getNumberOfLevels(){
+
+	public int getNumberOfLevels() {
 		try {
 			return activity.getResources().getAssets().list("level").length;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return 0;
-			
+
 		}
 	}
 }

@@ -17,6 +17,7 @@ import org.andengine.util.level.EntityLoader;
 import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.xml.sax.Attributes;
 
+import se.chalmers.segway.entities.Boulder;
 import se.chalmers.segway.entities.FallSpike;
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.resources.ResourcesManager;
@@ -45,6 +46,7 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GASTANK = "gastank";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPIKES = "spikes";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_FALLING_SPIKE = "fallspike";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOULDER = "boulder";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_DOWN = "zone_down";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_UP = "zone_up";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ZONE_LEFT = "zone_left";
@@ -129,6 +131,10 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			body.setUserData("spikes");
 			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
 					levelObject, body, true, false));
+
+		}else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOULDER)) {
+			
+			levelObject = new Boulder(x, y, physicsWorld, FIXTURE_DEF, player);
 
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_FALLING_SPIKE)) {
 
