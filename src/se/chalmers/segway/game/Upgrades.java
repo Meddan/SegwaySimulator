@@ -54,4 +54,10 @@ public enum Upgrades implements Serializable {
 		public String getInfo(){
 			return this.info;
 		}
+		public static void resetUpgrades(){
+			for(Upgrades upg : Upgrades.values()){
+				upg.setActive(false);
+			}
+			SaveManager.saveUpgrades();
+		}
 }
