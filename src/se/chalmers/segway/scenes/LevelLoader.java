@@ -3,8 +3,13 @@ package se.chalmers.segway.scenes;
 import java.io.IOException;
 
 import org.andengine.entity.IEntity;
+import org.andengine.entity.modifier.ColorModifier;
+import org.andengine.entity.modifier.FadeOutModifier;
 import org.andengine.entity.modifier.LoopEntityModifier;
+import org.andengine.entity.modifier.QuadraticBezierCurveMoveModifier;
+import org.andengine.entity.modifier.RotationModifier;
 import org.andengine.entity.modifier.ScaleModifier;
+import org.andengine.entity.modifier.SkewYModifier;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
@@ -13,6 +18,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.SAXUtils;
+import org.andengine.util.adt.color.Color;
 import org.andengine.util.level.EntityLoader;
 import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.xml.sax.Attributes;
@@ -20,6 +26,7 @@ import org.xml.sax.Attributes;
 import se.chalmers.segway.entities.Boulder;
 import se.chalmers.segway.entities.FallSpike;
 import se.chalmers.segway.entities.Player;
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.resources.ResourcesManager;
 
 import com.badlogic.gdx.math.Vector2;
@@ -132,8 +139,8 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 			physicsWorld.registerPhysicsConnector(new PhysicsConnector(
 					levelObject, body, true, false));
 
-		}else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOULDER)) {
-			
+		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOULDER)) {
+
 			levelObject = new Boulder(x, y, physicsWorld, FIXTURE_DEF, player);
 
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_FALLING_SPIKE)) {
@@ -242,15 +249,22 @@ public class LevelLoader extends EntityLoader<SimpleLevelEntityLoaderData> {
 		return zoneSprite;
 	}
 
-	private Sprite loadPlatform(int x, int y, String platform,
+	private Sprite loadPlatform(final int x, final int y, String platform,
 			ITextureRegion platformRegion) {
-		Sprite platformSprite = new Sprite(x, y, platformRegion, vbom);
+		Sprite platformSprite = new Sprite(x, y, platformRegion, vbom) {
+			@Override
+			protected void onManagedUpdate(float pSecondsElapsed) {
+				super.onManagedUpdate(pSecondsElapsed);
+				if (Upgrades.Shrooms.isActivated()) {
+					registerEntityModifier(new LoopEntityModifier(new ColorModifier(1, (float)Math.random(), (float)Math.random(), (float)Math.random(), (float)Math.random(), (float)Math.random(), (float)Math.random())));
+				}
+			}
+		};
 		final Body body = PhysicsFactory.createBoxBody(physicsWorld,
 				platformSprite, BodyType.StaticBody, FIXTURE_DEF);
 		body.setUserData(platform);
 		physicsWorld.registerPhysicsConnector(new PhysicsConnector(
 				platformSprite, body, true, false));
-
 		return platformSprite;
 	}
 
