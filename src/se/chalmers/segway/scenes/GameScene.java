@@ -279,7 +279,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in
 		// seconds
 		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
-		score += 42000;
 		playerData.setMoney(playerData.getMoney() + score);
 		int currentHighestLevel = playerData.getHighestLevelCleared();
 		if (currentHighestLevel < this.currentLvl) {
@@ -432,9 +431,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
-			if (Upgrades.Shrooms.isActivated()) {
-				camera.setRotation(camera.getRotation() + 10);
-			}
 		}
 	}
 

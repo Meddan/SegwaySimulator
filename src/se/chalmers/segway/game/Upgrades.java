@@ -11,8 +11,8 @@ public enum Upgrades implements Serializable {
 		AntigravityWheels (1000,false,"AntigravityWheels", "Jump higher!"),
 		SuperHelmet(3000, false,"SuperHelmet","Protect dem braincells"),
 		RocketBoost(5000,false,"RocketBoost","Go really really fast"),
-		Shrooms(420,false,"Shrooms","???"),
-		Rehab(400000,false,"Rehab","THEY TRY AND MAKE ME GO TO REHAB I SAY NO NO NO");
+		Shrooms(4200,false,"Shrooms","???"),
+		Rehab(12270,false,"Rehab","THEY TRY AND MAKE ME GO TO REHAB I SAY NO NO NO");
 		
 		
 		private final int cost;
