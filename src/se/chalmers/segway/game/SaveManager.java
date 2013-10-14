@@ -22,24 +22,15 @@ public class SaveManager {
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
 		File file = new File(path, "upgrades");
 		if(file.exists()){
-			System.out.println("FOUND UPGRADE FILE BITCH");
 			try {
-				//TODO: Needs testing
-				System.out.println("IN TRY BITCH");
 				FileInputStream fis = new FileInputStream(file);
-				System.out.println("FIS BITCH");
 				ObjectInputStream ois = new ObjectInputStream(fis);
-				System.out.println("OIS BITCH");
 				Object obj = ois.readObject();
-				System.out.println("OBJ BITCH");
 				ois.close();
 				if (obj != null && obj instanceof HashMap<?, ?>){
-					System.out.println("BITCH INSTANCEOF IS TRUE UPGRADES");
 					for(Object i : ((HashMap<?,?>)obj).keySet()){
-						System.out.println("IN FOR LOOP BITCH");
 						for(Upgrades u : Upgrades.values()){
 							if(u.getName().equals((String)i)){
-								System.out.println("IT EQUALED BITCH");
 								u.setActive((Boolean) ((HashMap<?,?>)obj).get(i));
 							}
 						}
@@ -48,10 +39,7 @@ public class SaveManager {
 			} catch (Exception e){
 				e.printStackTrace();
 			}
-		} else {
-			System.out.println("NO UPGRADE FILE BITCH");
 		}
-		
 	}
 	
 	/**
@@ -63,25 +51,15 @@ public class SaveManager {
 			saveMap.put(upg.getName(), upg.isActivated());
 		}
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
-		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		path.mkdir();
-		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		FileOutputStream fos;
 		File file = new File(path, "upgrades");
 		try {
-			System.out.println("TRYING TO WRITE UPGRADE BITCH");
 			fos = new FileOutputStream(file);
-			
-			System.out.println("FOS CREATED BITCH");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			System.out.println("OOS CREATED BITCH");
 			oos.writeObject(saveMap);
-			System.out.println("WROTE UPGRADE DATA BITCH");
 			oos.close();
-			System.out.println("CLOSED BITCH");
-			System.out.println("Exactly after it is " + file.exists() + " BITCH");
 		} catch (Exception e) {
-			System.out.println("EXCEPTION BITCH");
 			e.printStackTrace();
 			
 		}
@@ -92,28 +70,17 @@ public class SaveManager {
 	 */
 	public static void savePlayerData(PlayerData data){
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
-		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		path.mkdir();
-		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		FileOutputStream fos;
 		File file = new File(path, "player");
 		try {
-			System.out.println("TRYING TO WRITE PLAYER BITCH");
 			fos = new FileOutputStream(file);
-			
-			System.out.println("FOS CREATED BITCH");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			System.out.println("OOS CREATED BITCH");
 			oos.writeObject(data);
-			System.out.println("WROTE DATA BITCH");
 			oos.close();
-			System.out.println("CLOSED BITCH");
-			System.out.println("Exactly after it is " + file.exists() + " BITCH");
 		} catch (Exception e) {
-			System.out.println("EXCEPTION BITCH");
 			e.printStackTrace();
 		}
-		//System.out.println(new File("player").exists() + " BITCH");
 	}
 	/**
 	 * Returns the players saved data
@@ -123,19 +90,14 @@ public class SaveManager {
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
 		File file = new File(path, "player");
 		if(file.exists()){
-			System.out.println("FOUND PLAYER FILE BITCH");
 			try {
 				//TODO: Needs testing
 				FileInputStream fis = new FileInputStream(file);
-				System.out.println("FIS BITCH");
 				ObjectInputStream ois = new ObjectInputStream(fis);
-				System.out.println("OIS BITCH");
 				Object obj = ois.readObject();
-				System.out.println("OBJ BITCH");
 				ois.close();
 				
 				if (obj != null && obj instanceof PlayerData){
-					System.out.println("PLAYERCASH LOADED BITCH: " + ((PlayerData) obj).getMoney());
 					return (PlayerData) obj;
 				} else {
 					return null;
@@ -145,41 +107,28 @@ public class SaveManager {
 				return null;
 			}
 		} else {
-			System.out.println("NO PLAYER FILE BITCH");
 			return null;
 		}
 	}
 	public static void saveSettings(Settings settings){
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
-		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		path.mkdir();
-		System.out.println("BITCH IS DIR " +  path.isDirectory());
 		FileOutputStream fos;
 		File file = new File(path, "settings");
 		try {
-			System.out.println("TRYING TO WRITE SETTINGS BITCH");
 			fos = new FileOutputStream(file);
-			System.out.println("FOS CREATED BITCH");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			System.out.println("OOS CREATED BITCH");
 			oos.writeObject(settings);
-			System.out.println("WROTE SETTINGS BITCH");
 			oos.close();
-			System.out.println("CLOSED BITCH");
-			System.out.println("Exactly after it is " + file.exists() + " BITCH");
 		} catch (Exception e) {
-			System.out.println("EXCEPTION BITCH");
 			e.printStackTrace();
 		}
-		//System.out.println(new File("player").exists() + " BITCH");
 	}
 	public static Settings loadSettings(){
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
 		File file = new File(path, "settings");
 		if(file.exists()){
-			System.out.println("FOUND SETTINGS FILE BITCH");
 			try {
-				//TODO: Needs testing
 				FileInputStream fis = new FileInputStream(file);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				Object obj = ois.readObject();
@@ -191,12 +140,10 @@ public class SaveManager {
 					return null;
 				}
 			} catch (Exception e){
-				System.out.println("SETTINGS EXCEPTION");
 				e.printStackTrace();
 				return null;
 			}
 		} else {
-			System.out.println("NO SETTINGS FILE BITCH");
 			return null;
 		}
 	}

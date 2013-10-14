@@ -14,7 +14,7 @@ public enum Upgrades implements Serializable {
 		Shrooms(4200,false,"Shrooms","???"),
 		Rehab(12270,false,"Rehab","THEY TRY AND MAKE ME GO TO REHAB I SAY NO NO NO");
 		
-		
+		//Variables that contain all the necessary information
 		private final int cost;
 		private boolean isActive;
 		private final String name;
@@ -53,9 +53,16 @@ public enum Upgrades implements Serializable {
 		public String getName(){
 			return this.name;
 		}
+		/**
+		 * Returns some info about the upgrade
+		 * @return some info
+		 */
 		public String getInfo(){
 			return this.info;
 		}
+		/**
+		 * Resets all the upgrades statuses to their default value (off) and saves.
+		 */
 		public static void resetUpgrades(){
 			for(Upgrades upg : Upgrades.values()){
 				upg.setActive(false);
