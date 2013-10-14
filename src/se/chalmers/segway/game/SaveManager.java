@@ -1,24 +1,14 @@
 
 package se.chalmers.segway.game;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Writer;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import se.chalmers.segway.resources.ResourcesManager;
-import android.content.Context;
 
 /**
  * A class to save and load upgrades in between sessions.
@@ -137,11 +127,15 @@ public class SaveManager {
 			try {
 				//TODO: Needs testing
 				FileInputStream fis = new FileInputStream(file);
+				System.out.println("FIS BITCH");
 				ObjectInputStream ois = new ObjectInputStream(fis);
+				System.out.println("OIS BITCH");
 				Object obj = ois.readObject();
-				obj = ois.readObject();
+				System.out.println("OBJ BITCH");
 				ois.close();
+				
 				if (obj != null && obj instanceof PlayerData){
+					System.out.println("PLAYERCASH LOADED BITCH: " + ((PlayerData) obj).getMoney());
 					return (PlayerData) obj;
 				} else {
 					return null;
@@ -197,11 +191,12 @@ public class SaveManager {
 					return null;
 				}
 			} catch (Exception e){
+				System.out.println("SETTINGS EXCEPTION");
 				e.printStackTrace();
 				return null;
 			}
 		} else {
-			System.out.println("NO PLAYER FILE BITCH");
+			System.out.println("NO SETTINGS FILE BITCH");
 			return null;
 		}
 	}

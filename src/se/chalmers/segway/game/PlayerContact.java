@@ -5,20 +5,22 @@ import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 
 import se.chalmers.segway.entities.Player;
+import se.chalmers.segway.scenes.GameScene;
+import se.chalmers.segway.scenes.SceneManager;
 
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public class PlayerContact implements ContactListener {
 
 	private Player player;
 	private Engine engine;
 
-	
 	/**
 	 * @return the player
 	 */
@@ -27,7 +29,8 @@ public class PlayerContact implements ContactListener {
 	}
 
 	/**
-	 * @param player the player to set
+	 * @param player
+	 *            the player to set
 	 */
 	public void setPlayer(Player player) {
 		this.player = player;
@@ -41,7 +44,8 @@ public class PlayerContact implements ContactListener {
 	}
 
 	/**
-	 * @param engine the engine to set
+	 * @param engine
+	 *            the engine to set
 	 */
 	public void setEngine(Engine engine) {
 		this.engine = engine;
@@ -54,8 +58,10 @@ public class PlayerContact implements ContactListener {
 
 		if (x1.getBody().getUserData() != null
 				&& x2.getBody().getUserData() != null) {
-			if (((String)x2.getBody().getUserData()).contains("platform")
-					|| ((String)x2.getBody().getUserData()).contains("Platform")) {
+			if (((String) x2.getBody().getUserData()).contains("platform")
+					|| ((String) x2.getBody().getUserData())
+							.contains("Platform")) {
+				//TODO: Platform med stort P?
 				player.setContact(true);
 			}
 		}
@@ -78,6 +84,26 @@ public class PlayerContact implements ContactListener {
 					}));
 		}
 
+		if (x1.getBody().getUserData().equals("player")
+				&& ((String)x2.getBody().getUserData()).contains("zone")) {
+			GameScene gs = (GameScene) SceneManager.getInstance().getCurrentScene();
+			if(x2.getBody().getUserData().equals("zone_up")){
+				gs.getPhysicsWorld().setGravity(new Vector2(0, 17));
+			} else if (x2.getBody().getUserData().equals("zone_down")){
+				gs.getPhysicsWorld().setGravity(new Vector2(0, -34));
+			} else if (x2.getBody().getUserData().equals("zone_left")){
+				gs.getPhysicsWorld().setGravity(new Vector2(-17, 0));
+			} else if (x2.getBody().getUserData().equals("zone_right")){
+				gs.getPhysicsWorld().setGravity(new Vector2(17, 0));
+			}
+		}
+		
+		//Reduce lagging on my slow phone
+		if (x1.getBody().getUserData().equals("fallSpike")
+				&& ((String)x2.getBody().getUserData()).contains("platform")) {
+			x1.getBody().setType(BodyType.StaticBody);
+		}
+
 	}
 
 	@Override
@@ -87,10 +113,14 @@ public class PlayerContact implements ContactListener {
 
 		if (x1.getBody().getUserData() != null
 				&& x2.getBody().getUserData() != null) {
-			if (!x2.getBody().getUserData().equals("player")) {
-				player.setContact(false);
-				System.out.println("End contact");
+			if (x1.getBody().getUserData().equals("player")
+					&& ((String)x2.getBody().getUserData()).contains("zone")) {
+				GameScene gs = (GameScene) SceneManager.getInstance().getCurrentScene();
+				gs.getPhysicsWorld().setGravity(new Vector2(0, -17));
 			}
+//			if (!x2.getBody().getUserData().equals("player")) {
+//				player.setContact(false);
+//			}
 		}
 
 	}

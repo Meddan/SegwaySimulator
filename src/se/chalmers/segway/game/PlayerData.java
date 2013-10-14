@@ -13,8 +13,7 @@ public class PlayerData implements Serializable{
 	private int highestLevelFinished;
 	public PlayerData(String name){
 		this.name = name;
-		this.cash = 200;
-		this.highestLevelFinished = 6;
+		this.highestLevelFinished = 0;
 	}
 	
 	public int getMoney(){
@@ -34,5 +33,13 @@ public class PlayerData implements Serializable{
 	}
 	public int getHighestLevelCleared(){
 		return this.highestLevelFinished;
+	}
+	/**
+	 * Resets the players money and level progress and saves.
+	 */
+	public void resetPlayerData(){
+		this.cash = 0;
+		this.highestLevelFinished = 0;
+		SaveManager.savePlayerData(this);
 	}
 }

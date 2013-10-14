@@ -5,11 +5,12 @@
     <entity x="500" y="400" type="platform1"/>
     <entity x="800" y="420" type="platform1"/>
     <entity x="1100" y="440" type="platform1"/>
-    <entity x="1310" y="570" type="platform2"/>
-    <entity x="1200" y="500" type="golden_cookie"/>
-    <entity x="1350" y="530" type="platform2"/>
+    <entity x="1275" y="430" type="spikes"/>
+    <entity x="1450" y="440" type="platform1"/>
     <entity x="1700" y="440" type="platform1"/>
-    <entity x="2000" y="465" type="platform1"/>
+    <entity x="1800" y="470" type="spring"/>
+    <entity x="2000" y="565" type="platform1"/>
+    <entity x="2100" y="650" type="golden_cookie"/>
     <entity x="50" y="610" type="player"/>
     <entity x="400" y="550" type="coin"/>
     <entity x="420" y="530" type="coin"/>

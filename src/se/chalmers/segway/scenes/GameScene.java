@@ -33,6 +33,8 @@ import org.xml.sax.Attributes;
 
 import se.chalmers.segway.entities.Player;
 import se.chalmers.segway.game.PlayerContact;
+import se.chalmers.segway.game.PlayerData;
+import se.chalmers.segway.game.SaveManager;
 import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.scenes.ParallaxLayer.ParallaxEntity;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
@@ -67,7 +69,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	private boolean gameOverDisplayed = false;
 	private boolean boost = false;
-	private int boostAmount = 20;
+	private int boostAmount;
+	private Sprite boostCounter;
+	private Text boostText;
 
 	private Player player;
 	private PlayerContact contactListener;
@@ -78,6 +82,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private PointParticleEmitter particleEmitter;
 	private SpriteParticleSystem particleSystem;
 
+	private PlayerData playerData;
+
 	private TimerHandler boostTimer = new TimerHandler(0.1f,
 			new ITimerCallback() {
 				public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -85,15 +91,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 					if (boostAmount <= 0) {
 						engine.unregisterUpdateHandler(boostTimer);
-						Text boostMessage = new Text(camera.getCenterX() + 80,
-								camera.getCenterY() + 200 / 2,
-								resourcesManager.tipFont, "Out of boost!", vbom);
-						gameHUD.attachChild(boostMessage);
 						boost = false;
 					} else {
-						System.out.println("Boosting");
-						System.out.println("Boost left: " + boostAmount);
-						boostAmount--;
+						addToBoost(-1);
 					}
 				}
 			});
@@ -166,6 +166,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		}
 	}
 
+	private void createBoostCounter() {
+		boostAmount = 20;
+		boostCounter = new Sprite(580, 453, resourcesManager.gastank, vbom);
+		boostText = new Text(620, 450, resourcesManager.loadingFont,
+				": 1234567890", vbom);
+	}
+
 	private void createBackground() {
 		parallaxLayer = new ParallaxLayer(camera, true, 10000);
 		Sprite back = new Sprite(0, camera.getCenterY(), camera.getWidth(),
@@ -192,8 +199,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
+
 		tip = new Text(camera.getCenterX() + 80, camera.getCenterY() + 200 / 2,
 				resourcesManager.tipFont, "Tap screen to start!", vbom);
+
+		createBoostCounter();
+		setBoostCounter(boostAmount);
+
+		gameHUD.attachChild(boostCounter);
+		gameHUD.attachChild(boostText);
 		gameHUD.attachChild(tip);
 	}
 
@@ -201,30 +215,46 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		player = new Player(0, 0, vbom, camera, physicsWorld) {
 			@Override
 			public void onDie() {
-				if (!gameOverDisplayed) {
-					stopTimerAndReturnTime();
-					deathScene.display(GameScene.this, camera);
-					camera.setChaseEntity(null);
-					gameOverDisplayed = true;
-					/*
-					 * levelCompleteScene.display(GameScene.this, camera);
-					 * addToScore((int) player.getX() / 20);
-					 * displayScoreAtGameOver();
-					 */
-				}
+				showGameOver();
 			}
 		};
 		contactListener.setPlayer(player);
 		contactListener.setEngine(engine);
 	}
 
+	public void showGameOver() {
+		if (!gameOverDisplayed) {
+			stopTimerAndReturnTime();
+			engine.registerUpdateHandler(new TimerHandler(0.5f,
+					new ITimerCallback() {
+						public void onTimePassed(
+								final TimerHandler pTimerHandler) {
+							pTimerHandler.reset();
+							engine.unregisterUpdateHandler(pTimerHandler);
+							if (!gameOverDisplayed) {
+								System.out.println("display deathscene");
+								deathScene.display(GameScene.this, camera);
+								camera.setChaseEntity(null);
+								gameOverDisplayed = true;
+							}
+						}
+					}));
+		}
+	}
+
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		// Score is calculated: 10*amount of cookies + 1000/1 + time in seconds
+		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in seconds
 		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
-		finalScore = new Text(300, 80, resourcesManager.fancyFont, "Score: "
-				+ score, vbom);
+		playerData.setMoney(playerData.getMoney() + score);
+		int currentHighestLevel = playerData.getHighestLevelCleared();
+		if (currentHighestLevel < this.currentLvl) {
+			playerData.setHighestLevelCleared(currentLvl);
+		}
+		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: " + score, vbom);
+		SaveManager.savePlayerData(playerData);
+			
 		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
@@ -238,9 +268,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	public void addToScore(int i) {
 		score += i;
 	}
-	
+
 	public void addToBoost(int i) {
 		boostAmount += i;
+		setBoostCounter(boostAmount);
+	}
+	
+	public PhysicsWorld getPhysicsWorld() {
+		return physicsWorld;
+	}
+
+	private void setBoostCounter(int i) {
+		boostText.setText(":" + i);
+		boostText.setPosition(620 + (14 * Integer.toString(i).length()), 450);
 	}
 
 	private void createPhysics() {
@@ -260,7 +300,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	// Handles all code for loading levels
 	public void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
-
+		this.currentLvl = levelID;
 		levelLoader
 				.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(
 						LevelConstants.TAG_LEVEL) {
@@ -314,8 +354,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				}
 			}
 		} else if (pSceneTouchEvent.isActionUp()) {
-			boost = false;
-			engine.unregisterUpdateHandler(boostTimer);
+			if(pSceneTouchEvent.getX() < camera.getCenterX()){
+				boost = false;
+				engine.unregisterUpdateHandler(boostTimer);
+			}
 		} else {
 			takeInput = true;
 			tip.setVisible(false);
@@ -375,5 +417,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		long temp = System.currentTimeMillis() - stopWatchTime;
 		stopWatchTime = 0;
 		return temp;
+	}
+
+	public void setPlayerData(PlayerData pd) {
+		this.playerData = pd;
 	}
 }
