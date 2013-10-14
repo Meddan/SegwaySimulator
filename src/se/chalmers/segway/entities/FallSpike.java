@@ -5,6 +5,7 @@ import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.resources.ResourcesManager;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -35,13 +36,17 @@ public class FallSpike extends Sprite {
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
-		if (player.collidesWith(this)) {
+		if (player.collidesWith(this) && player.getY()+40 < this.getY()) {
+			if (!Upgrades.SuperHelmet.isActivated()) {
 			player.stop();
 			player.onDie();
+			} else {
+				Upgrades.SuperHelmet.setActive(false);
+			}
 		}
 
 		if (Math.abs(this.getX() - player.getX()) < 30
-				&& body.getType() == BodyType.StaticBody) {
+				&& body.getType() == BodyType.StaticBody && player.getY() < this.getY()) {
 			body.setType(BodyType.DynamicBody);
 		}
 		

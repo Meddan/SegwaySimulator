@@ -2,6 +2,25 @@
 <level width="14000" height="5500">  
 	<entity x="100" y="5000" type="platform1"/>
 	<entity x="1500" y="5000" type="boulder"/>
+	<entity x="2500" y="5000" type="boulder"/>
+	<entity x="3500" y="5000" type="boulder"/>
+	<entity x="4500" y="5000" type="boulder"/>
+	<entity x="5500" y="5000" type="boulder"/>
+	<entity x="6500" y="5000" type="boulder"/>
+	<entity x="7500" y="5000" type="boulder"/>
+	<entity x="8500" y="5000" type="boulder"/>
+	<entity x="9500" y="5000" type="boulder"/>
+	<entity x="10500" y="5000" type="boulder"/>
+	<entity x="11500" y="5000" type="boulder"/>
+	<entity x="500" y="6000" type="boulder"/>
+	<entity x="1000" y="6000" type="boulder"/>
+	<entity x="1300" y="6000" type="boulder"/>
+	<entity x="1100" y="6000" type="boulder"/>
+	<entity x="900" y="6000" type="boulder"/>
+	<entity x="700" y="6000" type="boulder"/>
+	<entity x="600" y="6000" type="boulder"/>
+	<entity x="0" y="6000" type="boulder"/>
+	<entity x="5" y="6000" type="boulder"/>
 	<entity x="400" y="4900" type="platform1"/>
 	<entity x="700" y="4800" type="platform1"/>
 	<entity x="1000" y="4700" type="platform1"/>
