@@ -129,7 +129,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
-
+		camera.setRotation(0);
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
@@ -183,17 +183,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		front.setRotation(150);
 		Sprite front2 = new Sprite(0, camera.getCenterY(),
 				resourcesManager.backgroundFront2Region, vbom);
-		front.setRotation(-150);
+		front2.setRotation(-150);
 
-		if(Upgrades.Shrooms.isActivated()){
+		parallaxLayer
+				.attachParallaxEntity(new ParallaxEntity(6, back, false, 1));
+		if (Upgrades.Shrooms.isActivated()) {
+			front.setColor(0.3f, 1f, 0.3f);
+			front2.setColor(0.3f, 1f, 0.3f);
+
 			parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front,
 					true));
 			parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2,
 					true));
 		}
-		parallaxLayer
-				.attachParallaxEntity(new ParallaxEntity(6, back, false, 1));
-		
 
 		setBackground(new Background(Color.CYAN));
 		this.attachChild(parallaxLayer);
@@ -253,16 +255,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in seconds
+		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in
+		// seconds
 		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
 		playerData.setMoney(playerData.getMoney() + score);
 		int currentHighestLevel = playerData.getHighestLevelCleared();
 		if (currentHighestLevel < this.currentLvl) {
 			playerData.setHighestLevelCleared(currentLvl);
 		}
-		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: " + score, vbom);
+		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: "
+				+ score, vbom);
 		SaveManager.savePlayerData(playerData);
-			
+
 		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
@@ -281,7 +285,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		boostAmount += i;
 		setBoostCounter(boostAmount);
 	}
-	
+
 	public PhysicsWorld getPhysicsWorld() {
 		return physicsWorld;
 	}
@@ -362,7 +366,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				}
 			}
 		} else if (pSceneTouchEvent.isActionUp()) {
-			if(pSceneTouchEvent.getX() < camera.getCenterX()){
+			if (pSceneTouchEvent.getX() < camera.getCenterX()) {
 				boost = false;
 				engine.unregisterUpdateHandler(boostTimer);
 			}
@@ -396,6 +400,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					multiplier = 10;
 				}
 				particleEmitter.setCenter(player.getX(), player.getY());
+				
 			}
 
 			player.setRotation(tiltSpeedX * 18f);
@@ -405,6 +410,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 			player.setSpeed(tiltGravity);
 			Vector2Pool.recycle(tiltGravity);
+			if (Upgrades.Shrooms.isActivated()) {
+				camera.setRotation(camera.getRotation() + 10);
+			}
 		}
 	}
 
