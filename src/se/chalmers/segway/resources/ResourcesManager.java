@@ -90,7 +90,6 @@ public class ResourcesManager {
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
-	public ITiledTextureRegion playerRegion;
 	public ITextureRegion gastank;
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
