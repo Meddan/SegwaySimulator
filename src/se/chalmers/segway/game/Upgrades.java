@@ -8,9 +8,9 @@ import java.io.Serializable;
  *
  */
 public enum Upgrades implements Serializable {
-		AntigravityWheels (100,false,"AntigravityWheels", "Jump higher!"),
-		SuperHelmet(300, false,"SuperHelmet","Protect dem braincells"),
-		RocketBoost(500,false,"RocketBoost","Go really really fast");
+		AntigravityWheels (1000,false,"AntigravityWheels", "Jump higher!"),
+		SuperHelmet(3000, false,"SuperHelmet","Protect dem braincells"),
+		RocketBoost(5000,false,"RocketBoost","Go really really fast");
 		
 		private final int cost;
 		private boolean isActive;
