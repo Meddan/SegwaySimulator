@@ -190,7 +190,7 @@ public class ResourcesManager {
 				TextureOptions.BILINEAR);
 		menu_background_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity,
-						"menu_background.png");
+						"hus.jpg");
 		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				menuTextureAtlas, activity, "play.png");
 		soundon_region = BitmapTextureAtlasTextureRegionFactory
