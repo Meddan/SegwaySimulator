@@ -180,15 +180,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 		Sprite front = new Sprite(0, camera.getCenterY(),
 				resourcesManager.backgroundFrontRegion, vbom);
+		front.setRotation(150);
 		Sprite front2 = new Sprite(0, camera.getCenterY(),
 				resourcesManager.backgroundFront2Region, vbom);
+		front.setRotation(-150);
 
+		if(Upgrades.Shrooms.isActivated()){
+			parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front,
+					true));
+			parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2,
+					true));
+		}
 		parallaxLayer
 				.attachParallaxEntity(new ParallaxEntity(6, back, false, 1));
-		// parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front,
-		// true));
-		// parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2,
-		// true));
+		
 
 		setBackground(new Background(Color.CYAN));
 		this.attachChild(parallaxLayer);
