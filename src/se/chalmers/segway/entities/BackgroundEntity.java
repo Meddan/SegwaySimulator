@@ -41,7 +41,7 @@ public class BackgroundEntity extends Sprite {
 	protected void preDraw(GLState pGLState, Camera pCamera) {
 		super.preDraw(pGLState, pCamera);
 		pGLState.enableDither();
-		super.setPosition(firstX-time%Math.abs(firstX-lastX), 400);
+		super.setPosition(firstX-time%Math.abs(firstX-lastX), startY);
 		time += 1.1;
 	}
 }

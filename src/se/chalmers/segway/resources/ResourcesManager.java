@@ -203,6 +203,9 @@ public class ResourcesManager {
 		upgrade_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity,
 						"upgrade_button.png");
+		player_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(menuTextureAtlas, activity, "segway.png",
+						3, 1);
 
 		try {
 			this.menuTextureAtlas
