@@ -60,8 +60,7 @@ public class PlayerContact implements ContactListener {
 				&& x2.getBody().getUserData() != null) {
 			if (((String) x2.getBody().getUserData()).contains("platform")
 					|| ((String) x2.getBody().getUserData())
-							.contains("Platform")) {
-				//TODO: Platform med stort P?
+							.contains("fall")) {
 				player.setContact(true);
 			}
 		}

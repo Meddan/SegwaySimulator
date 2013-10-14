@@ -1,16 +1,18 @@
 package se.chalmers.segway.scenes;
 
-import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
-import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.color.Color;
 
+import se.chalmers.segway.entities.BackgroundEntity;
 import se.chalmers.segway.game.PlayerData;
 import se.chalmers.segway.game.SaveManager;
 import se.chalmers.segway.game.Settings;
@@ -29,8 +31,8 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void createScene() {
-		createBackground();
 		createMenuChildScene();
+		createBackground();
 		initMusic();
 		createHUD();
 	}
@@ -78,14 +80,14 @@ public class MainMenuScene extends BaseScene implements
 	 * Adds a background to the scene.
 	 */
 	private void createBackground() {
-		attachChild(new Sprite(400, 240,
-				resourcesManager.menu_background_region, vbom) {
-			@Override
-			protected void preDraw(GLState pGLState, Camera pCamera) {
-				super.preDraw(pGLState, pCamera);
-				pGLState.enableDither();
-			}
-		});
+		setBackground(new Background(new Color(0.21f, 0.8f, 0.11f)));
+
+		SpriteMenuItem play = new SpriteMenuItem(3, resourcesManager.player_region, vbom);
+		play.setPosition(camera.getCenterX()+150, camera.getCenterY());
+		
+		attachChild(new BackgroundEntity(1200, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
+		attachChild(new BackgroundEntity(400, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
+		attachChild(play);
 	}
 
 	private MenuScene menuChildScene;
@@ -120,13 +122,13 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.setPosition(0, 0);
 
 		playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY,
-				resourcesManager.play_region, vbom), 1.2f, 1);
+				resourcesManager.play_region, vbom), 0.8f, 0.7f);
 		soundonMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
-				MENU_OPTIONS, resourcesManager.soundon_region, vbom), 1.2f, 1);
+				MENU_OPTIONS, resourcesManager.soundon_region, vbom), 0.8f, 0.7f);
 		soundoffMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(
-				MENU_OPTIONS, resourcesManager.soundoff_region, vbom), 1.2f, 1);
+				MENU_OPTIONS, resourcesManager.soundoff_region, vbom), 0.8f, 0.7f);
 		shopMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_SHOP,
-				resourcesManager.shop_region, vbom), 1.2f, 1);
+				resourcesManager.shop_region, vbom), 0.8f, 0.7f);
 
 		menuChildScene.addMenuItem(playMenuItem);
 		menuChildScene.addMenuItem(shopMenuItem);
@@ -136,10 +138,10 @@ public class MainMenuScene extends BaseScene implements
 		menuChildScene.buildAnimations();
 		menuChildScene.setBackgroundEnabled(false);
 
-		playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY() - 70);
-		shopMenuItem.setPosition(shopMenuItem.getX(), shopMenuItem.getY() - 70);
-		soundoffMenuItem.setPosition(soundoffMenuItem.getX(), soundoffMenuItem.getY()-70);
-		soundonMenuItem.setPosition(soundoffMenuItem.getX(), soundoffMenuItem.getY());
+		playMenuItem.setPosition(camera.getCenterX()-280, camera.getCenterY()-100);
+		shopMenuItem.setPosition(camera.getCenterX(), camera.getCenterY()-100);
+		soundoffMenuItem.setPosition(camera.getCenterX()+280, camera.getCenterY()-100);
+		soundonMenuItem.setPosition(camera.getCenterX()+280, camera.getCenterY()-100);
 		
 		soundoffMenuItem.setVisible(!sound);
 		soundonMenuItem.setVisible(sound);

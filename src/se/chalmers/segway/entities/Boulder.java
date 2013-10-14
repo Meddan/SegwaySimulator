@@ -7,6 +7,7 @@ import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.resources.ResourcesManager;
 
 import com.badlogic.gdx.math.Vector2;
@@ -26,7 +27,6 @@ public class Boulder extends Sprite {
 
 					if (speed <= 0) {
 						ResourcesManager.getInstance().engine.unregisterUpdateHandler(speedTimer);
-						stop();
 					} else {
 						speed += -1;
 					}
@@ -54,10 +54,13 @@ public class Boulder extends Sprite {
 		super.onManagedUpdate(pSecondsElapsed);
 
 		if (player.collidesWith(this) && body.getLinearVelocity().x > 5) {
+			if (!Upgrades.SuperHelmet.isActivated()) {
 			player.stop();
-			this.stop();
 			player.onDie();
-		}
+			} else {
+				Upgrades.SuperHelmet.setActive(false);
+			}
+		} 
 
 		if (Math.abs(this.getX() - player.getX()) < 30
 				&& body.getType() == BodyType.StaticBody) {

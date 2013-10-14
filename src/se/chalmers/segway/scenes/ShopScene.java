@@ -111,6 +111,11 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 
 	private void buy() {
 		if (player.getMoney() >= selected.getCost()) {
+			if (selected.getName() == "Rehab") {
+				Upgrades.Shrooms.setActive(false);
+			} else if (selected.getName() == "Shrooms") {
+				Upgrades.Rehab.setActive(false);
+			}
 			selected.setActive(true);
 			player.setMoney(player.getMoney() - selected.getCost());
 		} else {

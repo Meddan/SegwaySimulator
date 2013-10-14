@@ -83,7 +83,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private SpriteParticleSystem particleSystem;
 
 	private PlayerData playerData;
-
+	
+	private float trippyTime = 0;
+	
+	private TimerHandler trippyTimer;
+	
 	private TimerHandler boostTimer = new TimerHandler(0.1f,
 			new ITimerCallback() {
 				public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -112,6 +116,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createLocalScenes();
 		createBackground();
 		initTrail();
+		if(Upgrades.Shrooms.isActivated()) {
+			initTrippy();
+		}
+	}
+
+	private void initTrippy() {
+		trippyTimer = new TimerHandler(0.001f,
+				new ITimerCallback() {
+					public void onTimePassed(final TimerHandler pTimerHandler) {
+						pTimerHandler.reset();
+						trippyTime +=0.1f;
+						camera.setRotation((float) (20*Math.sin(trippyTime)));
+					}
+				});
+		engine.registerUpdateHandler(trippyTimer);
 	}
 
 	@Override
@@ -126,10 +145,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 	@Override
 	public void disposeScene() {
+		engine.unregisterUpdateHandler(trippyTimer);
+		camera.setRotation(0);
 		camera.setHUD(null);
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
-
+		camera.setRotation(0);
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
@@ -180,12 +201,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 
 		Sprite front = new Sprite(0, camera.getCenterY(),
 				resourcesManager.backgroundFrontRegion, vbom);
+		front.setRotation(150);
 		Sprite front2 = new Sprite(0, camera.getCenterY(),
 				resourcesManager.backgroundFront2Region, vbom);
+		front2.setRotation(-150);
 
-		parallaxLayer.attachParallaxEntity(new ParallaxEntity(6, back, false,1));
-//		parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front, true));
-//		parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2, true));
+		parallaxLayer.attachParallaxEntity(new ParallaxEntity(6, back, false, 1));
+		if (Upgrades.Shrooms.isActivated()) {
+			front.setColor(0.3f, 1f, 0.3f);
+			front2.setColor(0.3f, 1f, 0.3f);
+
+			parallaxLayer.attachParallaxEntity(new ParallaxEntity(3, front,
+					true));
+			parallaxLayer.attachParallaxEntity(new ParallaxEntity(1, front2,
+					true));
+		}
 
 		setBackground(new Background(Color.CYAN));
 		this.attachChild(parallaxLayer);
@@ -245,16 +275,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private void displayScoreAtGameOver() {
 
 		camera.setChaseEntity(null);
-		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in seconds
+		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in
+		// seconds
 		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
 		playerData.setMoney(playerData.getMoney() + score);
 		int currentHighestLevel = playerData.getHighestLevelCleared();
 		if (currentHighestLevel < this.currentLvl) {
 			playerData.setHighestLevelCleared(currentLvl);
 		}
-		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: " + score, vbom);
+		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: "
+				+ score, vbom);
 		SaveManager.savePlayerData(playerData);
-			
+
 		levelCompleteScene.attachChild(finalScore);
 		gameOverDisplayed = true;
 	}
@@ -273,7 +305,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		boostAmount += i;
 		setBoostCounter(boostAmount);
 	}
-	
+
 	public PhysicsWorld getPhysicsWorld() {
 		return physicsWorld;
 	}
@@ -354,7 +386,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				}
 			}
 		} else if (pSceneTouchEvent.isActionUp()) {
-			if(pSceneTouchEvent.getX() < camera.getCenterX()){
+			if (pSceneTouchEvent.getX() < camera.getCenterX()) {
 				boost = false;
 				engine.unregisterUpdateHandler(boostTimer);
 			}
@@ -388,6 +420,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					multiplier = 10;
 				}
 				particleEmitter.setCenter(player.getX(), player.getY());
+				
 			}
 
 			player.setRotation(tiltSpeedX * 18f);

@@ -90,7 +90,6 @@ public class ResourcesManager {
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
-	public ITiledTextureRegion playerRegion;
 	public ITextureRegion gastank;
 	public ITextureRegion soundon_region;
 	public ITextureRegion soundoff_region;
@@ -190,7 +189,7 @@ public class ResourcesManager {
 				TextureOptions.BILINEAR);
 		menu_background_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity,
-						"menu_background.png");
+						"hus.jpg");
 		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				menuTextureAtlas, activity, "play.png");
 		soundon_region = BitmapTextureAtlasTextureRegionFactory
@@ -204,6 +203,9 @@ public class ResourcesManager {
 		upgrade_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity,
 						"upgrade_button.png");
+		player_region = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(menuTextureAtlas, activity, "segway.png",
+						3, 1);
 
 		try {
 			this.menuTextureAtlas
