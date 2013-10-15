@@ -82,12 +82,14 @@ public class MainMenuScene extends BaseScene implements
 	private void createBackground() {
 		setBackground(new Background(new Color(0.21f, 0.8f, 0.11f)));
 
-		SpriteMenuItem play = new SpriteMenuItem(3, resourcesManager.player_region, vbom);
-		play.setPosition(camera.getCenterX()+150, camera.getCenterY());
+		AnimatedSprite segwayKid = new AnimatedSprite(1, 3, resourcesManager.player_region, vbom);
+		segwayKid.setPosition(camera.getCenterX()+150, camera.getCenterY()+56);
+		segwayKid.setRotation(30);
+		segwayKid.animate(40, true);
 		
-		attachChild(new BackgroundEntity(1200, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
-		attachChild(new BackgroundEntity(400, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
-		attachChild(play);
+		attachChild(new BackgroundEntity(5.9f, 1200, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
+		attachChild(new BackgroundEntity(5.9f, 400, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
+		attachChild(segwayKid);
 	}
 
 	private MenuScene menuChildScene;
