@@ -83,8 +83,9 @@ public class MainMenuScene extends BaseScene implements
 		setBackground(new Background(new Color(0.21f, 0.8f, 0.11f)));
 
 		AnimatedSprite segwayKid = new AnimatedSprite(1, 3, resourcesManager.player_region, vbom);
-		segwayKid.setPosition(camera.getCenterX()+150, camera.getCenterY()+56);
+		segwayKid.setPosition(camera.getCenterX()+130, camera.getCenterY()+46);
 		segwayKid.setRotation(30);
+		segwayKid.setScale(2.3f);
 		segwayKid.animate(40, true);
 		
 		attachChild(new BackgroundEntity(5.9f, 1200, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
