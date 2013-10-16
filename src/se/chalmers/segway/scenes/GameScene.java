@@ -197,6 +197,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				": 1234567890", vbom);
 	}
 
+	/**
+	 * Creates the background of the level, the background 
+	 * is always the cliffs of dover on cyan background.
+	 *  
+	 */
 	private void createBackground() {
 		parallaxLayer = new ParallaxLayer(camera, true, 10000);
 		Sprite back = new Sprite(0, camera.getCenterY(), camera.getWidth(),
@@ -230,6 +235,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		deathScene = new DeathScene(vbom);
 	}
 
+	/**
+	 * Creates the HUD.
+	 */
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
@@ -245,6 +253,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		gameHUD.attachChild(tip);
 	}
 
+	/**
+	 * Creates the player entity and decides what happens in onDie().
+	 */
 	private void createPlayer() {
 		player = new Player(0, 0, vbom, camera, physicsWorld) {
 			@Override
@@ -256,6 +267,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		contactListener.setEngine(engine);
 	}
 
+	/**
+	 * Displays the DeathScene, which is called when you fail a level.
+	 * The game over screen, waits half a second before showing. 
+	 */
 	public void showGameOver() {
 		if (!gameOverDisplayed) {
 			stopTimerAndReturnTime();
@@ -333,7 +348,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				SensorManager.SENSOR_DELAY_GAME);
 	}
 
-	// Handles all code for loading levels
+	/**
+	 * Loads a level from an .lvl file
+	 * 
+	 * @param levelID
+	 * 					the ID of the level to be loaded
+	 */
 	public void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
 		this.currentLvl = levelID;
@@ -402,9 +422,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	@Override
-	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
-
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {		
 	}
 
 	@Override
