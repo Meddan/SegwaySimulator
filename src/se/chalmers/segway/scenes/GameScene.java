@@ -83,11 +83,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private SpriteParticleSystem particleSystem;
 
 	private PlayerData playerData;
-	
+
 	private float trippyTime = 0;
-	
+
 	private TimerHandler trippyTimer;
-	
+
 	private TimerHandler boostTimer = new TimerHandler(0.1f,
 			new ITimerCallback() {
 				public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -116,20 +116,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createLocalScenes();
 		createBackground();
 		initTrail();
-		if(Upgrades.Shrooms.isActivated()) {
+		if (Upgrades.Shrooms.isActivated()) {
 			initTrippy();
 		}
 	}
 
 	private void initTrippy() {
-		trippyTimer = new TimerHandler(0.001f,
-				new ITimerCallback() {
-					public void onTimePassed(final TimerHandler pTimerHandler) {
-						pTimerHandler.reset();
-						trippyTime +=0.1f;
-						camera.setRotation((float) (20*Math.sin(trippyTime)));
-					}
-				});
+		trippyTimer = new TimerHandler(0.001f, new ITimerCallback() {
+			public void onTimePassed(final TimerHandler pTimerHandler) {
+				pTimerHandler.reset();
+				trippyTime += 0.1f;
+				camera.setRotation((float) (20 * Math.sin(trippyTime)));
+			}
+		});
 		engine.registerUpdateHandler(trippyTimer);
 	}
 
@@ -151,7 +150,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
 		camera.setRotation(0);
-		
+
 		resourcesManager.unloadGameResources();
 		this.dispose();
 		// TODO code responsible for disposing scene
@@ -185,8 +184,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (!gameOverDisplayed) {
 			this.detachChild(levelCompleteScene);
 			levelCompleteScene.display(GameScene.this, camera);
-			addToScore((int) player.getX() / 20);
-			displayScoreAtGameOver();
+
+			camera.setChaseEntity(null);
+			score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
+			playerData.setMoney(playerData.getMoney() + score);
+			int currentHighestLevel = playerData.getHighestLevelCleared();
+			if (currentHighestLevel < this.currentLvl) {
+				playerData.setHighestLevelCleared(currentLvl);
+			}
+			finalScore = new Text(320, 80, resourcesManager.fancyFont,
+					"Score: " + score, vbom);
+			SaveManager.savePlayerData(playerData);
+
+			levelCompleteScene.attachChild(finalScore);
+			gameOverDisplayed = true;
+
 		}
 	}
 
@@ -289,25 +301,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						}
 					}));
 		}
-	}
-
-	private void displayScoreAtGameOver() {
-
-		camera.setChaseEntity(null);
-		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in
-		// seconds
-		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
-		playerData.setMoney(playerData.getMoney() + score);
-		int currentHighestLevel = playerData.getHighestLevelCleared();
-		if (currentHighestLevel < this.currentLvl) {
-			playerData.setHighestLevelCleared(currentLvl);
-		}
-		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: "
-				+ score, vbom);
-		SaveManager.savePlayerData(playerData);
-
-		levelCompleteScene.attachChild(finalScore);
-		gameOverDisplayed = true;
 	}
 
 	/**
@@ -442,7 +435,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					multiplier = 10;
 				}
 				particleEmitter.setCenter(player.getX(), player.getY());
-				
+
 			}
 
 			player.setRotation(tiltSpeedX * 18f);
