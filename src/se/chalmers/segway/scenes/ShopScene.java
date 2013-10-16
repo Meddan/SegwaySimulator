@@ -114,7 +114,7 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 		int x = 580;
 
 		if (selected == null) {
-			upgradeChildScene.attachChild(generateText("Välj uppgradering", x,
+			upgradeChildScene.attachChild(generateText("Choose an upgrade", x,
 					380, listFont, true));
 		} else {
 			IMenuItem buyButton;
