@@ -2,6 +2,7 @@ package se.chalmers.segway.scenes;
 
 import java.util.LinkedList;
 
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
@@ -9,6 +10,7 @@ import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.ButtonSprite;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
@@ -27,6 +29,9 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 	private MenuScene upgradeChildScene;
 	private LinkedList<Upgrades> upgrades;
 	private PlayerData player;
+	private HUD hud;
+	private Sprite cookieCounter;
+	private Text cookieAmount;
 
 	@Override
 	public void createScene() {
@@ -36,6 +41,7 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 		createBackground();
 		showUpgrades();
 		showInfo();
+		createHUD();
 		System.out.println("Skapa shop");
 	}
 
@@ -52,6 +58,25 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 		setBackground(new Background(Color.WHITE));
 	}
 
+	private void createHUD() {
+		hud = new HUD();
+		camera.setHUD(hud);
+	}
+
+	public void updateHUD() {
+		camera.setHUD(hud);
+		hud.detachChildren();
+		cookieCounter = new Sprite(455, 50,
+				resourcesManager.cookieCounter_region, vbom);
+		cookieAmount = new Text(620, 20,
+				resourcesManager.loadingFont, ":" + player.getMoney(), vbom);
+		cookieAmount.setPosition(
+				495 + (14 * Integer.toString(player.getMoney()).length()),
+				47);
+		hud.attachChild(cookieAmount);
+		hud.attachChild(cookieCounter);
+	}
+	
 	private void showUpgrades() {
 		upgradeChildScene.detachChildren();
 		upgradeChildScene.attachChild(generateText("Upgrades", 200, 420,
@@ -125,6 +150,7 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 
 	@Override
 	public void onBackKeyPressed() {
+		disposeScene();
 		SceneManager.getInstance().loadMenuScene(engine);
 	}
 
@@ -135,7 +161,8 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 
 	@Override
 	public void disposeScene() {
-
+		cookieCounter.setVisible(false);
+		cookieAmount.setVisible(false);
 	}
 
 	@Override

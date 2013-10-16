@@ -34,7 +34,6 @@ public class MainMenuScene extends BaseScene implements
 		createMenuChildScene();
 		createBackground();
 		initMusic();
-		createHUD();
 	}
 
 	public void setPlayerData(PlayerData data) {
@@ -72,8 +71,6 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void disposeScene() {
-		cookieCounter.setVisible(false);
-		cookieAmount.setVisible(false);
 	}
 
 	/**
@@ -94,31 +91,9 @@ public class MainMenuScene extends BaseScene implements
 	}
 
 	private MenuScene menuChildScene;
-	private HUD hud;
 	private final int MENU_PLAY = 0;
 	private final int MENU_OPTIONS = 1;
 	private final int MENU_SHOP = 2;
-	private Sprite cookieCounter;
-	private Text cookieAmount;
-
-	private void createHUD() {
-		hud = new HUD();
-		camera.setHUD(hud);
-	}
-
-	public void updateHUD() {
-		camera.setHUD(hud);
-		hud.detachChildren();
-		cookieCounter = new Sprite(580, 453,
-				resourcesManager.cookieCounter_region, vbom);
-		cookieAmount = new Text(620, 450,
-				resourcesManager.loadingFont, ":" + playerData.getMoney(), vbom);
-		cookieAmount.setPosition(
-				620 + (14 * Integer.toString(playerData.getMoney()).length()),
-				450);
-		hud.attachChild(cookieAmount);
-		hud.attachChild(cookieCounter);
-	}
 
 	private void createMenuChildScene() {
 		menuChildScene = new MenuScene(camera);
