@@ -409,6 +409,21 @@ public class ResourcesManager {
 		splashTextureAtlas.unload();
 		splash_region = null;
 	}
+	
+	public void unloadGameBackground(){
+		backgroundTextureAtlas.unload();
+		background2TextureAtlas.unload();
+		background3TextureAtlas.unload();
+		
+		backgroundBackRegion = null;
+		backgroundFrontRegion = null;
+		backgroundFront2Region = null;
+	}
+	
+	public void unloadGameResources(){
+		unloadGameBackground();
+		unloadGameTextures();
+	}
 
 	/**
 	 * @param engine
