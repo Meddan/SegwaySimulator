@@ -9,16 +9,14 @@ import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
-import org.andengine.entity.sprite.ButtonSprite;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
 import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.util.adt.color.Color;
 
-import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.game.PlayerData;
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
