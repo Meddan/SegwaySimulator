@@ -389,12 +389,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	@Override
+	/**
+	 * Whenever the player touches the screen this mehod runs
+	 */
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		if (pSceneTouchEvent.isActionDown()) {
 			if (takeInput) {
 				if (gameOverDisplayed) {
 					SceneManager.getInstance().loadMenuScene(engine);
-					startTimer();
 				} else if (pSceneTouchEvent.getX() > camera.getCenterX()) {
 					player.jump();
 				} else if (boostAmount > 0) {
@@ -408,6 +410,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				engine.unregisterUpdateHandler(boostTimer);
 			}
 		} else {
+			startTimer();
 			takeInput = true;
 			tip.setVisible(false);
 		}
