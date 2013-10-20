@@ -42,7 +42,6 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 		upgradeChildScene = new MenuScene(camera);
 
 		setTexts();
-		Upgrades.resetUpgrades();
 
 		createBackground();
 		showUpgrades();
@@ -63,8 +62,6 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 
 	public void setPlayerData(PlayerData player) {
 		this.player = player;
-		player.setMoney(99999);
-
 	}
 
 	private void loadFonts() {
