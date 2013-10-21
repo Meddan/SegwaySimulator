@@ -38,6 +38,7 @@ public class ResourcesManager {
 	public MainActivity activity;
 	public BoundCamera camera;
 	public VertexBufferObjectManager vbom;
+	public Font titleFont;
 	public Font loadingFont;
 	public Font fancyFont;
 	public Font tipFont;
@@ -224,6 +225,10 @@ public class ResourcesManager {
 
 	private void loadMenuFonts() {
 		FontFactory.setAssetBasePath("font/");
+		final ITexture titleFontTexture = new BitmapTextureAtlas(
+				activity.getTextureManager(), 256, 256,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
 		final ITexture loadFontTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -243,6 +248,13 @@ public class ResourcesManager {
 		final ITexture listTexture = new BitmapTextureAtlas(
 				activity.getTextureManager(), 256, 256,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+		// titleFont
+		titleFont = FontFactory.createStrokeFromAsset(
+				activity.getFontManager(), titleFontTexture,
+				activity.getAssets(), "start2p.ttf", 36, true, Color.BLACK, 2,
+				Color.WHITE);
+		titleFont.load();
 
 		// loadingFont
 		loadingFont = FontFactory.createStrokeFromAsset(
@@ -408,6 +420,21 @@ public class ResourcesManager {
 	public void unloadSplashScreen() {
 		splashTextureAtlas.unload();
 		splash_region = null;
+	}
+	
+	public void unloadGameBackground(){
+		backgroundTextureAtlas.unload();
+		background2TextureAtlas.unload();
+		background3TextureAtlas.unload();
+		
+		backgroundBackRegion = null;
+		backgroundFrontRegion = null;
+		backgroundFront2Region = null;
+	}
+	
+	public void unloadGameResources(){
+		unloadGameBackground();
+		unloadGameTextures();
 	}
 
 	/**

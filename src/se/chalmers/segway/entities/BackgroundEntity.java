@@ -13,6 +13,7 @@ public class BackgroundEntity extends Sprite {
 	int startX;
 	int startY;
 	float time = 0;
+	float timeModifier;
 
 	public BackgroundEntity(int startX, int startY, int firstX, int lastX,
 			ITextureRegion pTextureRegion,
@@ -24,6 +25,21 @@ public class BackgroundEntity extends Sprite {
 		this.firstX = firstX;
 		this.lastX = lastX;
 		this.time = Math.abs(firstX-lastX)-startX;
+		timeModifier = 0;
+	}
+	
+	public BackgroundEntity(float timeModifier, int startX, int startY, int firstX, int lastX,
+			ITextureRegion pTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager) {
+		super(startX, startY, pTextureRegion, pVertexBufferObjectManager);
+
+		this.startX = startX;
+		this.startY = startY;
+		this.firstX = firstX;
+		this.lastX = lastX;
+		this.time = Math.abs(firstX-lastX)-startX;
+		this.timeModifier = timeModifier;
+		
 	}
 
 	// @Override
@@ -42,6 +58,6 @@ public class BackgroundEntity extends Sprite {
 		super.preDraw(pGLState, pCamera);
 		pGLState.enableDither();
 		super.setPosition(firstX-time%Math.abs(firstX-lastX), startY);
-		time += 1.1;
+		time += 1.1 + timeModifier;
 	}
 }

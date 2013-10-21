@@ -2,21 +2,21 @@ package se.chalmers.segway.scenes;
 
 import java.util.LinkedList;
 
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
 import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
-import org.andengine.entity.sprite.ButtonSprite;
-import org.andengine.entity.sprite.ButtonSprite.OnClickListener;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
 import org.andengine.opengl.font.Font;
 import org.andengine.util.adt.color.Color;
 
-import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.game.PlayerData;
+import se.chalmers.segway.game.Upgrades;
 import se.chalmers.segway.scenes.SceneManager.SceneType;
 
 public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
@@ -27,16 +27,37 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 	private MenuScene upgradeChildScene;
 	private LinkedList<Upgrades> upgrades;
 	private PlayerData player;
+	private HUD hud;
+	private Sprite cookieCounter;
+	private Text cookieAmount;
+
+	private Text name;
+	private Text description;
+	private Text price;
 
 	@Override
 	public void createScene() {
+		loadFonts();
 		upgrades = new LinkedList<Upgrades>();
 		upgradeChildScene = new MenuScene(camera);
-		loadFonts();
+
+		setTexts();
+
 		createBackground();
 		showUpgrades();
 		showInfo();
+		createHUD();
 		System.out.println("Skapa shop");
+	}
+
+	private void setTexts() {
+		name = generateText("", 580, 380, listFont, true);
+		description = generateText("", 580, 260, listFont, true);
+		price = generateText("", 580, 210, listFont, true);
+
+		upgradeChildScene.attachChild(name);
+		upgradeChildScene.attachChild(description);
+		upgradeChildScene.attachChild(price);
 	}
 
 	public void setPlayerData(PlayerData player) {
@@ -52,14 +73,33 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 		setBackground(new Background(Color.WHITE));
 	}
 
+	private void createHUD() {
+		hud = new HUD();
+		camera.setHUD(hud);
+	}
+
+	public void updateHUD() {
+		camera.setHUD(hud);
+		hud.detachChildren();
+		cookieCounter = new Sprite(455, 50,
+				resourcesManager.cookieCounter_region, vbom);
+		cookieAmount = new Text(620, 20, resourcesManager.loadingFont, ":"
+				+ player.getMoney(), vbom);
+		cookieAmount.setPosition(495 + (14 * Integer
+				.toString(player.getMoney()).length()), 47);
+		hud.attachChild(cookieAmount);
+		hud.attachChild(cookieCounter);
+	}
+
 	private void showUpgrades() {
-		upgradeChildScene.detachChildren();
 		upgradeChildScene.attachChild(generateText("Upgrades", 200, 420,
 				headerFont));
 
 		int n = 0;
+		upgrades = new LinkedList<Upgrades>();
 		for (Upgrades t : Upgrades.values()) {
 			if (!t.isActivated()) {
+				System.out.println(t.getName());
 				upgrades.add(t);
 				IMenuItem upgrade = new ScaleMenuItemDecorator(
 						new SpriteMenuItem(n + 10,
@@ -83,22 +123,24 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 	}
 
 	private void showInfo() {
-		showUpgrades();
 		upgradeChildScene
 				.attachChild(generateText("Shop", 600, 420, headerFont));
 		int x = 580;
 
+		System.out.println("11");
 		if (selected == null) {
-			upgradeChildScene.attachChild(generateText("Välj uppgradering", x,
-					380, listFont, true));
+			System.out.println("12");
+			name.setText("Choose an upgrade");
+			System.out.println(13);
 		} else {
+			System.out.println(14);
 			IMenuItem buyButton;
-			upgradeChildScene.attachChild(generateText(selected.getName(), x,
-					380, listFont, true));
-			upgradeChildScene.attachChild(generateText(selected.getInfo(), x,
-					260, listFont, true));
-			upgradeChildScene.attachChild(generateText(
-					"Price: " + selected.getCost(), x, 210, listFont, true));
+
+			name.setText(selected.getName());
+			description.setText(selected.getInfo());
+			price.setText("Price: " + selected.getCost());
+
+			System.out.println(15);
 			buyButton = new ScaleMenuItemDecorator(new SpriteMenuItem(5,
 					resourcesManager.upgrade_region, vbom), 0.6f, 0.7f);
 			buyButton.attachChild(generateText("Buy",
@@ -107,6 +149,7 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 			buyButton.setPosition(x, 120);
 			upgradeChildScene.addMenuItem(buyButton);
 		}
+		upgradeChildScene.detachSelf();
 	}
 
 	private void buy() {
@@ -118,6 +161,14 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 			}
 			selected.setActive(true);
 			player.setMoney(player.getMoney() - selected.getCost());
+
+			System.out.println("Update the upgrade list");
+			upgradeChildScene.detachChildren();
+			upgradeChildScene.clearTouchAreas();
+			selected = null;
+			updateHUD();
+			showUpgrades();
+			setTexts();
 		} else {
 			System.out.println("Not enough monies");
 		}
@@ -125,6 +176,7 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 
 	@Override
 	public void onBackKeyPressed() {
+		disposeScene();
 		SceneManager.getInstance().loadMenuScene(engine);
 	}
 
@@ -135,7 +187,8 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 
 	@Override
 	public void disposeScene() {
-
+		cookieCounter.setVisible(false);
+		cookieAmount.setVisible(false);
 	}
 
 	@Override
@@ -145,7 +198,9 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 		if (pMenuItem.getID() == 5) {
 			buy();
 		} else if (pMenuItem.getID() >= 10) {
+			System.out.println("ClickedID: " + pMenuItem.getID());
 			selected = upgrades.get(pMenuItem.getID() - 10);
+			System.out.println("Selected: " + selected);
 		}
 
 		System.out.println(pMenuItem.getID());
@@ -154,7 +209,7 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 	}
 
 	private Text generateText(String text, int xOffset, int yOffset, Font font) {
-		Text t = new Text(xOffset, yOffset, font, text, vbom);
+		Text t = new Text(xOffset, yOffset, font, text, 400, vbom);
 		return t;
 	}
 

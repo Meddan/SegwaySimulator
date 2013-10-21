@@ -26,7 +26,8 @@ public class Boulder extends Sprite {
 					pTimerHandler.reset();
 
 					if (speed <= 0) {
-						ResourcesManager.getInstance().engine.unregisterUpdateHandler(speedTimer);
+						ResourcesManager.getInstance().engine
+								.unregisterUpdateHandler(speedTimer);
 					} else {
 						speed += -1;
 					}
@@ -53,27 +54,31 @@ public class Boulder extends Sprite {
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		super.onManagedUpdate(pSecondsElapsed);
 
+		if (body.getLinearVelocity().x > 1) {
+			this.setRotation(this.getRotation() + 7.2f);
+		}
+
 		if (player.collidesWith(this) && body.getLinearVelocity().x > 5) {
 			if (!Upgrades.SuperHelmet.isActivated()) {
-			player.stop();
-			player.onDie();
+				player.stop();
+				player.onDie();
 			} else {
 				Upgrades.SuperHelmet.setActive(false);
 			}
-		} 
+		}
 
 		if (Math.abs(this.getX() - player.getX()) < 30
 				&& body.getType() == BodyType.StaticBody) {
 			body.setType(BodyType.DynamicBody);
-			ResourcesManager.getInstance().engine.registerUpdateHandler(speedTimer);
+			ResourcesManager.getInstance().engine
+					.registerUpdateHandler(speedTimer);
 		}
 
 		if (body.getType() == BodyType.DynamicBody) {
-				body.applyForce(
-						new Vector2(speed, 0), body.getPosition());
+			body.applyForce(new Vector2(speed, 0), body.getPosition());
 		}
 	}
-	
+
 	public void stop() {
 		this.body.setType(BodyType.StaticBody);
 	}

@@ -83,11 +83,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	private SpriteParticleSystem particleSystem;
 
 	private PlayerData playerData;
-	
+
 	private float trippyTime = 0;
-	
+
 	private TimerHandler trippyTimer;
-	
+
 	private TimerHandler boostTimer = new TimerHandler(0.1f,
 			new ITimerCallback() {
 				public void onTimePassed(final TimerHandler pTimerHandler) {
@@ -116,20 +116,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		createLocalScenes();
 		createBackground();
 		initTrail();
-		if(Upgrades.Shrooms.isActivated()) {
+		if (Upgrades.Shrooms.isActivated()) {
 			initTrippy();
 		}
 	}
 
 	private void initTrippy() {
-		trippyTimer = new TimerHandler(0.001f,
-				new ITimerCallback() {
-					public void onTimePassed(final TimerHandler pTimerHandler) {
-						pTimerHandler.reset();
-						trippyTime +=0.1f;
-						camera.setRotation((float) (20*Math.sin(trippyTime)));
-					}
-				});
+		trippyTimer = new TimerHandler(0.001f, new ITimerCallback() {
+			public void onTimePassed(final TimerHandler pTimerHandler) {
+				pTimerHandler.reset();
+				trippyTime += 0.1f;
+				camera.setRotation((float) (20 * Math.sin(trippyTime)));
+			}
+		});
 		engine.registerUpdateHandler(trippyTimer);
 	}
 
@@ -151,6 +150,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		camera.setCenter(400, 240);
 		camera.setChaseEntity(null);
 		camera.setRotation(0);
+
+		resourcesManager.unloadGameResources();
+		this.dispose();
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
@@ -182,8 +184,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		if (!gameOverDisplayed) {
 			this.detachChild(levelCompleteScene);
 			levelCompleteScene.display(GameScene.this, camera);
-			addToScore((int) player.getX() / 20);
-			displayScoreAtGameOver();
+
+			camera.setChaseEntity(null);
+			score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
+			playerData.setMoney(playerData.getMoney() + score);
+			int currentHighestLevel = playerData.getHighestLevelCleared();
+			if (currentHighestLevel < this.currentLvl) {
+				playerData.setHighestLevelCleared(currentLvl);
+			}
+			finalScore = new Text(320, 80, resourcesManager.fancyFont,
+					"Score: " + score, vbom);
+			SaveManager.savePlayerData(playerData);
+
+			levelCompleteScene.attachChild(finalScore);
+			gameOverDisplayed = true;
+
 		}
 	}
 
@@ -194,6 +209,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				": 1234567890", vbom);
 	}
 
+	/**
+	 * Creates the background of the level, the background 
+	 * is always the cliffs of dover on cyan background.
+	 *  
+	 */
 	private void createBackground() {
 		parallaxLayer = new ParallaxLayer(camera, true, 10000);
 		Sprite back = new Sprite(0, camera.getCenterY(), camera.getWidth(),
@@ -226,6 +246,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		deathScene = new DeathScene(vbom);
 	}
 
+	/**
+	 * Creates the HUD.
+	 */
 	private void createHUD() {
 		gameHUD = new HUD();
 		camera.setHUD(gameHUD);
@@ -241,6 +264,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		gameHUD.attachChild(tip);
 	}
 
+	/**
+	 * Creates the player entity and decides what happens in onDie().
+	 */
 	private void createPlayer() {
 		player = new Player(0, 0, vbom, camera, physicsWorld) {
 			@Override
@@ -252,6 +278,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 		contactListener.setEngine(engine);
 	}
 
+	/**
+	 * Displays the DeathScene, which is called when you fail a level.
+	 * The game over screen, waits half a second before showing. 
+	 */
 	public void showGameOver() {
 		if (!gameOverDisplayed) {
 			stopTimerAndReturnTime();
@@ -270,25 +300,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 						}
 					}));
 		}
-	}
-
-	private void displayScoreAtGameOver() {
-
-		camera.setChaseEntity(null);
-		// Score is calculated: 10*amount of cookies taken + 1000/1 + time in
-		// seconds
-		score = (int) (score + 1000 / (1 + stopTimerAndReturnTime() / 1000));
-		playerData.setMoney(playerData.getMoney() + score);
-		int currentHighestLevel = playerData.getHighestLevelCleared();
-		if (currentHighestLevel < this.currentLvl) {
-			playerData.setHighestLevelCleared(currentLvl);
-		}
-		finalScore = new Text(320, 80, resourcesManager.fancyFont, "Score: "
-				+ score, vbom);
-		SaveManager.savePlayerData(playerData);
-
-		levelCompleteScene.attachChild(finalScore);
-		gameOverDisplayed = true;
 	}
 
 	/**
@@ -329,7 +340,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				SensorManager.SENSOR_DELAY_GAME);
 	}
 
-	// Handles all code for loading levels
+	/**
+	 * Loads a level from an .lvl file
+	 * 
+	 * @param levelID
+	 * 					the ID of the level to be loaded
+	 */
 	public void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
 		this.currentLvl = levelID;
@@ -372,12 +388,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	@Override
+	/**
+	 * Whenever the player touches the screen this mehod runs
+	 */
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
 		if (pSceneTouchEvent.isActionDown()) {
 			if (takeInput) {
 				if (gameOverDisplayed) {
 					SceneManager.getInstance().loadMenuScene(engine);
-					startTimer();
 				} else if (pSceneTouchEvent.getX() > camera.getCenterX()) {
 					player.jump();
 				} else if (boostAmount > 0) {
@@ -391,6 +409,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 				engine.unregisterUpdateHandler(boostTimer);
 			}
 		} else {
+			startTimer();
 			takeInput = true;
 			tip.setVisible(false);
 		}
@@ -398,9 +417,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 	}
 
 	@Override
-	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
-
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {		
 	}
 
 	@Override
@@ -420,7 +437,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener,
 					multiplier = 10;
 				}
 				particleEmitter.setCenter(player.getX(), player.getY());
-				
+
 			}
 
 			player.setRotation(tiltSpeedX * 18f);

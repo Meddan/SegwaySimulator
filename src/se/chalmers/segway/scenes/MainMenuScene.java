@@ -1,6 +1,5 @@
 package se.chalmers.segway.scenes;
 
-import org.andengine.engine.camera.hud.HUD;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
@@ -8,7 +7,7 @@ import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.AutoWrap;
 import org.andengine.entity.text.Text;
 import org.andengine.util.adt.color.Color;
 
@@ -34,7 +33,6 @@ public class MainMenuScene extends BaseScene implements
 		createMenuChildScene();
 		createBackground();
 		initMusic();
-		createHUD();
 	}
 
 	public void setPlayerData(PlayerData data) {
@@ -72,8 +70,6 @@ public class MainMenuScene extends BaseScene implements
 
 	@Override
 	public void disposeScene() {
-		cookieCounter.setVisible(false);
-		cookieAmount.setVisible(false);
 	}
 
 	/**
@@ -81,41 +77,29 @@ public class MainMenuScene extends BaseScene implements
 	 */
 	private void createBackground() {
 		setBackground(new Background(new Color(0.21f, 0.8f, 0.11f)));
-
-		SpriteMenuItem play = new SpriteMenuItem(3, resourcesManager.player_region, vbom);
-		play.setPosition(camera.getCenterX()+150, camera.getCenterY());
 		
-		attachChild(new BackgroundEntity(1200, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
-		attachChild(new BackgroundEntity(400, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
-		attachChild(play);
+		Text title = new Text(0, 0, resourcesManager.titleFont, "Segway Simulator", vbom);
+		title.setPosition(camera.getCenterX()-180, camera.getCenterY()+100);
+		title.setAutoWrap(AutoWrap.WORDS);
+		title.setAutoWrapWidth(250);
+		title.setScale(1.2f);
+
+		AnimatedSprite segwayKid = new AnimatedSprite(1, 3, resourcesManager.player_region, vbom);
+		segwayKid.setPosition(camera.getCenterX()+130, camera.getCenterY()+46);
+		segwayKid.setRotation(30);
+		segwayKid.setScale(2.3f);
+		segwayKid.animate(40, true);
+		
+		attachChild(new BackgroundEntity(5.9f, 1200, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
+		attachChild(new BackgroundEntity(5.9f, 400, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
+		attachChild(segwayKid);
+		attachChild(title);
 	}
 
 	private MenuScene menuChildScene;
-	private HUD hud;
 	private final int MENU_PLAY = 0;
 	private final int MENU_OPTIONS = 1;
 	private final int MENU_SHOP = 2;
-	private Sprite cookieCounter;
-	private Text cookieAmount;
-
-	private void createHUD() {
-		hud = new HUD();
-		camera.setHUD(hud);
-	}
-
-	public void updateHUD() {
-		camera.setHUD(hud);
-		hud.detachChildren();
-		cookieCounter = new Sprite(580, 453,
-				resourcesManager.cookieCounter_region, vbom);
-		cookieAmount = new Text(620, 450,
-				resourcesManager.loadingFont, ":" + playerData.getMoney(), vbom);
-		cookieAmount.setPosition(
-				620 + (14 * Integer.toString(playerData.getMoney()).length()),
-				450);
-		hud.attachChild(cookieAmount);
-		hud.attachChild(cookieCounter);
-	}
 
 	private void createMenuChildScene() {
 		menuChildScene = new MenuScene(camera);
