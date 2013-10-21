@@ -166,6 +166,7 @@ public class ShopScene extends BaseScene implements IOnMenuItemClickListener {
 			upgradeChildScene.detachChildren();
 			upgradeChildScene.clearTouchAreas();
 			selected = null;
+			updateHUD();
 			showUpgrades();
 			setTexts();
 		} else {
