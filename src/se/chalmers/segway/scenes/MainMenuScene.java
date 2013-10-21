@@ -7,6 +7,8 @@ import org.andengine.entity.scene.menu.item.IMenuItem;
 import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.text.AutoWrap;
+import org.andengine.entity.text.Text;
 import org.andengine.util.adt.color.Color;
 
 import se.chalmers.segway.entities.BackgroundEntity;
@@ -75,6 +77,12 @@ public class MainMenuScene extends BaseScene implements
 	 */
 	private void createBackground() {
 		setBackground(new Background(new Color(0.21f, 0.8f, 0.11f)));
+		
+		Text title = new Text(0, 0, resourcesManager.titleFont, "Segway Simulator", vbom);
+		title.setPosition(camera.getCenterX()-180, camera.getCenterY()+100);
+		title.setAutoWrap(AutoWrap.WORDS);
+		title.setAutoWrapWidth(250);
+		title.setScale(1.2f);
 
 		AnimatedSprite segwayKid = new AnimatedSprite(1, 3, resourcesManager.player_region, vbom);
 		segwayKid.setPosition(camera.getCenterX()+130, camera.getCenterY()+46);
@@ -85,6 +93,7 @@ public class MainMenuScene extends BaseScene implements
 		attachChild(new BackgroundEntity(5.9f, 1200, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
 		attachChild(new BackgroundEntity(5.9f, 400, 380, 1200, -400, resourcesManager.menu_background_region, vbom));
 		attachChild(segwayKid);
+		attachChild(title);
 	}
 
 	private MenuScene menuChildScene;
