@@ -67,6 +67,5 @@ public enum Upgrades implements Serializable {
 			for(Upgrades upg : Upgrades.values()){
 				upg.setActive(false);
 			}
-			SaveManager.saveUpgrades();
 		}
 }

@@ -18,10 +18,25 @@ public class UpgradesTest extends TestCase {
 		if(Upgrades.SuperHelmet.isActivated()){
 			testWentWell = false;
 		}
-		
 		assertTrue(testWentWell);
 	}
 	public void testGetName(){
-		assertTrue(Upgrades.RocketBoost.getName().equals("RocketBoost"));
+		assertTrue(Upgrades.RocketBoost.getName().equals("RocketBoost") && Upgrades.SuperHelmet.getName().equals("SuperHelmet"));
+	}
+	public void testGetValues(){
+		assertNotNull(Upgrades.values());
+	}
+	public void testResetUpgrades(){
+		for(Upgrades u : Upgrades.values()){
+			u.setActive(true);
+		}
+		Upgrades.resetUpgrades();
+		boolean testWentWell = true;
+		for(Upgrades u : Upgrades.values()){
+			if(u.isActivated()){
+				testWentWell = false;
+			}
+		}
+		assertTrue(testWentWell);
 	}
 }

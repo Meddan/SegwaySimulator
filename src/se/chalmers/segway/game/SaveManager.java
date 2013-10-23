@@ -53,8 +53,8 @@ public class SaveManager {
 		for(Upgrades upg : Upgrades.values()){
 			saveMap.put(upg.getName(), upg.isActivated());
 		}
-		//The path where the file will be saved
 		File path=new File(ResourcesManager.getInstance().activity.getFilesDir(),"saves");
+		//The path where the file will be saved
 		path.mkdir();
 		FileOutputStream fos;
 		File file = new File(path, "upgrades");
@@ -64,7 +64,7 @@ public class SaveManager {
 			oos.writeObject(saveMap);
 			oos.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			//This happens if  the file did not exist or something went terribly wrong. This causes upgrades to be reset.
 		}
 	}
 	/**
